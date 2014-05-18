@@ -1,0 +1,63 @@
+- types of groups to implement:
+ - the trivial group
+ - Klein 4-group
+ - semidirect products (somehow)
+ - quotient groups
+ - alternating groups
+ - symmetric groups
+ - multiplication modulo n?
+- operations to add:
+ - generating all powers of an element?
+ - calculating group tables
+ - calculating algebraic closures (i.e., generating subgroups from subsets)
+ - calculating centralizers & centers
+ - calculating normalizers
+ - determining all subgroups of a group
+ - calculating commutators
+ - determining whether a subgroup is normal
+ - calculating automorphisms and groups thereof
+- Add methods for configuring how to display the elements of a group:
+ - setting the strings to display for generators and the identity
+ - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,
+   or $[a]_n$
+ - setting whether direct product groups should use pair notation or just
+   concatenate the element strings
+  - when pair notation is used, setting whether elements of component direct
+    product groups should be "flattened" or not (e.g., "((a, b), c)" vs. "(a,
+    b, c)")
+ - setting whether to display operations/combinations of generators additively
+   or multiplicatively
+ - setting whether to give $ab=c\in V_4$ and $ij=k\in Q_8$ separate symbols
+   (and, if so, which ones) or to represent them as combinations of generators
+ - setting what order to display factors of elements of semidirect products in
+   (including elements of dihedral and dicyclic groups)
+ - setting how to display i^n = j^2 in dicyclic groups
+- Implement actual exceptions
+ - The constructors for Dihedral and Dicyclic should throw exceptions when
+   passed 0 or 1
+  - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
+ - quaternion() should throw an exception when given an invalid argument
+- Rethink the memory management of Group objects passed to Direct's constructor
+  (including those used in Direct::copy())
+- Consider making showElem() (and other methods?) private and having Element
+  befriend Group
+- Protect elem objects from being used directly by unwanted code
+- Add a way for the user to query the "type" of a group (cyclic, dihedral,
+  etc.)
+- Add ways for the user to query what parameters were used to construct a given
+  group
+- Add ways for the user to deconstruct Elements (e.g., determining the parts of
+  a Direct::delem or the residue of a Cyclic::celem)
+- Add a way for the user to create abitrary elements of a Dihedral or Dicyclic
+  group
+- Consider adding a method to Group for comparing two Groups (at least for
+  equality)
+- Make the default generator names for dicyclic groups less quaternion-like
+- Consider adding an alternative to or replacement for quaternion() that takes
+  the cardinality of the desired group
+- Add in a way to represent subgroups
+- Considering adding an isIdentity() method to Element
+- Consider replacing Element with an abstract class, with elements of groups
+  being instances of public classes within the groups' namespaces that
+  implement Element; e.g., elements of a cyclic group would have public type
+  Cyclic::Element (or Cyclic<n>::Element?)
