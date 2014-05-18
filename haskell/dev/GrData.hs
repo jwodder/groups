@@ -7,8 +7,7 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups
-import Math.NumTheory (factor)
-import Ternary
+import Groups.Internals  -- factor and Ternary
 
 grdata :: (String, Group, [String]) -> String
 grdata (name, g, props) | g_size g == 1 = unlines [

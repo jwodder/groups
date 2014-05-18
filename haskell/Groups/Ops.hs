@@ -5,8 +5,6 @@ module Groups.Ops where
  import Flow (expfa)
  import Groups.Types
  import Groups.Internals
- import MoreData.Lists (cartesian)
- import Ternary
 
  gexp :: Elem -> Int -> Elem
  gexp (Elem (i, g)) n = n' == 0 ?: identity g

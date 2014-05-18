@@ -21,7 +21,6 @@ module Permutation (
  import qualified Data.Array as A
  import Data.List (intercalate, mapAccumL)
  import Data.Monoid
- import MoreData.Lists ((&:))
 
  newtype Permutation = Perm (Array Int Int) deriving (Eq, Ord)
 
@@ -87,6 +86,7 @@ module Permutation (
 			       cykeAt q sh' = if q == x then ([], sh')
 					      else q &: (cykeAt (σ A.! q)
 							 $ sh' // [(q, True)])
+			       x &: (xs, y) = (x:xs, y)
 
  showCycles :: Permutation -> String
  showCycles σ = case toCycles σ of
@@ -130,3 +130,4 @@ module Permutation (
 	lehmer' (y:ys) x' i | x' == y = (ys, i)
 	lehmer' (y:ys) x' i = y &: lehmer' ys x' (i+1)
 	lehmer' [] _ _ = undefined
+	x &: (xs, y) = (x:xs, y)

@@ -1,8 +1,7 @@
 import Data.Array
 import Data.List (intercalate)
 import Groups
-import Math.NumTheory (modInverse')
-import MoreData.Lists (cartesian)
+import Groups.Internals (modInverse', cartesian)
 
 group = holCyclic 3
 

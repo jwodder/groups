@@ -4,11 +4,7 @@ module Groups.Families where
  import Closure (closure2A)
  import Groups.Types
  import Groups.Internals
- import Math.Combinatorics (partitions)
- import Math.NumTheory (modInverse', factor)
- import MoreData.Lists (cartesian, cross, extZip)
  import qualified Permutation as P
- import Ternary
 
  cyclic :: Int -> Group
  cyclic = mkgroup . cyclic'

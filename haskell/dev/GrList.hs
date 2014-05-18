@@ -1,7 +1,6 @@
 module GrList (groupList, o32nonA) where
  import Groups
- import MoreData.Lists (isSublist)
- import Ternary
+ import Groups.Internals  -- isSublist and Ternary
 
  type GrEntry = (String, Group, [String])
 

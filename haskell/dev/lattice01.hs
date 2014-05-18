@@ -4,7 +4,7 @@ import qualified Data.IntSet as ISet
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups (subgroups)
-import MoreData.Lists (classify)
+import Groups.Internals (classify)
 
 --group = cycSemiCyc 8 4 (-1)
 group = cycSemiCyc 8 4 3

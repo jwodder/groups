@@ -3,7 +3,7 @@ import System.Environment (getArgs)
 import qualified Data.IntSet as ISet
 import Groups
 import Closure (view)
-import MoreData.Lists (fromHead)
+import Groups.Internals (fromHead)
 import Permutation
 
 main = do
