@@ -7,7 +7,7 @@ module Math.Groups.Families where
  import Math.Combinatorics (partitions)
  import Math.NumTheory (modInverse', factor)
  import MoreData.Lists (cartesian, cross, extZip)
- import qualified MoreData.Symmetric as Sy
+ import qualified MoreData.Permutation as P
  import Ternary
 
  cyclic :: Int -> Group
@@ -120,40 +120,40 @@ module Math.Groups.Families where
  symmetric :: Int -> Group
  symmetric = mkgroup . symmetric'
 
- symmetric' :: Int -> Group' Sy.Symmetry
+ symmetric' :: Int -> Group' P.Permutation
  symmetric' n | n < 1 = undefined
  symmetric' n = Group' {
   g'size = product [1..n],
   -- TODO: Compare the performances of the two methods for generating $S_n$
-  --g'elems = closure2A Sy.compose $ map (Sy.setDegree' n . Sy.transpose 1) [2..n],
-  g'elems = if n == 1 then [Sy.identity' 1]
-	    else closure2A Sy.compose [Sy.fromCycle [1..n],
-				       Sy.setDegree' n $ Sy.transpose 1 2],
-  g'index = Sy.lehmer,
-  g'oper = Sy.compose,
-  g'invert = Sy.invert,
-  g'order = Sy.order,
-  g'id = Sy.identity' n
+  --g'elems = closure2A P.compose $ map (P.setDegree' n . P.transpose 1) [2..n],
+  g'elems = if n == 1 then [P.identity' 1]
+	    else closure2A P.compose [P.fromCycle [1..n],
+				      P.setDegree' n $ P.transpose 1 2],
+  g'index = P.lehmer,
+  g'oper = P.compose,
+  g'invert = P.invert,
+  g'order = P.order,
+  g'id = P.identity' n
  }
 
  alternating :: Int -> Group
  alternating = mkgroup . alternating'
 
- alternating' :: Int -> Group' Sy.Symmetry
+ alternating' :: Int -> Group' P.Permutation
  alternating' n | n < 1 = undefined
  alternating' n = Group' {
   g'size = n == 1 ?: 1 :? div facN 2,
   g'elems = els,
-  g'index = (!) dex . Sy.lehmer,
-  g'oper = Sy.compose,
-  g'invert = Sy.invert,
-  g'order = Sy.order,
-  g'id = Sy.identity' n
+  g'index = (!) dex . P.lehmer,
+  g'oper = P.compose,
+  g'invert = P.invert,
+  g'order = P.order,
+  g'id = P.identity' n
  } where facN = product [1..n]
 	 -- TODO: Prove that the below is correct!
-	 els = closure2A Sy.compose [Sy.setDegree' n $ Sy.fromCycle [1,a,b]
+	 els = closure2A P.compose [P.setDegree' n $ P.fromCycle [1,a,b]
 				     | a <- [2..n], b <- [a+1..n]]
-	 dex = array (0, facN-1) $ zip (sort $ map Sy.lehmer els) [0..]
+	 dex = array (0, facN-1) $ zip (sort $ map P.lehmer els) [0..]
 
  multiplicN :: Int -> Group  -- Rename to "autCyclic"?
  multiplicN = mkgroup . multiplicN'

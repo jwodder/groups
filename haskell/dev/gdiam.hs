@@ -4,7 +4,7 @@ import qualified Data.IntSet as ISet
 import Algorithms.Closure (view)
 import Math.Groups
 import MoreData.Lists (fromHead)
-import MoreData.Symmetric
+import MoreData.Permutation
 
 main = do
  n <- getArgs >>= readIO . fromHead "5"

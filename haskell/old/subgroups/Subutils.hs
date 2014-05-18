@@ -5,7 +5,7 @@ module Subutils where
  import qualified Data.IntSet as ISet
  import Math.Groups
 
- import MoreData.Symmetric (showCycles)
+ import MoreData.Permutation (showCycles)
 
  group :: Group
  group = mkgroup group'

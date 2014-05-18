@@ -1,5 +1,5 @@
 import Algorithms.Closure (closure2A)
-import MoreData.Symmetric
+import MoreData.Permutation
 
 n = 5
 
