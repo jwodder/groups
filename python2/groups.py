@@ -1,25 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# To add:
-#  - alternating groups
-#  - "boolean" group?
-#  - calculating all subgroups of a group
-#  - testing whether a group is abelian
-#  - calculating nilpotence classes
-#  - configurable element showing
-#  - __copy__ and __deepcopy__ methods (see the `copy` module)
-#   - Element.copy()
-#  - Make `identity` a property?
-#  - an inverse method to `indexElem`?
-#  - Rewrite Group.__contains__ and/or Group.elem to ensure that the Element
-#    objects in question actually appear in their respective Groups?  cf. the
-#    overloading of .elem by Cyclic
-#  - Should .oper (and other Group methods?) raise a TypeError when given
-#    Elements outside the Group?
-#  - Element construction of the form `Element(paramTuple, group)` (where
-#    Element is the base class rather than a group's derived class) ?
-#  - Should Element.order and/or Element.index cache their results?
-
 import operator
 import re
 from   closure     import closure2A
@@ -541,18 +521,3 @@ def showbinopU(x,op,y):
     if u' ' in x: x = u'(' + x + u')'
     if u' ' in y: y = u'(' + y + u')'
     return x + u' ' + op + u' ' + y
-
-
-#def abelians(n):
-#    if n < 1: return
-#    else:
-#	vals = []
-#	for (p,k) in factor(n):
-#	    vals.append([[p**i for i in part] for part in partitions(k)])
-#	def mully(a,b):
-#	    if a is None: return b
-#	    elif b is None: return a
-#	    else: return a*b
-#	for xs in itertools.product(*vals):
-#	    xs2 = reduce(lambda a,b: map(mully, a, b), xs)
-#	    yield (reduce(DirectProduct, map(Cyclic, xs2)), xs2)
