@@ -2,8 +2,8 @@ import Data.Array
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as ISet
 import qualified Data.Set as Set
-import Math.Groups
-import Math.Groups.Subgroups (subgroups)
+import Groups
+import Groups.Subgroups (subgroups)
 import MoreData.Lists (classify)
 
 --group = cycSemiCyc 8 4 (-1)

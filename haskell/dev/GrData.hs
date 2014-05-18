@@ -5,8 +5,8 @@ import Data.Maybe (fromJust)
 import qualified Data.IntSet as ISet
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Math.Groups
-import Math.Groups.Subgroups
+import Groups
+import Groups.Subgroups
 import Math.NumTheory (factor)
 import Ternary
 

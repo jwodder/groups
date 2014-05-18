@@ -1,5 +1,5 @@
-module Math.Groups.Types.Elem where
- import Math.Groups.Types.Group
+module Groups.Types.Elem where
+ import Groups.Types.Group
 
  newtype Elem = Elem (Int, Group) deriving (Eq, Ord, Read, Show)
   -- TODO: Keep this constructor private to prevent out-of-bounds errors?

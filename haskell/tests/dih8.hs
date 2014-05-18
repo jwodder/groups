@@ -1,6 +1,6 @@
 import Data.Array
 import Data.List (intercalate)
-import Math.Groups
+import Groups
 
 main = mapM_ (putStrLn . bracket "{}" . map elemID . gclosure . map (mkelem group'))
  [[(False, 4), (True, 0)],

@@ -2,12 +2,12 @@
 -- TO ADD: conversion to & from [Int]
 -- TO ADD: ∈ ???
 
-module Math.Groups.Types.Subset where
+module Groups.Types.Subset where
  import Control.Monad (guard)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
- import Math.Groups.Types.Elem
- import Math.Groups.Types.Group
+ import Groups.Types.Elem
+ import Groups.Types.Group
 
  newtype Subset = Subset (Group, IntSet) deriving (Eq, Ord, Read, Show)
   -- The constructor needs to be kept private!

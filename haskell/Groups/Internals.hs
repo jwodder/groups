@@ -1,10 +1,10 @@
-module Math.Groups.Internals where
+module Groups.Internals where
  import Control.Monad (guard)
  import Data.Array
  import Data.Maybe (fromJust)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
- import Math.Groups.Types
+ import Groups.Types
 
  cycOrd :: Int -> Int -> Int
  cycOrd n x = n `div` gcd x n

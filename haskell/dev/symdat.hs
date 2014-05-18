@@ -1,11 +1,11 @@
 import Data.Array
 import Data.List (intercalate)
 import System.Environment (getArgs)
-import Algorithms.Closure (closure2A)
-import Math.Groups
+import Closure (closure2A)
+import Groups
 import MoreData.Index (mkIndex, getIndex)
 import MoreData.Lists (splitElem)
-import qualified MoreData.Permutation as P
+import qualified Permutation as P
 import GrData
 
 main :: IO ()

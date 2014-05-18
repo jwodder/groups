@@ -1,5 +1,5 @@
 import Data.List (intercalate)
-import Math.Groups.Type
+import Groups.Type
 
 group = semidirect quaternion (cyclic 2) (\x (i, j) -> if x == 1 then (mod (i + 2 * mod i 2 + 2*fromEnum j) 4, j) else (i, j))
 

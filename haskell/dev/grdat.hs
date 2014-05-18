@@ -1,4 +1,4 @@
-import Math.Groups (Group)
+import Groups (Group)
 import GrData
 import GrList
 

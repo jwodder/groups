@@ -1,13 +1,13 @@
-module Math.Groups.Families where
+module Groups.Families where
  import Data.Array
  import Data.List (sort)
- import Algorithms.Closure (closure2A)
- import Math.Groups.Types
- import Math.Groups.Internals
+ import Closure (closure2A)
+ import Groups.Types
+ import Groups.Internals
  import Math.Combinatorics (partitions)
  import Math.NumTheory (modInverse', factor)
  import MoreData.Lists (cartesian, cross, extZip)
- import qualified MoreData.Permutation as P
+ import qualified Permutation as P
  import Ternary
 
  cyclic :: Int -> Group

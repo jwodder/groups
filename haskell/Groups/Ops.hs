@@ -1,10 +1,10 @@
-module Math.Groups.Ops where
+module Groups.Ops where
  import Data.Array
  import Data.Maybe (isJust)
  import qualified Data.IntSet as ISet
  import Flow (expfa)
- import Math.Groups.Types
- import Math.Groups.Internals
+ import Groups.Types
+ import Groups.Internals
  import MoreData.Lists (cartesian)
  import Ternary
 

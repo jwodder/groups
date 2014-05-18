@@ -1,4 +1,4 @@
-module Math.Groups.Subgroups (subgroups, subgroupGens) where
+module Groups.Subgroups (subgroups, subgroupGens) where
  import Control.Monad (guard)
  import Data.Maybe (mapMaybe)
  import Data.IntSet (IntSet)
@@ -7,8 +7,8 @@ module Math.Groups.Subgroups (subgroups, subgroupGens) where
  import qualified Data.Map as Map
  import Data.Set (Set)
  import qualified Data.Set as Set
- import Math.Groups.Types
- import Math.Groups.Internals
+ import Groups.Types
+ import Groups.Internals
 
  subgroups :: Group -> Set IntSet  -- subgrs05b.hs
  -- returns a set of subgroups

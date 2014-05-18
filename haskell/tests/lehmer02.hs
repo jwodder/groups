@@ -1,5 +1,5 @@
-import Math.Groups5b
-import MoreData.Permutation (showCycles)
+import Groups
+import Permutation (showCycles)
 
 --group = symmetric' 4
 group = alternating' 5

@@ -1,6 +1,6 @@
 import Data.Array
 import Data.List (intercalate)
-import Math.Groups
+import Groups
 
 main = mapM_ (\x -> putStrLn $ intercalate "\t" $ map (ciska . elemID)
 			     $ map (x ·) $ elements group) $ elements group

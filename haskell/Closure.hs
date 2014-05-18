@@ -1,4 +1,4 @@
-module Algorithms.Closure (
+module Closure (
   -- * Closure functions
   closure2, closure2', closure2'', closure2A,
   closure1m, closure1m',

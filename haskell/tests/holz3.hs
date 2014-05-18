@@ -1,6 +1,6 @@
 import Data.Array
 import Data.List (intercalate)
-import Math.Groups
+import Groups
 import Math.NumTheory (modInverse')
 import MoreData.Lists (cartesian)
 

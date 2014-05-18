@@ -1,4 +1,4 @@
-module Math.Groups.Types.Group where
+module Groups.Types.Group where
  import Data.Array
 
  newtype Group = Group (Array (Int, Int) Int, Array Int (Int, Int))

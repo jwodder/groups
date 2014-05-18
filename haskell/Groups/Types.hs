@@ -1,13 +1,13 @@
-module Math.Groups.Types (
-  module Math.Groups.Types.Elem,
-  module Math.Groups.Types.Group,
-  module Math.Groups.Types.Subset,
+module Groups.Types (
+  module Groups.Types.Elem,
+  module Groups.Types.Group,
+  module Groups.Types.Subset,
   Group'(..), mkgroup, unmkgroup
  ) where
  import Data.Array
- import Math.Groups.Types.Elem
- import Math.Groups.Types.Group
- import Math.Groups.Types.Subset
+ import Groups.Types.Elem
+ import Groups.Types.Group
+ import Groups.Types.Subset
 
  data Group' a = Group' {
   g'size   :: Int,

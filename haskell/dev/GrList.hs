@@ -1,5 +1,5 @@
 module GrList (groupList, o32nonA) where
- import Math.Groups
+ import Groups
  import MoreData.Lists (isSublist)
  import Ternary
 

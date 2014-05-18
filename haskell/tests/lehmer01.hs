@@ -1,5 +1,5 @@
-import Algorithms.Closure (closure2A)
-import MoreData.Permutation
+import Closure (closure2A)
+import Permutation
 
 n = 5
 

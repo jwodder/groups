@@ -4,7 +4,7 @@ import Data.IntSet (IntSet)
 import qualified Data.IntSet as ISet
 import Data.Set (Set)
 import qualified Data.Set as Set
-import Math.Groups
+import Groups
 import Subutils
 
 main = mapM_ (putStrLn . bracket "{}" . ISet.toList)

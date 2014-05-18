@@ -3,7 +3,7 @@
 -- TODO: Make all Permutations returned from functions be trimmed to their
 -- proper degree à la permutation.py
 
-module MoreData.Permutation (
+module Permutation (
   -- * Permutation type
   Permutation,
   -- * Basic operations

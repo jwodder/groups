@@ -1,10 +1,10 @@
 import Control.Monad (liftM2)
 import System.Environment (getArgs)
 import qualified Data.IntSet as ISet
-import Algorithms.Closure (view)
-import Math.Groups
+import Groups
+import Closure (view)
 import MoreData.Lists (fromHead)
-import MoreData.Permutation
+import Permutation
 
 main = do
  n <- getArgs >>= readIO . fromHead "5"

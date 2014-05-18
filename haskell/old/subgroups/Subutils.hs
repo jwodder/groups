@@ -3,9 +3,9 @@ module Subutils where
  import Data.List (intercalate)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
- import Math.Groups
+ import Groups
 
- import MoreData.Permutation (showCycles)
+ import Permutation (showCycles)
 
  group :: Group
  group = mkgroup group'
