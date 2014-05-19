@@ -5,7 +5,7 @@ import operator
 __all__ = ["Permutation"]
 
 class Permutation(object):
-    def __init__(self, mapping=()):
+    def __init__(self, mapping=()):  # not for public use
 	self._map = tuple(mapping)
 	self._lehmer = None
 	self._order = None
@@ -14,6 +14,9 @@ class Permutation(object):
 	while i >= 0 and self._map[i] == i+1:
 	    i -= 1
 	self._map = self._map[0:i+1]
+
+    @classmethod
+    def identity(cls): return cls()
 
     def __getitem__(self, i):
 	### Add support for slices?

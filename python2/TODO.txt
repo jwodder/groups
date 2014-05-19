@@ -19,5 +19,3 @@
 - Should .oper (and other Group methods?) raise a TypeError when given Elements
   outside the Group?
 - Should Element.order and/or Element.index cache their results?
-- permutation.py: Add an `identity` classmethod to further keep users away from
-  the constructor?
