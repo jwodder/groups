@@ -23,7 +23,7 @@ namespace Groups {
   Element mkElem(const elem* x) const {return Element(this, x); }
   template<class T> const T* getElem(const Element& x) const {
    if (x.gr == this) return static_cast<const T*>(x.x);
-   else throw /* something */ ;
+   else throw /* ??? TODO */ ;
   }
  };
 }

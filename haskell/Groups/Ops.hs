@@ -2,7 +2,6 @@ module Groups.Ops where
  import Data.Array
  import Data.Maybe (isJust)
  import qualified Data.IntSet as ISet
- import Flow (expfa)
  import Groups.Types
  import Groups.Internals
 

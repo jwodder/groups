@@ -121,15 +121,14 @@ module Groups.Families where
  symmetric' n = Group' {
   g'size = product [1..n],
   -- TODO: Compare the performances of the two methods for generating $S_n$
-  --g'elems = closure2A P.compose $ map (P.setDegree' n . P.transpose 1) [2..n],
-  g'elems = if n == 1 then [P.identity' 1]
-	    else closure2A P.compose [P.fromCycle [1..n],
-				      P.setDegree' n $ P.transpose 1 2],
+  --g'elems = closure2A P.compose $ map (P.transpose 1) [2..n],
+  g'elems = if n == 1 then [P.identity]
+	    else closure2A P.compose [P.fromCycle [1..n], P.transpose 1 2],
   g'index = P.lehmer,
   g'oper = P.compose,
   g'invert = P.invert,
   g'order = P.order,
-  g'id = P.identity' n
+  g'id = P.identity
  }
 
  alternating :: Int -> Group
@@ -144,11 +143,11 @@ module Groups.Families where
   g'oper = P.compose,
   g'invert = P.invert,
   g'order = P.order,
-  g'id = P.identity' n
+  g'id = P.identity
  } where facN = product [1..n]
 	 -- TODO: Prove that the below is correct!
-	 els = closure2A P.compose [P.setDegree' n $ P.fromCycle [1,a,b]
-				     | a <- [2..n], b <- [a+1..n]]
+	 els = closure2A P.compose [P.fromCycle [1,a,b]
+				    | a <- [2..n], b <- [a+1..n]]
 	 dex = array (0, facN-1) $ zip (sort $ map P.lehmer els) [0..]
 
  multiplicN :: Int -> Group  -- Rename to "autCyclic"?

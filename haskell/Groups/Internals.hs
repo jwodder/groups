@@ -1,7 +1,9 @@
 module Groups.Internals where
  import Control.Monad (guard)
  import Data.Array
+ import Data.Bits (bit, testBit)
  import Data.Maybe (fromJust)
+ import Data.List (isPrefixOf, elemIndices)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
  import Groups.Types
@@ -48,7 +50,7 @@ module Groups.Internals where
  view [] seen = ([], seen)
  view (x:xs) seen | ISet.member x seen = view xs seen
  view (x:xs) seen = x &: view xs (ISet.insert x seen)
-  where z &: (zs, y) = (z:zs, y)
+  where z &: (zs, w) = (z:zs, w)
 
  data TernaryBranch a = a :? a deriving (Eq, Ord, Read, Show, Bounded)
 
@@ -132,12 +134,14 @@ module Groups.Internals where
 	 where (k,x) = until (\(_,y) -> mod y p /= 0)
 			     (\(j,y) -> (j+1, div y p)) (0, m)
 	factor' (_:q) m = factor' q m
+	z &: (zs, w) = (z:zs, w)
 
  modInverse :: Integral a => a -> a -> Maybe a
  modInverse a n = invert (abs n) 0 (modulo a n) 1
   where invert _ _ 1 x = Just $ modulo x n
 	invert _ _ 0 _ = Nothing
 	invert u uc l lc = invert l lc (mod u l) (uc - lc * div u l)
+	modulo a' n' = mod a' (abs n')
 
  modInverse' :: Integral a => a -> a -> a
  modInverse' a n = case modInverse a n of

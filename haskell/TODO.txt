@@ -23,10 +23,6 @@
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
   then rename the functions in `Group.hs`, `Elem.hs`, `Subset.hs`, & `Ops.hs`
   so that they all use the same (conflicting) names for the same things
-- Permutation.hs: Make all Permutations returned from functions be trimmed to
-  their proper degree à la permutation.py
- - Failing that, at least make the Read and Show instances preserve degree
-   information
 - Consider giving Elem an Ix instance that yields nonempty lists only when the
   groups of the bounds match; this will then make it possible to implement a
   group table function with type ``Group -> Array (Elem, Elem) Elem''

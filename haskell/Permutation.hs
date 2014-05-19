@@ -4,13 +4,11 @@ module Permutation (
   -- * Basic operations
   (!), compose, invert,
   -- * Construction
-  identity, identity', transpose, fromCycle, fromCycles,
+  identity, transpose, fromCycle, fromCycles,
   -- * Deconstruction
   toCycles, showCycles,
   -- * Properties
-  order, isEven, isOdd, degree, degree', isIdentity, lehmer,
-  -- * Other
-  trim, setDegree, setDegree'
+  order, isEven, isOdd, degree, lehmer
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
@@ -19,12 +17,12 @@ module Permutation (
 
  newtype Permutation = Perm (Array Int Int) deriving (Eq, Ord)
 
- instance Read Permutation where  -- This needs to preserve degree information.
+ instance Read Permutation where
   readsPrec p = readParen (p > 10) $ \r -> do ("fromCycles", s) <- lex r
 					      (xs, t) <- reads s
 					      return (fromCycles xs, t)
 
- instance Show Permutation where  -- This needs to preserve degree information.
+ instance Show Permutation where
   showsPrec p σ = showParen (p > 10) $ showString "fromCycles "
 				     . shows (toCycles σ)
 
@@ -37,17 +35,15 @@ module Permutation (
  Perm σ ! x = if inRange (bounds σ) x then σ A.! x else x
 
  compose :: Permutation -> Permutation -> Permutation
- compose s t = Perm $ array (1,n) [(i, s ! (t ! i)) | i <- [1..n]]
+ compose s t = trim $ Perm $ array (1,n) [(i, s ! (t ! i)) | i <- [1..n]]
   where n = degree s `max` degree t
 
  invert :: Permutation -> Permutation
  invert (Perm σ) = Perm $ array (bounds σ) [(b,a) | (a,b) <- assocs σ]
+  -- Trimming is not needed here (assuming the input is trimmed).
 
  identity :: Permutation
- identity = Perm $ array (1, 0) []
-
- identity' :: Int -> Permutation
- identity' n = Perm $ listArray (1,n) [1..n]
+ identity = Perm $ array (1,0) []
 
  transpose :: Int -> Int -> Permutation
  -- Rename "transposition"?
@@ -61,7 +57,8 @@ module Permutation (
  fromCycle :: [Int] -> Permutation
  fromCycle []  = identity
  fromCycle [_] = identity
- fromCycle (a:xs) = Perm $ listArray (1,n) [1..n] // motions
+ fromCycle (a:xs) = trim $ Perm $ listArray (1,n) [1..n] // motions
+  -- Trimming isn't actually necessary here, is it?
   where (n, motions) = cyke a (a:xs)
 	-- TODO: This needs to check the input list for non-positive numbers.
 	-- TODO: How should this deal with duplicate elements in the input?
@@ -82,7 +79,7 @@ module Permutation (
 			       cykeAt q sh' = if q == x then ([], sh')
 					      else q &: (cykeAt (σ A.! q)
 							 $ sh' // [(q, True)])
-			       x &: (xs, y) = (x:xs, y)
+			       z &: (zs, w) = (z:zs, w)
 
  showCycles :: Permutation -> String
  showCycles σ = case toCycles σ of
@@ -99,26 +96,6 @@ module Permutation (
  degree :: Permutation -> Int
  degree (Perm σ) = snd $ bounds σ
 
- degree' :: Permutation -> Int
- degree' (Perm σ) = last $ 0 : [i | (i, i') <- assocs σ, i /= i']
-
- isIdentity :: Permutation -> Bool
- isIdentity (Perm σ) = all (uncurry (==)) $ assocs σ
-
- trim :: Permutation -> Permutation
- trim s@(Perm σ) = Perm $ ixmap (1, degree' s) id σ
-
- setDegree :: Int -> Permutation -> Maybe Permutation
- setDegree n s | n < degree' s = Nothing
- setDegree n (Perm σ) = Just $ Perm $ if n < d then ixmap (1,n) id σ
-				      else listArray (1,n) $ elems σ ++ [d+1..n]
-  where d = snd $ bounds σ
-
- setDegree' :: Int -> Permutation -> Permutation
- setDegree' n s = case setDegree n s of
-  Just τ  -> τ
-  Nothing -> error "Permutation.setDegree': incompatible degrees"
-
  lehmer :: Permutation -> Int
  lehmer (Perm σ) = sum $ zipWith (*) (reverse code) $ scanl (*) 1 [1..]
   where code = snd $ mapAccumL (\left x -> lehmer' left (σ A.! x) 0) ds ds
@@ -126,4 +103,8 @@ module Permutation (
 	lehmer' (y:ys) x' i | x' == y = (ys, i)
 	lehmer' (y:ys) x' i = y &: lehmer' ys x' (i+1)
 	lehmer' [] _ _ = undefined
-	x &: (xs, y) = (x:xs, y)
+	z &: (zs, w) = (z:zs, w)
+
+ trim :: Permutation -> Permutation  -- internal function
+ trim (Perm σ) = Perm $ ixmap (1, deg) id σ
+  where deg = last $ 0 : [i | (i,i') <- assocs σ, i /= i']

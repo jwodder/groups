@@ -55,7 +55,7 @@ namespace Groups {
 
  Element Direct::pair(const Element& x, const Element& y) const {
   if (x.group() == left && y.group() == right) return mkElem(new delem(x, y));
-  else throw /* something */ ;
+  else throw /* ??? TODO */ ;
  }
 
  bool Direct::abelian() const {return left->abelian() && right->abelian(); }
