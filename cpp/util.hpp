@@ -5,6 +5,6 @@
 namespace Groups {
  int gcd(int, int);
  int lcm(int, int);
- ostream& expgen(ostream&, const string&, int, const string&);
+ std::ostream& expgen(std::ostream&, const std::string&, int, const std::string&);
 }
 #endif

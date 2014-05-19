@@ -26,7 +26,7 @@ class Permutation(object):
 	return Permutation(self[other[i]]
 			   for i in range(1, max(self.degree, other.degree)+1))
 
-    __rmul__ = __mul__
+    #__rmul__ = __mul__
 
     def __repr__(self): return '%s(%r)' % (self.__class__.__name__, self._map)
 
@@ -74,14 +74,14 @@ class Permutation(object):
 	if self._lehmer is None:
 	    code = []
 	    left = range(1, len(self._map)+1)
-	    for x in range(1, len(self._map)+1):
+	    for x in left[:]:
 		i = left.index(self[x])
 		del left[i]
 		code.append(i)
-	    code.reverse()
 	    self._lehmer = 0
 	    fac = 1
-	    for (c,f) in zip(code, range(1, len(code)+1)):
+	    #for (f,c) in enumerate(reversed(code), start=1):  # v.2.6+
+	    for (c,f) in zip(reversed(code), range(1, len(code)+1)):
 		self._lehmer += c * fac
 		fac *= f
 	return self._lehmer

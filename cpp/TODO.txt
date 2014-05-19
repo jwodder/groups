@@ -3,8 +3,8 @@
  - Klein 4-group
  - semidirect products (somehow)
  - quotient groups
- - alternating groups
  - symmetric groups
+ - alternating groups
  - multiplication modulo n?
 - operations to add:
  - generating all powers of an element?
@@ -57,7 +57,11 @@
   the cardinality of the desired group
 - Add in a way to represent subgroups
 - Considering adding an isIdentity() method to Element
+ - Alternatively, overload `Element::operator bool()` to test for
+   non-identity-ness
 - Consider replacing Element with an abstract class, with elements of groups
   being instances of public classes within the groups' namespaces that
   implement Element; e.g., elements of a cyclic group would have public type
   Cyclic::Element (or Cyclic<n>::Element?)
+- Permutation.cpp: Should methods that construct new Permutations set the
+  values for _order and _even when they can be easily derived?
