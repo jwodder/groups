@@ -1,0 +1,53 @@
+The following is a list of all features I desire/plan to implement:
+
+- There must exist a single type G (i.e., not a type of the form `T a` where
+  `a` is a type variable) for representing all possible isomorphism types of
+  finite groups (not necessarily uniquely).
+- The following operations must be possible for all groups & elements thereof:
+ - getting the identity
+ - the group operation
+ - inversion
+ - getting the order of a group
+ - getting the order of an element
+ - getting a list of all elements in a group
+ - testing whether an element is in a group
+ - getting whether a group is abelian
+ - algebraic closures
+ - calculating centralizers, centers, and normalizers
+ - calculating all subgroups
+ - determining whether a subgroup is normal
+ - calculating automorphisms and groups thereof
+ - determining whether two groups are isomorphic
+ - calculating commutators
+ - Family-specific operations:
+  - getting the parities of elements of symmetric groups
+- Types of groups to implement:
+ - trivial group
+ - Klein 4-group
+ - cyclic groups
+ - multiplication modulo n
+ - dihedral groups
+  - generalized dihedral groups
+ - dicyclic groups
+  - generalized quaternion groups
+   - quaternion group
+ - direct products
+ - semidirect products
+ - symmetric groups
+ - alternating groups
+ - quotient groups
+ - automorphism groups
+ - holomorphs
+ - wreath products
+ - elementary abelian groups
+ - subgroups
+- It should be possible to "deconstruct" any group to obtain its family
+  (cyclic, dicyclic, semidirect product of G and H, etc.) and any values used
+  to construct it (e.g., order for cyclic groups, homomorphism for semidirect
+  products).
+- It should be possible, given a group, to convert any element thereof to a
+  human-readable string representation with the ability to configure the
+  representations of the group's generators.
+- It should be possible to construct arbitrary group elements without having to
+  fetch all of a group's elements (e.g., `dihedralElem :: Int -> (Bool, Int) ->
+  Elem`).
