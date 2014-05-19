@@ -3,7 +3,6 @@
 import operator
 import re
 from   closure     import closure2A
-from   moremath    import factorial, gcd, lcm, modInverse
 from   permutation import Permutation
 
 __all__ = ["Group", "Element", "Cyclic", "Semidirect", "DirectProduct",
@@ -521,3 +520,27 @@ def showbinopU(x,op,y):
     if u' ' in x: x = u'(' + x + u')'
     if u' ' in y: y = u'(' + y + u')'
     return x + u' ' + op + u' ' + y
+
+def factorial(n):
+    x=1
+    for i in range(2,n+1):
+	x *= i
+    return x
+
+def gcd(x,y):
+    (a,b) = (abs(x), abs(y))
+    if a == 0 and b == 0: return 0
+    elif a == 0 or b == 0: return a or b
+    while b != 0:
+	(a,b) = (b, a % b)
+    return a
+
+def lcm(x,y): d = gcd(x,y); return 0 if d == 0 else abs(x*y) // d
+
+def modInverse(a,n):
+    (u, uc) = (abs(n), 0)
+    (l, lc) = (a % u, 1)
+    while l > 1:
+	(u, uc, l, lc) = (l, lc, u % l, uc - lc * (u//l))
+    if l == 1: return lc % abs(n)
+    else: raise ValueError('%d has no multiplicative inverse modulo %d' % (a,n))
