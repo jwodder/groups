@@ -50,8 +50,5 @@
   human-readable string representation with the ability to configure the
   representations of the group's generators.
 - It should be possible to construct arbitrary group elements (e.g.,
-  ``dihedralElem :: Int -> (Bool, Int) -> Elem'')
+  `dihedralElem :: Int -> (Bool, Int) -> Elem`)
  - cf. mkelem in misc.hs
-- Consider giving Elem an Ix instance that yields nonempty lists only when the
-  groups of the bounds match; this will then make it possible to implement a
-  group table function with type ``Group -> Array (Elem, Elem) Elem''

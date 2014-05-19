@@ -1,8 +1,3 @@
--- TODO: Make the Read and Show instances preserve degree information?
-
--- TODO: Make all Permutations returned from functions be trimmed to their
--- proper degree à la permutation.py
-
 module Permutation (
   -- * Permutation type
   Permutation,

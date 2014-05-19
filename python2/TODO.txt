@@ -11,6 +11,7 @@
  - an inverse method to `indexElem`?
  - Element construction of the form `Element(paramTuple, group)` (where Element
    is the base class rather than a group's derived class) ?
+ - permutation.py: Converting from Lehmer codes to Permutations
 - Make `identity` a property?
 - Rewrite Group.__contains__ and/or Group.elem to ensure that the Element
   objects in question actually appear in their respective Groups?  cf. the

@@ -1,7 +1,3 @@
--- TO ADD: ss_fromIntSet :: Group -> IntSet -> Subset
--- TO ADD: conversion to & from [Int]
--- TO ADD: ∈ ???
-
 module Groups.Types.Subset where
  import Control.Monad (guard)
  import Data.IntSet (IntSet)
