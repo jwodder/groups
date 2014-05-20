@@ -7,6 +7,8 @@ namespace Groups {
  class Direct : public Group {
  public:
   Direct(const Group* g, const Group* h) : left(g->copy()), right(h->copy()) { }
+  Direct(const Direct& d) : left(d.left->copy()), right(d.right->copy()) { }
+  Direct& operator=(const Direct&);
   virtual ~Direct() {delete left; delete right; }
   virtual Element op(const Element&, const Element&) const;
   virtual Element identity() const;

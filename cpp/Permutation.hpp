@@ -9,8 +9,6 @@
 namespace Groups {
  class Permutation {
  public:
-  /* TODO: Add copy/assignment/whatever constructors */
-
   static Permutation identity();
   int operator[](int) const;
   Permutation operator*(const Permutation&) const;

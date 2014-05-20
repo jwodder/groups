@@ -36,3 +36,4 @@
 - It should be possible to construct arbitrary group elements (e.g.,
   `dihedralElem :: Int -> (Bool, Int) -> Elem`)
  - cf. mkelem in misc.hs
+- Make the bulk of symdat.hs into yet another entry in Families.hs

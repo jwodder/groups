@@ -5,6 +5,16 @@
 using namespace std;
 
 namespace Groups {
+ Direct& operator=(const Direct& d) {
+  if (this != &d) {
+   delete left;
+   delete right;
+   left = d.left->copy();
+   right = d.right->copy();
+  }
+  return *this;
+ }
+
  Element Direct::op(const Element& x, const Element& y) const {
   const delem* xp = getElem<delem>(x);
   const delem* yp = getElem<delem>(y);
