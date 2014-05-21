@@ -99,7 +99,7 @@ module Permutation (
  lehmer :: Permutation -> Int
  lehmer (Perm σ) = sum $ zipWith (*) (reverse code) $ scanl (*) 1 [1..]
   where code = snd $ mapAccumL (\left x -> lehmer' left (σ A.! x) 0) ds ds
-	ds = indices σ
+	ds = reverse $ indices σ
 	lehmer' (y:ys) x' i | x' == y = (ys, i)
 	lehmer' (y:ys) x' i = y &: lehmer' ys x' (i+1)
 	lehmer' [] _ _ = undefined

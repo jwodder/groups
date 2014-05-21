@@ -62,12 +62,12 @@ def closureS(function, iterable):
 	new = list(view(function(seen.copy(), new), seen))
     return seen
 
-def view(iterable, seen):
-    for x in iterable:
-	if x not in seen:
-	    seen.add(x)
-	    yield x
-
 #def view(iterable, seen):
-#    seen_add = seen.add  # Apparently this is a worthwhile optimization.
-#    return (x for x in iterable if x not in seen and not seen_add(x))
+#    for x in iterable:
+#	if x not in seen:
+#	    seen.add(x)
+#	    yield x
+
+def view(iterable, seen):
+    seen_add = seen.add  # Apparently this is a worthwhile optimization.
+    return (x for x in iterable if x not in seen and not seen_add(x))

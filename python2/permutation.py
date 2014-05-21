@@ -76,7 +76,7 @@ class Permutation(object):
     def lehmer(self):
 	if self._lehmer is None:
 	    code = []
-	    left = range(1, len(self._map)+1)
+	    left = range(len(self._map), 0, -1)
 	    for x in left[:]:
 		i = left.index(self[x])
 		del left[i]

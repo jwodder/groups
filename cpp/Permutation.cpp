@@ -86,8 +86,8 @@ namespace Groups {
    vector<int> code;
    code.reserve(degree());
    list<int> left;
-   for (int i=1; i<=degree(); i++) left.push_back(i);
-   for (int x=1; x<=degree(); x++) {
+   for (int i=degree(); i>0; i--) left.push_back(i);
+   for (int x=degree(); x>0; x--) {
     int y = (*this)[x];
     list<int>::iterator iter = left.begin();
     int i=0;
