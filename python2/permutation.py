@@ -89,6 +89,19 @@ class Permutation(object):
 		fac *= f
 	return self._lehmer
 
+    @classmethod
+    def fromLehmer(cls, x):
+        code = []
+	f = 1
+	while x != 0:
+	    code.append(x % f)
+	    x /= f
+	    f += 1
+	map = []
+	for (i,c) in enumerate(code):
+	    map.insert(c, i+1)
+	return cls(reversed(map)).inverse
+
     def toCycles(self):
 	used = [True] + [False] * len(self._map)
 	cycles = []
