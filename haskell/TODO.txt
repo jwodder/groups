@@ -5,7 +5,6 @@
  - calculating automorphisms and groups thereof
  - determining whether two groups are isomorphic
  - calculating commutators
- - Permutation.hs: Converting from Lehmer codes to Permutations
  - quotient groups
  - automorphism groups
  - holomorphs
@@ -25,7 +24,7 @@
   so that they all use the same (conflicting) names for the same things
 - Consider giving Elem an Ix instance that yields nonempty lists only when the
   groups of the bounds match; this will then make it possible to implement a
-  group table function with type ``Group -> Array (Elem, Elem) Elem''
+  group table function with type `Group -> Array (Elem, Elem) Elem`
 - It should be possible to "deconstruct" any group to obtain its family
   (cyclic, dicyclic, semidirect product of G and H, etc.) and any values used
   to construct it (e.g., order for cyclic groups, homomorphism for semidirect

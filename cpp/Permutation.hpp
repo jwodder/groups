@@ -9,19 +9,23 @@
 namespace Groups {
  class Permutation {
  public:
-  static Permutation identity();
+  int  degree() const;
+  int  order()  const;
+  bool isEven() const;
+  bool isOdd()  const;
+  int  lehmer() const;
+  Permutation inverse() const;
+  std::vector< std::vector<int> > toCycles() const;
+
   int operator[](int) const;
   Permutation operator*(const Permutation&) const;
+
   operator std::string() const;
   operator bool() const;
-  int degree() const;
-  Permutation inverse() const;
-  int order() const;
-  bool isEven() const;
-  bool isOdd() const;
-  int lehmer() const;
-  std::vector< std::vector<int> > toCycles() const;
-  static Permutation transposition(int a, int b);
+
+  static Permutation identity();
+  static Permutation fromLehmer(int);
+  static Permutation transposition(int, int);
 
   bool operator==(const Permutation& y) const {return pmap == y.pmap; }
   bool operator<(const Permutation& y)  const {return pmap <  y.pmap; }

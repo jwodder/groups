@@ -4,7 +4,7 @@ module Permutation (
   -- * Basic operations
   (!), compose, invert,
   -- * Construction
-  identity, transpose, fromCycle, fromCycles,
+  identity, transpose, fromCycle, fromCycles, fromLehmer,
   -- * Deconstruction
   toCycles, showCycles,
   -- * Properties
@@ -104,6 +104,14 @@ module Permutation (
 	lehmer' (y:ys) x' i = y &: lehmer' ys x' (i+1)
 	lehmer' [] _ _ = undefined
 	z &: (zs, w) = (z:zs, w)
+
+ fromLehmer :: Int -> Permutation
+ fromLehmer x = Perm $ array (1, deg) $ zip mapping [deg, deg-1 .. 1]
+  where code = code' x 1
+	code' y _ | y < 1 = []
+	code' y f = mod y f : code' (div y f) (f+1)
+	deg = length code
+	mapping = foldl (\m (i,c) -> take c m ++ i:drop c m) [] $ zip [1..] code
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

@@ -1,6 +1,5 @@
 #include <algorithm>  /* max */
 #include <list>
-#include <map>
 #include <sstream>
 #include <stdexcept>  /* invalid_argument */
 #include <string>
@@ -12,20 +11,20 @@ using namespace std;
 namespace Groups {
  Permutation::Permutation(const vector<int>& mapping)
    : pmap(mapping), _lehmer(-1), _order(-1), _even(-1) {
-  while (!pmap.empty() && pmap.back() == pmap.size()) pmap.pop_back();
+  while (!pmap.empty() && pmap.back() == (int) pmap.size()) pmap.pop_back();
  }
 
  Permutation Permutation::identity() {return Permutation(); }
 
  int Permutation::operator[](int i) const {
-  if (0 < i && i <= pmap.size()) return pmap[i-1];
+  if (0 < i && i <= (int) pmap.size()) return pmap[i-1];
   else return i;
  }
 
  Permutation Permutation::operator*(const Permutation& other) const {
   int newdeg = max(degree(), other.degree());
   vector<int> newmap(newdeg);
-  for (size_t i=0; i<newdeg; i++) newmap[i] = (*this)[other[i+1]];
+  for (int i=0; i<newdeg; i++) newmap[i] = (*this)[other[i+1]];
   return Permutation(newmap);
  }
 
@@ -105,6 +104,20 @@ namespace Groups {
    }
   }
   return _lehmer;
+ }
+
+ Permutation Permutation::fromLehmer(int x) {
+  vector<int> code;
+  for (int f=1; x > 0; f++) {
+   code.push_back(x % f);
+   x /= f;
+  }
+  vector<int> mapping;
+  mapping.reserve(code.size());
+  for (int i=0; i<(int)code.size(); i++) {
+   mapping.insert(mapping.begin() + code[i], i+1);
+  }
+  return Permutation(vector<int>(mapping.rbegin(), mapping.rend())).inverse();
  }
 
  vector< vector<int> > Permutation::toCycles() const {

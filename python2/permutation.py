@@ -93,7 +93,7 @@ class Permutation(object):
     def fromLehmer(cls, x):
         code = []
 	f = 1
-	while x != 0:
+	while x > 0:
 	    code.append(x % f)
 	    x /= f
 	    f += 1
