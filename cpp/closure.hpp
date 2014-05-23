@@ -1,3 +1,6 @@
+#ifndef CLOSURE_H
+#define CLOSURE_H
+
 #include <list>
 #include <queue>
 #include <set>
@@ -62,3 +65,5 @@ namespace Groups {
   return seen;
  }
 }
+
+#endif
