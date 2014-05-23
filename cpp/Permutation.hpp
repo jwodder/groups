@@ -9,6 +9,7 @@
 namespace Groups {
  class Permutation {
  public:
+  Permutation();
   int  degree() const;
   int  order()  const;
   bool isEven() const;
@@ -67,7 +68,7 @@ namespace Groups {
   }
 
  private:
-  Permutation(const std::vector<int>& = std::vector<int>());
+  Permutation(const std::vector<int>&);
   std::vector<int> pmap;
   mutable int _lehmer, _order, _even;
  };

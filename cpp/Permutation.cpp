@@ -9,6 +9,8 @@
 using namespace std;
 
 namespace Groups {
+ Permutation::Permutation() : pmap(), _lehmer(0), _order(1), _even(1) { }
+
  Permutation::Permutation(const vector<int>& mapping)
    : pmap(mapping), _lehmer(-1), _order(-1), _even(-1) {
   while (!pmap.empty() && pmap.back() == (int) pmap.size()) pmap.pop_back();
