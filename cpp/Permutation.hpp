@@ -28,12 +28,13 @@ namespace Groups {
   static Permutation fromLehmer(int);
   static Permutation transposition(int, int);
 
-  bool operator==(const Permutation& y) const {return pmap == y.pmap; }
-  bool operator<(const Permutation& y)  const {return pmap <  y.pmap; }
-  bool operator>(const Permutation& y)  const {return pmap >  y.pmap; }
-  bool operator>=(const Permutation& y) const {return pmap >= y.pmap; }
-  bool operator<=(const Permutation& y) const {return pmap <= y.pmap; }
-  bool operator!=(const Permutation& y) const {return pmap != y.pmap; }
+  int cmp(const Permutation&) const;
+  bool operator==(const Permutation& y) const {return cmp(y) == 0; }
+  bool operator<(const Permutation& y)  const {return cmp(y) <  0; }
+  bool operator>(const Permutation& y)  const {return cmp(y) >  0; }
+  bool operator>=(const Permutation& y) const {return cmp(y) >= 0; }
+  bool operator<=(const Permutation& y) const {return cmp(y) <= 0; }
+  bool operator!=(const Permutation& y) const {return cmp(y) != 0; }
 
   template<class Iter>
   static Permutation fromCycle(Iter first, Iter last) {

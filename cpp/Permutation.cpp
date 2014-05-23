@@ -156,4 +156,17 @@ namespace Groups {
    return Permutation(mapping);
   }
  }
+
+ /* This comparison method produces the same ordering as the modified Lehmer
+  * codes. */
+ int Permutation::cmp(const Permutation& other) const {
+  if (degree() < other.degree()) return -1;
+  if (degree() > other.degree()) return  1;
+  for (int i=degree()-1; i>=0; i--) {
+   if (pmap[i] > other.pmap[i]) return -1;
+   if (pmap[i] < other.pmap[i]) return 1;
+  }
+  return 0;
+ }
+
 }

@@ -18,6 +18,6 @@ int main(void) {
  const set<Permutation> sn = closure2A<Permutation>(multiplies<Permutation>(), start+0, start+2);
  set<Permutation>::const_iterator iter;
  for (iter = sn.begin(); iter != sn.end(); iter++)
-  cout << string(*iter) << endl;
+  cout << iter->lehmer() << '\t' << string(*iter) << endl;
  return 0;
 }

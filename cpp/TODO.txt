@@ -9,7 +9,6 @@
 - operations to add:
  - generating all powers of an element?
  - calculating group tables
- - calculating algebraic closures (i.e., generating subgroups from subsets)
  - calculating centralizers & centers
  - calculating normalizers
  - determining all subgroups of a group
