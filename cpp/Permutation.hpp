@@ -40,15 +40,12 @@ namespace Groups {
    if (first == last) return Permutation();
    std::map<int,int> mapping;
    int start = *first, maxVal = 0;
-   for (;;) {
+   while (first != last) {
     int v = *first;
     if (v < 1) throw std::invalid_argument("Permutation::fromCycle: values must be positive");
     if (mapping.find(v) != mapping.end()) throw std::invalid_argument("Permutation::fromCycle: value appears more than once in cycle");
     first++;
-    if (first == last) {
-     mapping[v] = start;
-     break;
-    } else {mapping[v] = *first; }
+    mapping[v] = first == last ? start : *first;
     if (v > maxVal) maxVal = v;
    }
    if (mapping.size() < 2) return Permutation();
