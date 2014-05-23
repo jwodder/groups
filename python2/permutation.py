@@ -97,10 +97,10 @@ class Permutation(object):
 	    code.append(x % f)
 	    x /= f
 	    f += 1
-	map = []
+	mapping = []
 	for (i,c) in enumerate(code):
-	    map.insert(c, i+1)
-	return cls(reversed(map)).inverse
+	    mapping.insert(c, i+1)
+	return cls(reversed(mapping)).inverse
 
     def toCycles(self):
 	used = [True] + [False] * len(self._map)

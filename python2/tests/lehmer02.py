@@ -1,7 +1,7 @@
 from groups      import Symmetric
 from permutation import Permutation
 
-for x in Symmetric(4):
+for x in Symmetric(5):
     lehmer = x.lehmer
     remhel = Permutation.fromLehmer(lehmer)
     if x != remhel:
