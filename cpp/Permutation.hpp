@@ -130,9 +130,9 @@ namespace Groups {
   }
 
  private:
-  Permutation(const std::vector<int>&);
+  Permutation(const std::vector<int>&, int=-1, int=-1, int=-1);
   std::vector<int> pmap;
-  mutable int _lehmer, _order, _even;
+  mutable int _even, _order, _lehmer;
 
   friend class permutation_gen::iterator;
  };

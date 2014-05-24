@@ -9,10 +9,10 @@
 using namespace std;
 
 namespace Groups {
- Permutation::Permutation() : pmap(), _lehmer(0), _order(1), _even(1) { }
+ Permutation::Permutation() : pmap(), _even(1), _order(1), _lehmer(0) { }
 
- Permutation::Permutation(const vector<int>& mapping)
-   : pmap(mapping), _lehmer(-1), _order(-1), _even(-1) {
+ Permutation::Permutation(const vector<int>& mapping, int ev, int ord, int lehm)
+   : pmap(mapping), _even(ev), _order(ord), _lehmer(lehm) {
   while (!pmap.empty() && pmap.back() == (int) pmap.size()) pmap.pop_back();
  }
 
@@ -27,7 +27,7 @@ namespace Groups {
   int newdeg = max(degree(), other.degree());
   vector<int> newmap(newdeg);
   for (int i=0; i<newdeg; i++) newmap[i] = (*this)[other[i+1]];
-  return Permutation(newmap);
+  return Permutation(newmap, _even != -1 && other._even != -1 ? _even == other._even : -1);
  }
 
  Permutation::operator string() const {
@@ -54,7 +54,7 @@ namespace Groups {
  Permutation Permutation::inverse() const {
   vector<int> newmap(pmap.size());
   for (size_t i=0; i<pmap.size(); i++) newmap[pmap[i]-1] = i+1;
-  return Permutation(newmap);
+  return Permutation(newmap, _even, _order);
  }
 
  int Permutation::order() const {
@@ -119,7 +119,10 @@ namespace Groups {
   for (int i=0; i<(int)code.size(); i++) {
    mapping.insert(mapping.begin() + code[i], i+1);
   }
-  return Permutation(vector<int>(mapping.rbegin(), mapping.rend())).inverse();
+  Permutation p(vector<int>(mapping.rbegin(), mapping.rend()));
+  p = p.inverse();
+  p._lehmer = max(x,0);
+  return p;
  }
 
  vector< vector<int> > Permutation::toCycles() const {
@@ -153,7 +156,7 @@ namespace Groups {
    vector<int> mapping(max(a,b));
    for (int i=0; i<max(a,b); i++)
     mapping[i] = i+1 == a ? b : i+1 == b ? a : i+1;
-   return Permutation(mapping);
+   return Permutation(mapping, 0, 2);
   }
  }
 
@@ -232,9 +235,7 @@ namespace Groups {
  Permutation PGI::operator*() const {
   if (lehmer == endLehmer)
    throw logic_error("Attempt to dereference exhausted pointer");
-  Permutation p(vector<int>(rmap.rbegin(), rmap.rend()));
-  p._lehmer = lehmer;
-  return p;
+  return Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
  }
 
  PGI PGI::operator++(int) {
