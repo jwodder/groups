@@ -109,6 +109,7 @@ namespace Groups {
  }
 
  Permutation Permutation::fromLehmer(int x) {
+  int x0 = x;
   vector<int> code;
   for (int f=1; x > 0; f++) {
    code.push_back(x % f);
@@ -121,7 +122,7 @@ namespace Groups {
   }
   Permutation p(vector<int>(mapping.rbegin(), mapping.rend()));
   p = p.inverse();
-  p._lehmer = max(x,0);
+  p._lehmer = max(x0,0);
   return p;
  }
 

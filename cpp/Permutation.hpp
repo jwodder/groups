@@ -119,7 +119,7 @@ namespace Groups {
     int j = mapping[i+1];
     vmap[i] = j==0 ? i+1 : j;
    }
-   return Permutation(vmap);
+   return Permutation(vmap, mapping.size() % 2, mapping.size());
   }
 
   template<class Iter>

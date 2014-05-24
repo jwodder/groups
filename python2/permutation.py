@@ -5,11 +5,12 @@ import operator
 __all__ = ["Permutation"]
 
 class Permutation(object):
-    def __init__(self, mapping=()):  # not for public use
-	self._map = tuple(mapping)
-	self._lehmer = None
-	self._order = None
-	self._even = None
+    def __init__(self, mapping=(), even=None, order=None, lehmer=None):
+    # not for public use
+	self._map    = tuple(mapping)
+	self._even   = even
+	self._order  = order
+	self._lehmer = lehmer
 	i = len(self._map) - 1
 	while i >= 0 and self._map[i] == i+1:
 	    i -= 1
@@ -26,8 +27,12 @@ class Permutation(object):
 	    return i
 
     def __mul__(self, other):
-	return Permutation(self[other[i]]
-			   for i in range(1, max(self.degree, other.degree)+1))
+	return Permutation((self[other[i+1]]
+			    for i in range(max(self.degree, other.degree))),
+			   even = self._even == other._even
+			       if self._even is not None
+				   and other._even is not None
+			       else None)
 
     #__rmul__ = __mul__
 
@@ -55,7 +60,7 @@ class Permutation(object):
 	newMap = [None] * len(self._map)
 	for (a,b) in enumerate(self._map):
 	    newMap[b-1] = a+1
-	return Permutation(newMap)
+	return Permutation(newMap, even=self._even, order=self._order)
 
     @property
     def order(self):
@@ -91,7 +96,8 @@ class Permutation(object):
 
     @classmethod
     def fromLehmer(cls, x):
-        code = []
+	x0 = x
+	code = []
 	f = 1
 	while x > 0:
 	    code.append(x % f)
@@ -100,7 +106,9 @@ class Permutation(object):
 	mapping = []
 	for (i,c) in enumerate(code):
 	    mapping.insert(c, i+1)
-	return cls(reversed(mapping)).inverse
+	p = cls(reversed(mapping)).inverse
+	p._lehmer = max(x0,0)
+	return p
 
     def toCycles(self):
 	used = [True] + [False] * len(self._map)
@@ -129,8 +137,9 @@ class Permutation(object):
 	elif a == b:
 	    return cls()
 	else:
-	    return cls(b if x == a else a if x == b else x
-		       for x in range(1, max(a,b)+1))
+	    return cls((b if x == a else a if x == b else x
+			for x in range(1, max(a,b)+1)),
+		       even=False, order=2)
 
     @classmethod
     def fromCycle(cls, cyc):
@@ -144,7 +153,8 @@ class Permutation(object):
 		raise ValueError('%s appears more than once in cycle' % (v,))
 	    mapping[v] = cyc[i+1] if i < len(cyc)-1 else cyc[0]
 	    if v > maxVal: maxVal = v
-	return cls(mapping.get(i,i) for i in range(1, maxVal+1))
+	return cls((mapping.get(i,i) for i in range(1, maxVal+1)),
+		   even = len(cyc) % 2, order=len(cyc))
 
     @classmethod
     def fromCycles(cls, cycles):
