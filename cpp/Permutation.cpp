@@ -1,3 +1,4 @@
+#include <cstdlib>  /* abs */
 #include <algorithm>  /* max, next_permutation, prev_permutation */
 #include <list>
 #include <sstream>  /* ostringstream */
@@ -280,12 +281,18 @@ namespace Groups {
  }
 
  PGI& PGI::operator+=(int i) {
-  if (i<0) return *this -= -i;
-  if (lehmer+i >= endLehmer) {
+  if (lehmer+i <= 0) {
+   lehmer = 0;
+   for (int i=0; i<degree; i++) rmap[i] = degree-i;
+  } else if (lehmer+i >= endLehmer) {
    lehmer = endLehmer;
    for (int i=0; i<degree; i++) rmap[i] = i+1;
-  } else if (i<iteration_cutoff) {
-   for (; i>0; i--) ++*this;
+  } else if (abs(i)<iteration_cutoff) {
+   if (i>=0) {
+    for (; i>0; i--) ++*this;
+   } else {
+    for (i *= -1; i>0; i--) --*this;
+   }
   } else {
    lehmer += i;
    if (current == NULL) {
@@ -298,24 +305,7 @@ namespace Groups {
   return *this;
  }
 
- PGI& PGI::operator-=(int i) {
-  if (i<0) return *this += -i;
-  if (lehmer-i <= 0) {
-   lehmer = 0;
-   for (int i=0; i<degree; i++) rmap[i] = degree-i;
-  } else if (i<iteration_cutoff) {
-   for (; i>0; i--) --*this;
-  } else {
-   lehmer -= i;
-   if (current == NULL) {
-    current = new Permutation(Permutation::fromLehmer(lehmer));
-   } else if (current->_lehmer != lehmer) {
-    *current = Permutation::fromLehmer(lehmer);
-   }
-   for (int j=0; j<degree; j++) rmap[j] = (*current)[degree-j];
-  }
-  return *this;
- }
+ PGI& PGI::operator-=(int i) {return *this += -i; }
 
  PGI PGI::operator+(int i) const {
   iterator tmp = *this;
