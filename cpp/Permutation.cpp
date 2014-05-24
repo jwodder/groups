@@ -199,7 +199,7 @@ namespace Groups {
  int PGI::iteration_cutoff = 100;  // I have no idea what this value should be.
 
  PGI::iterator(int d, bool atend)
-   : degree(max(d,1)), lehmer(0), endLehmer(1), rmap(max(d,1)) {
+   : degree(max(d,1)), lehmer(0), endLehmer(1), rmap(max(d,1)), current(NULL) {
   for (int i=2; i<=degree; i++) endLehmer *= i;
   if (!atend) {
    for (int i=0; i<degree; i++) rmap[i] = degree-i;
@@ -210,10 +210,29 @@ namespace Groups {
  }
 
  PGI::iterator(const permutation_gen& pg)
-   : degree(pg.degree), lehmer(0), endLehmer(1), rmap(pg.degree) {
+   : degree(pg.degree), lehmer(0), endLehmer(1), rmap(pg.degree), current(NULL)
+ {
   for (int i=2; i<=degree; i++) endLehmer *= i;
   for (int i=0; i<degree; i++) rmap[i] = degree-i;
  }
+
+ PGI::iterator(const PGI& y)
+   : degree(y.degree), lehmer(y.lehmer), endLehmer(y.endLehmer), rmap(y.rmap),
+     current(NULL) {
+  if (y.current != NULL) current = new Permutation(*y.current);
+ }
+
+ PGI& PGI::operator=(const PGI& y) {
+  degree = y.degree;
+  lehmer = y.lehmer;
+  endLehmer = y.endLehmer;
+  rmap = y.rmap;
+  if (current != NULL) delete current;
+  current = y.current == NULL ? NULL : new Permutation(*y.current);
+  return *this;
+ }
+
+ PGI::~iterator() {if (current != NULL) delete current; }
 
  PGI& PGI::operator++() {
   if (lehmer < endLehmer && ++lehmer < endLehmer) {
@@ -234,9 +253,18 @@ namespace Groups {
  Permutation PGI::operator[](int i) const {return *(*this + i); }
 
  Permutation PGI::operator*() const {
+  return *(operator->());
+ }
+
+ Permutation* PGI::operator->() const {
   if (lehmer == endLehmer)
    throw logic_error("Attempt to dereference exhausted pointer");
-  return Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
+  if (current == NULL) {
+   current = new Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
+  } else if (current->_lehmer != lehmer) {
+   *current = Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
+  }
+  return current;
  }
 
  PGI PGI::operator++(int) {
@@ -259,8 +287,13 @@ namespace Groups {
   } else if (i<iteration_cutoff) {
    for (; i>0; i--) ++*this;
   } else {
-   Permutation result = Permutation::fromLehmer(lehmer+i);
-   for (int j=0; j<degree; j++) rmap[j] = result[degree-j];
+   lehmer += i;
+   if (current == NULL) {
+    current = new Permutation(Permutation::fromLehmer(lehmer));
+   } else if (current->_lehmer != lehmer) {
+    *current = Permutation::fromLehmer(lehmer);
+   }
+   for (int j=0; j<degree; j++) rmap[j] = (*current)[degree-j];
   }
   return *this;
  }
@@ -273,8 +306,13 @@ namespace Groups {
   } else if (i<iteration_cutoff) {
    for (; i>0; i--) --*this;
   } else {
-   Permutation result = Permutation::fromLehmer(lehmer-i);
-   for (int j=0; j<degree; j++) rmap[j] = result[degree-j];
+   lehmer -= i;
+   if (current == NULL) {
+    current = new Permutation(Permutation::fromLehmer(lehmer));
+   } else if (current->_lehmer != lehmer) {
+    *current = Permutation::fromLehmer(lehmer);
+   }
+   for (int j=0; j<degree; j++) rmap[j] = (*current)[degree-j];
   }
   return *this;
  }

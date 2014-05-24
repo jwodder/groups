@@ -38,9 +38,12 @@ namespace Groups {
 
    iterator(int=1, bool=false);
    iterator(const permutation_gen&);
+   iterator(const iterator&);
+   iterator& operator=(const iterator&);
+   ~iterator();
 
    Permutation operator*() const;
-   // TODO: Implement `Permutation* operator->() const`?
+   Permutation* operator->() const;
    iterator& operator++();
    iterator& operator--();
 
@@ -66,6 +69,7 @@ namespace Groups {
    const static std::greater<int> comp;
    int degree, lehmer, endLehmer;
    std::vector<int> rmap;
+   mutable Permutation* current;
   };
  };
 
