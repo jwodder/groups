@@ -1,4 +1,4 @@
-- types of groups to implement:
+- Types of groups to implement:
  - the trivial group
  - Klein 4-group
  - semidirect products (somehow)
@@ -6,7 +6,7 @@
  - symmetric groups
  - alternating groups
  - multiplication modulo n?
-- operations to add:
+- Operations to add:
  - generating all powers of an element?
  - calculating group tables
  - calculating centralizers & centers
@@ -31,11 +31,10 @@
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- Implement actual exceptions
- - The constructors for Dihedral and Dicyclic should throw exceptions when
-   passed 0 or 1
-  - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
- - quaternion() should throw an exception when given an invalid argument
+- The constructors for Dihedral and Dicyclic should throw exceptions when
+  passed 0 or 1
+ - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
+- quaternion() should throw an exception when given an invalid argument
 - Rethink the memory management of Group objects passed to Direct's constructor
   (including those used in Direct::copy())
 - Consider making showElem() (and other methods?) private and having Element
@@ -43,6 +42,8 @@
 - Protect elem objects from being used directly by unwanted code
 - Add a way for the user to create abitrary elements of a Dihedral or Dicyclic
   group
+- Make the names of the methods for constructing arbitrary elements (currently
+  Cyclic::residue and Direct::pair) consistent
 - Consider adding a method to Group for comparing two Groups (at least for
   equality)
 - Make the default generator names for dicyclic groups less quaternion-like
@@ -56,8 +57,6 @@
   being instances of public classes within the groups' namespaces that
   implement Element; e.g., elements of a cyclic group would have public type
   Cyclic::Element (or Cyclic<n>::Element?)
-- Permutation.cpp: Should methods that construct new Permutations set the
-  values for _order and _even when they can be easily derived?
 - Rethink the way Element manages its Group* (Use Group& instead?)
 - Replace `elem` and `Element` with an `Element<G>` template class?
 

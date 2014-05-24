@@ -1,6 +1,7 @@
 #ifndef GROUP_H
 #define GROUP_H
 
+#include <stdexcept>  /* invalid_argument */
 #include <string>
 #include <vector>
 #include "Element.hpp"
@@ -23,7 +24,7 @@ namespace Groups {
   Element mkElem(const elem* x) const {return Element(this, x); }
   template<class T> const T* getElem(const Element& x) const {
    if (x.gr == this) return static_cast<const T*>(x.x);
-   else throw /* ??? TODO */ ;
+   else throw std::invalid_argument("Group::getElem: group mismatch");
   }
  };
 }

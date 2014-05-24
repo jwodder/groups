@@ -1,4 +1,5 @@
 #include <sstream>
+#include <stdexcept>  /* invalid_argument */
 #include <vector>
 #include "Direct.hpp"
 #include "util.hpp"
@@ -65,7 +66,7 @@ namespace Groups {
 
  Element Direct::pair(const Element& x, const Element& y) const {
   if (x.group() == left && y.group() == right) return mkElem(new delem(x, y));
-  else throw /* ??? TODO */ ;
+  else throw invalid_argument("Direct::pair: group mismatch");
  }
 
  bool Direct::abelian() const {return left->abelian() && right->abelian(); }

@@ -197,7 +197,7 @@ class Cyclic(Group):
     def __unicode__(self): return u'ℤ' + subU(self.n)
     def LaTeX(self):       return r'\mathbb{Z}' + sub(self.n)
     def showElem(self,x):  return shexp('x', x.i)
-     ### Add an option for changing the name of the variable
+     ### TODO: Add an option for changing the name of the variable
     LaTeXElem = showElem
     def elem(self,i):      return self.Element((i % self.n,), self)
 
@@ -243,7 +243,7 @@ class Semidirect(Group):
 	if x.a or x.b: return '(%s, %s)' % (x.a.LaTeX(), x.b.LaTeX())
 	else: return '1'
 
-    ### Add an option for turning on "ab"-style showing
+    ### TODO: Add an option for turning on "ab"-style showing
 
     def __str__(self): return showbinop(self.g, 'x|', self.h)
      ### Rethink the operator
@@ -309,7 +309,7 @@ def Quaternion(n=2):
     if n<2: raise ValueError('n must be at least 2')
     qn = Dicyclic(1 << (n-1))
     #qn.__str__ = qn.LaTeX = lambda self: 'Q' + sub(1 << (n+1))
-     ### Figure out how to make this work.
+     ### TODO: Figure out how to make this work.
     return qn
     ### When n=2, the group should be somehow modified so that 'ij' is shown as
     ### 'k'.
