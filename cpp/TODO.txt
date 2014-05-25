@@ -59,6 +59,10 @@
   Cyclic::Element (or Cyclic<n>::Element?)
 - Rethink the way Element manages its Group* (Use Group& instead?)
 - Replace `elem` and `Element` with an `Element<G>` template class?
+- Add a Group subtype to which any other Group can be converted that represents
+  its elements as integers that are operated on via a lookup table
+  (essentially, Group.hs)
+- Rename `Group::order()` to `size`?
 
 - Future features:
  - Add a way for the user to query the "type" of a group (cyclic, dihedral,
