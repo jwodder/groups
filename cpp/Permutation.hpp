@@ -17,18 +17,16 @@ namespace Groups {
  class permutation_gen {
  public:
   class iterator;
-  //typedef std::reverse_iterator<iterator> reverse_iterator;
+  typedef std::reverse_iterator<iterator> reverse_iterator;
 
   int degree;
   permutation_gen(int);
   iterator begin() const;
   iterator end() const;
-/*
   reverse_iterator rbegin() const;
   reverse_iterator rend() const;
-*/
 
-  class iterator
+  struct iterator
    : std::iterator<std::random_access_iterator_tag, Permutation, size_t, Permutation*, Permutation> {
   public:
    static int iteration_cutoff;

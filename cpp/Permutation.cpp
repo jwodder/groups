@@ -187,7 +187,6 @@ namespace Groups {
   return PGI(degree, true);
  }
 
-/*
  permutation_gen::reverse_iterator permutation_gen::rbegin() const {
   return permutation_gen::reverse_iterator(end());
  }
@@ -195,7 +194,6 @@ namespace Groups {
  permutation_gen::reverse_iterator permutation_gen::rend() const {
   return permutation_gen::reverse_iterator(begin());
  }
-*/
 
  int PGI::iteration_cutoff = 100;  // I have no idea what this value should be.
 
