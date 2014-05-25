@@ -1,5 +1,5 @@
-#include <cstdlib>  /* abs */
 #include <algorithm>  /* max, next_permutation, prev_permutation */
+#include <functional>  /* greater */
 #include <list>
 #include <sstream>  /* ostringstream */
 #include <stdexcept>  /* logic_error, invalid_argument */
@@ -162,6 +162,11 @@ namespace Groups {
   }
  }
 
+ Permutation Permutation::firstOfDegree(int n) {
+  if (n <= 1) return identity();
+  else return transposition(n, n-1);
+ }
+
  /* This comparison method produces the same ordering as the modified Lehmer
   * codes. */
  int Permutation::cmp(const Permutation& other) const {
@@ -174,156 +179,39 @@ namespace Groups {
   return 0;
  }
 
-
- typedef permutation_gen::iterator PGI;
-
- permutation_gen::permutation_gen(int d) : degree(max(d,1)) { }
-
- PGI permutation_gen::begin() const {
-  return PGI(degree);
- }
-
- PGI permutation_gen::end() const {
-  return PGI(degree, true);
- }
-
- permutation_gen::reverse_iterator permutation_gen::rbegin() const {
-  return permutation_gen::reverse_iterator(end());
- }
-
- permutation_gen::reverse_iterator permutation_gen::rend() const {
-  return permutation_gen::reverse_iterator(begin());
- }
-
- int PGI::iteration_cutoff = 100;  // I have no idea what this value should be.
-
- PGI::iterator(int d, bool atend)
-   : degree(max(d,1)), lehmer(0), endLehmer(1), rmap(max(d,1)), current(NULL) {
-  for (int i=2; i<=degree; i++) endLehmer *= i;
-  if (!atend) {
-   for (int i=0; i<degree; i++) rmap[i] = degree-i;
+ Permutation& Permutation::operator++() {
+  if (degree() == 0) {
+   *this = transposition(1,2);
+  } else if (!next_permutation(pmap.rbegin(), pmap.rend(), greater<int>())) {
+   *this = firstOfDegree(degree()+1);
   } else {
-   lehmer = endLehmer;
-   for (int i=0; i<degree; i++) rmap[i] = i+1;
-  }
- }
-
- PGI::iterator(const permutation_gen& pg)
-   : degree(pg.degree), lehmer(0), endLehmer(1), rmap(pg.degree), current(NULL)
- {
-  for (int i=2; i<=degree; i++) endLehmer *= i;
-  for (int i=0; i<degree; i++) rmap[i] = degree-i;
- }
-
- PGI::iterator(const PGI& y)
-   : degree(y.degree), lehmer(y.lehmer), endLehmer(y.endLehmer), rmap(y.rmap),
-     current(NULL) {
-  if (y.current != NULL) current = new Permutation(*y.current);
- }
-
- PGI& PGI::operator=(const PGI& y) {
-  degree = y.degree;
-  lehmer = y.lehmer;
-  endLehmer = y.endLehmer;
-  rmap = y.rmap;
-  if (current != NULL) delete current;
-  current = y.current == NULL ? NULL : new Permutation(*y.current);
-  return *this;
- }
-
- PGI::~iterator() {if (current != NULL) delete current; }
-
- PGI& PGI::operator++() {
-  if (lehmer < endLehmer && ++lehmer < endLehmer) {
-   next_permutation(rmap.begin(), rmap.end(), comp);
+   _even = -1;
+   _order = -1;
+   if (_lehmer != -1) _lehmer++;
   }
   return *this;
  }
 
- PGI& PGI::operator--() {
-  if (lehmer == endLehmer) {lehmer--; }
-  else if (lehmer > 0) {
-   lehmer--;
-   prev_permutation(rmap.begin(), rmap.end(), comp);
-  }
-  return *this;
- }
-
- Permutation PGI::operator[](int i) const {return *(*this + i); }
-
- Permutation PGI::operator*() const {
-  return *(operator->());
- }
-
- Permutation* PGI::operator->() const {
-  if (lehmer == endLehmer)
-   throw logic_error("Attempt to dereference exhausted pointer");
-  if (current == NULL) {
-   current = new Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
-  } else if (current->_lehmer != lehmer) {
-   *current = Permutation(vector<int>(rmap.rbegin(), rmap.rend()), -1, -1, lehmer);
-  }
-  return current;
- }
-
- PGI PGI::operator++(int) {
-  iterator tmp = *this;
+ Permutation Permutation::operator++(int) {
+  Permutation tmp(*this);
   ++*this;
   return tmp;
  }
 
- PGI PGI::operator--(int) {
-  iterator tmp = *this;
-  --*this;
-  return tmp;
- }
-
- PGI& PGI::operator+=(int i) {
-  if (lehmer+i <= 0) {
-   lehmer = 0;
-   for (int i=0; i<degree; i++) rmap[i] = degree-i;
-  } else if (lehmer+i >= endLehmer) {
-   lehmer = endLehmer;
-   for (int i=0; i<degree; i++) rmap[i] = i+1;
-  } else if (abs(i)<iteration_cutoff) {
-   if (i>=0) {
-    for (; i>0; i--) ++*this;
-   } else {
-    for (i *= -1; i>0; i--) --*this;
-   }
-  } else {
-   lehmer += i;
-   if (current == NULL) {
-    current = new Permutation(Permutation::fromLehmer(lehmer));
-   } else if (current->_lehmer != lehmer) {
-    *current = Permutation::fromLehmer(lehmer);
-   }
-   for (int j=0; j<degree; j++) rmap[j] = (*current)[degree-j];
-  }
+ Permutation& Permutation::operator--() {
+  if (degree() == 0)
+   throw logic_error("Permutation::operator--: cannot decrement identity");
+  prev_permutation(pmap.rbegin(), pmap.rend(), greater<int>());
+  while (!pmap.empty() && pmap.back() == (int) pmap.size()) pmap.pop_back();
+  _even = -1;
+  _order = -1;
+  if (_lehmer != -1) _lehmer--;
   return *this;
  }
 
- PGI& PGI::operator-=(int i) {return *this += -i; }
-
- PGI PGI::operator+(int i) const {
-  iterator tmp = *this;
-  tmp += i;
+ Permutation Permutation::operator--(int) {
+  Permutation tmp(*this);
+  --*this;
   return tmp;
- }
-
- PGI PGI::operator-(int i) const {
-  iterator tmp = *this;
-  tmp -= i;
-  return tmp;
- }
-
- int PGI::operator-(const PGI& other) const {
-  if (degree != other.degree)
-   throw invalid_argument("iterators are from different permutation_gen's");
-  return lehmer - other.lehmer;
- }
-
- int PGI::cmp(const PGI& other) const {
-  return degree == other.degree ? lehmer - other.lehmer : other.degree - degree;
  }
 }
