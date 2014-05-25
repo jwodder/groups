@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from sys import stdout
+from sys import path, stdout
+path.insert(1, path[0] + '/..')
 import groups
 
 #group = groups.Cyclic(5)

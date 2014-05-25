@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(1, sys.path[0] + '/..')
 from groups      import Symmetric
 from permutation import Permutation
 
