@@ -6,8 +6,8 @@ main :: IO ()
 main = mapM_ (putStrLn . grdata) groups
 
 groups :: [(String, Group, [String])]
---groups = groupList
-groups = o32nonA
+groups = groupList
+--groups = o32nonA
 
 {-
 groups = [(intercalate "\\times" $ map (zahlen . show) xs, g, [])

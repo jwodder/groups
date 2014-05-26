@@ -64,6 +64,7 @@
   (essentially, Group.hs)
 - Rename `Group::order()` to `size`?
 - Add a Makefile
+- Add closure functions that send their output to supplied output iterators?
 
 - Future features:
  - Add a way for the user to query the "type" of a group (cyclic, dihedral,

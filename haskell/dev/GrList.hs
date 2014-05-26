@@ -5,95 +5,70 @@ module GrList (groupList, o32nonA) where
  type GrEntry = (String, Group, [String])
 
  groupList :: [GrEntry]
- -- TODO: Store this as a list of pairs of abelian & nonabelian groups of each
- -- order :: [([GrEntry], [GrEntry])].  Alternatively, have one list in this
- -- format and make `groupList` just a flattening of the other list.
- groupList = [
-   ("1", trivial, ["cyclic", "symmetric", "alternating"]),
-   cyc 2,
-   cyc 3,
-   cyc 4, v4,
-   cyc 5,
-   cyc 6,
-      sym 3,
-   cyc 7,
-   cyc 8, cyc 4 ⨯ cyc 2, elemAbel 2 3,
-      quat 2,
-      dih 4,
-   cyc 9, elemAbel 3 2,
-   cyc 10,
-      dih 5,
-   cyc 11,
-   cyc 12, cyc 6 ⨯ cyc 2,
-      alt 4,
-      dih 6,
-      csc 3 4 (-1),
-   cyc 13,
-   cyc 14,
-      dih 7,
-   cyc 15,
-   cyc 16, cyc 8 ⨯ cyc 2, cyc 4 ⨯ cyc 4, cyc 4 ⨯ v4, elemAbel 2 4,
-      quat 3,
-      qd16,
-      m16,
-      quat 2 ⨯ cyc 2,
-      q8sz2,
-      dih 4 ⨯ cyc 2,
-      csc 4 4 (-1),
-      v4sz4,
-      dih 8,
-   cyc 17,
-   cyc 18, cyc 6 ⨯ cyc 3,
-      dih 9,
-      sym 3 ⨯ cyc 3,
-      gdih $ elemAbel 3 2,
-   cyc 19,
-   cyc 20, cyc 10 ⨯ cyc 2,
-      ("F_{20}", cycSemiCyc 5 4 3, []),
-      dic 5,
-      dih 10,
-   cyc 21,
-      csc 7 3 2,
-   cyc 22,
-      dih 11,
-   cyc 23,
+ groupList = flatten groupList'
+  where flatten ((a,b):xs) = a ++ b ++ flatten xs
+	flatten [] = []
 
-   cyc 24, cyc 12 ⨯ cyc 2, cyc 6 ⨯ v4,
-      dic 6,
-      quat 2 ⨯ cyc 3,
-      csc 3 4 (-1) ⨯ cyc 2,
-      dih 4 ⨯ cyc 3,
-      sym 3 ⨯ cyc 4,
-      alt 4 ⨯ cyc 2,
-      sym 4,
-      dih 12,
-      dih 6 ⨯ cyc 2,
-      -- Q_8\rtimes\Z_3 ???
+ groupList' :: [([GrEntry], [GrEntry])]
+ groupList' = [
+   ([("1", trivial, ["cyclic", "symmetric", "alternating"])], []),
+   ([cyc 2], []),
+   ([cyc 3], []),
+   ([cyc 4, v4], []),
+   ([cyc 5], []),
+   ([cyc 6], [sym 3]),
+   ([cyc 7], []),
+   ([cyc 8, cyc 4 ⨯ cyc 2, elemAbel 2 3], [quat 2, dih 4]),
+   ([cyc 9, elemAbel 3 2], []),
+   ([cyc 10], [dih 5]),
+   ([cyc 11], []),
+   ([cyc 12, cyc 6 ⨯ cyc 2], [alt 4, dih 6, csc 3 4 (-1)]),
+   ([cyc 13], []),
+   ([cyc 14], [dih 7]),
+   ([cyc 15], []),
+   ([cyc 16, cyc 8 ⨯ cyc 2, cyc 4 ⨯ cyc 4, cyc 4 ⨯ v4, elemAbel 2 4],
+    [quat 3, qd16, m16, quat 2 ⨯ cyc 2, q8sz2, dih 4 ⨯ cyc 2, csc 4 4 (-1),
+     v4sz4, dih 8]),
+   ([cyc 17], []),
+   ([cyc 18, cyc 6 ⨯ cyc 3], [dih 9, sym 3 ⨯ cyc 3, gdih $ elemAbel 3 2]),
+   ([cyc 19], []),
+   ([cyc 20, cyc 10 ⨯ cyc 2],
+    [("F_{20}", cycSemiCyc 5 4 3, []), dic 5, dih 10]),
+   ([cyc 21], [csc 7 3 2]),
+   ([cyc 22], [dih 11]),
+   ([cyc 23], []),
+
+   ([cyc 24, cyc 12 ⨯ cyc 2, cyc 6 ⨯ v4],
+    [dic 6, quat 2 ⨯ cyc 3, csc 3 4 (-1) ⨯ cyc 2, dih 4 ⨯ cyc 3, sym 3 ⨯ cyc 4,
+     alt 4 ⨯ cyc 2, sym 4, dih 12, dih 6 ⨯ cyc 2
+     -- Q_8\rtimes\Z_3
+     -- ???
+     -- ???
+    ]),
+
+   ([cyc 25, elemAbel 5 2], []),
+   ([cyc 26], [dih 13]),
+
+   ([cyc 27, cyc 9 ⨯ cyc 3, elemAbel 3 3],
+    [
       -- ???
       -- ???
+    ]),
 
-   cyc 25, elemAbel 5 2,
-   cyc 26,
-      dih 13,
+   ([cyc 28, cyc 14 ⨯ cyc 2], [dih 14, dic 7]),
+   ([cyc 29], []),
 
-   cyc 27, cyc 9 ⨯ cyc 3, elemAbel 3 3,
+   ([cyc 30],
+    [dih 15
       -- ???
       -- ???
+    ]),
 
-   cyc 28, cyc 14 ⨯ cyc 2,
-      dih 14,
-      dic 7,
-   cyc 29,
-
-   cyc 30,
-      dih 15,
-      -- ???
-      -- ???
-
-   cyc 31,
-   cyc 32, cyc 16 ⨯ cyc 2, cyc 8 ⨯ cyc 4, cyc 8 ⨯ v4, cyc 4 ⨯ cyc 4 ⨯ cyc 2,
-      cyc 4 ⨯ elemAbel 2 3, elemAbel 2 5
-  ] ++ o32nonA
+   ([cyc 31], []),
+   ([cyc 32, cyc 16 ⨯ cyc 2, cyc 8 ⨯ cyc 4, cyc 8 ⨯ v4, cyc 4 ⨯ cyc 4 ⨯ cyc 2,
+     cyc 4 ⨯ elemAbel 2 3, elemAbel 2 5],
+    o32nonA)
+  ]
 
  v4 :: GrEntry
  v4 = ("V_4", klein4, ["dihedral"])
