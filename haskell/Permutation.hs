@@ -8,7 +8,7 @@ module Permutation (
   -- * Deconstruction
   toCycles, showCycles,
   -- * Properties
-  order, isEven, isOdd, degree, lehmer
+  order, isEven, isOdd, degree, lehmer, disjoint
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
@@ -114,6 +114,10 @@ module Permutation (
 	code' y f = mod y f : code' (div y f) (f+1)
 	deg = length code
 	mapping = foldl (\m (i,c) -> take c m ++ i:drop c m) [] $ zip [1..] code
+
+ disjoint :: Permutation -> Permutation -> Bool
+ disjoint (Perm σ) (Perm τ) = not $ any (\((i,a),b) -> i /= a && i /= b)
+				  $ zip (assocs σ) (elems τ)
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

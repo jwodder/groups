@@ -163,6 +163,11 @@ class Permutation(object):
     def fromCycles(cls, cycles):
 	return reduce(operator.mul, map(cls.fromCycle, cycles), cls())
 
+    def disjoint(self, other):
+	for (i,(a,b)) in enumerate(zip(self._map, other._map)):
+	    if i+1 != a && i+1 != b: return False
+	return True
+
 def gcd(x,y):
     (a,b) = (abs(x), abs(y))
     if a == 0 and b == 0: return 0

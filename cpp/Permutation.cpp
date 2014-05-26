@@ -213,4 +213,11 @@ namespace Groups {
   --*this;
   return tmp;
  }
+
+ bool Permutation::disjoint(const Permutation& other) const {
+  for (int i=0; i < min(degree(), other.degree()); i++) {
+   if (i+1 != pmap[i] && i+1 != other.pmap[i]) return false;
+  }
+  return true;
+ }
 }
