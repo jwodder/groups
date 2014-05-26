@@ -12,7 +12,7 @@ module Permutation (
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
- import Data.List (intercalate, mapAccumL)
+ import Data.List (intercalate)
  import Data.Monoid
 
  newtype Permutation = Perm (Array Int Int) deriving (Eq, Ord)
@@ -98,9 +98,10 @@ module Permutation (
  degree (Perm σ) = snd $ bounds σ
 
  lehmer :: Permutation -> Int
- lehmer (Perm σ) = sum $ zipWith (*) (reverse code) $ scanl (*) 1 [1..]
-  where code = snd $ mapAccumL (\left x -> lehmer' left (σ A.! x) 0) ds ds
-	ds = reverse $ indices σ
+ lehmer (Perm σ) = snd $ foldl (\(left, l) x ->
+				let (left', i) = lehmer' left (σ A.! x) 0
+				in (left', l*x + i)) (ds, 0) ds
+  where ds = reverse $ indices σ
 	lehmer' (y:ys) x' i | x' == y = (ys, i)
 	lehmer' (y:ys) x' i = y &: lehmer' ys x' (i+1)
 	lehmer' [] _ _ = undefined

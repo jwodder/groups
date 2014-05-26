@@ -80,18 +80,12 @@ class Permutation(object):
     @property
     def lehmer(self):
 	if self._lehmer is None:
-	    code = []
 	    left = range(len(self._map), 0, -1)
+	    self._lehmer = 0
 	    for x in left[:]:
 		i = left.index(self[x])
 		del left[i]
-		code.append(i)
-	    self._lehmer = 0
-	    fac = 1
-	    #for (f,c) in enumerate(reversed(code), start=1):  # v.2.6+
-	    for (c,f) in zip(reversed(code), range(1, len(code)+1)):
-		self._lehmer += c * fac
-		fac *= f
+		self._lehmer = self._lehmer * x + i
 	return self._lehmer
 
     @classmethod

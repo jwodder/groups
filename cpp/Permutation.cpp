@@ -85,8 +85,7 @@ namespace Groups {
 
  int Permutation::lehmer() const {
   if (_lehmer == -1) {
-   vector<int> code;
-   code.reserve(degree());
+   _lehmer = 0;
    list<int> left;
    for (int i=degree(); i>0; i--) left.push_back(i);
    for (int x=degree(); x>0; x--) {
@@ -95,15 +94,7 @@ namespace Groups {
     int i=0;
     while (*iter != y) {iter++; i++; }
     left.erase(iter);
-    code.push_back(i);
-   }
-   _lehmer = 0;
-   int fac = 1, f = 1;
-   vector<int>::reverse_iterator riter;
-   for (riter = code.rbegin(); riter != code.rend(); riter++) {
-    _lehmer += *riter * fac;
-    fac *= f;
-    f++;
+    _lehmer = _lehmer * x + i;
    }
   }
   return _lehmer;
