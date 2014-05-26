@@ -39,6 +39,7 @@ module Permutation (
   where n = degree s `max` degree t
 
  invert :: Permutation -> Permutation
+ -- TODO: Rename "inverse"?
  invert (Perm σ) = Perm $ array (bounds σ) [(b,a) | (a,b) <- assocs σ]
   -- Trimming is not needed here (assuming the input is trimmed).
 
@@ -46,7 +47,7 @@ module Permutation (
  identity = Perm $ array (1,0) []
 
  transpose :: Int -> Int -> Permutation
- -- Rename "transposition"?
+ -- TODO: Rename "transposition"?
  transpose a b | a < 1 || b < 1 = error "Permutation.transpose: values must be positive"
  transpose a b | a == b = identity
  transpose a b = Perm $ array rng [(x, if x == a then b

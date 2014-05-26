@@ -137,9 +137,18 @@ class Permutation(object):
 	elif a == b:
 	    return cls()
 	else:
+	    # For $a<b$, $Lehmer((a b)) = (b-a) (b-1)! + \sum_{i=a}^{b-2} i!$
+	    big = max(a,b)
+	    small = min(a,b)
+	    lehmer = 0
+	    fac = reduce(operator.mul, range(1, small+1))
+	    for i in range(small, big-1):
+	        lehmer += fac
+		fac *= i+1
+	    lehmer += fac * (big-small)
 	    return cls((b if x == a else a if x == b else x
-			for x in range(1, max(a,b)+1)),
-		       even=False, order=2)
+			for x in range(1, big+1)),
+		       even=False, order=2, lehmer=lehmer)
 
     @classmethod
     def fromCycle(cls, cyc):

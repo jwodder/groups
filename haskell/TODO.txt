@@ -39,3 +39,4 @@
   "permutation", "permutationGroup", or "permGroup"?)
 - Actually make `Group`'s constructor private -- without messing up the
   definition of `mkgroup`
+- Add a Makefile

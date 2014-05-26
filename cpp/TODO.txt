@@ -63,6 +63,7 @@
   its elements as integers that are operated on via a lookup table
   (essentially, Group.hs)
 - Rename `Group::order()` to `size`?
+- Add a Makefile
 
 - Future features:
  - Add a way for the user to query the "type" of a group (cyclic, dihedral,
