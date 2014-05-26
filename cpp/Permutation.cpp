@@ -1,4 +1,4 @@
-#include <algorithm>  /* max, next_permutation, prev_permutation */
+#include <algorithm>  /* max, min, next_permutation, prev_permutation */
 #include <functional>  /* greater */
 #include <list>
 #include <sstream>  /* ostringstream */
@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "Permutation.hpp"
-#include "util.hpp"  /* lcm */
+#include "util.hpp"  /* lcm, factorial */
 using namespace std;
 
 namespace Groups {
@@ -155,10 +155,18 @@ namespace Groups {
   if (a < 1 || b < 1) throw invalid_argument("Permutation::transposition: arguments must be positive");
   if (a == b) return Permutation();
   else {
-   vector<int> mapping(max(a,b));
-   for (int i=0; i<max(a,b); i++)
+   int big = max(a,b), small = min(a,b);
+   vector<int> mapping(big);
+   for (int i=0; i<big; i++)
     mapping[i] = i+1 == a ? b : i+1 == b ? a : i+1;
-   return Permutation(mapping, 0, 2);
+   /* For $a<b$, $Lehmer((a b)) = (b-a) (b-1)! + \sum_{i=a}^{b-2} i!$ */
+   int lehmer = 0, fac = factorial(small);
+   for (int i=small; i<big-1; i++) {
+    lehmer += fac;
+    fac *= i+1;
+   }
+   lehmer += fac * (big-small);
+   return Permutation(mapping, 0, 2, lehmer);
   }
  }
 

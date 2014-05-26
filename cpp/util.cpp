@@ -19,4 +19,10 @@ namespace Groups {
   else if (n == 1) return out << gen;
   else return out << gen << "^{" << n << '}';
  }
+
+ int factorial(int x) {
+  int fac = 1;
+  for (int i=2; i<=x; i++) fac *= i;
+  return fac;
+ }
 }
