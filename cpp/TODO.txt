@@ -28,7 +28,6 @@ FEATURES
  - permutation groups
  - multiplication modulo n?
 - Operations to add:
- - generating all powers of an element?
  - calculating group tables
  - calculating centralizers & centers
  - calculating normalizers

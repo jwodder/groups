@@ -8,12 +8,6 @@ namespace Groups {
 
  int Element::order() const {return gr->order(*this); }
 
- const Element Element::operator*(const Element& y) const {
-  return gr->op(*this, y);
- }
-
- Element& Element::operator*=(const Element y) {return *this = *this * y; }
-
  Element Element::pow(int n) const {
   Element x(n > 0 ? *this : inverse());
   if (n < 0) n *= -1;
@@ -25,6 +19,23 @@ namespace Groups {
   for (i <<= 1, x *= x; i <= n; i <<= 1, x *= x) if (n & i) agg *= x;
   return agg;
  }
+
+ vector<Element> Element::cycle() const {
+  int qty = order();
+  vector<Element> pows(qty, gr->identity());
+  Element tmp(*this);
+  for (int i=1; i<qty; i++) {
+   pows[i] = tmp;
+   tmp *= *this;
+  }
+  return pows;
+ }
+
+ const Element Element::operator*(const Element& y) const {
+  return gr->op(*this, y);
+ }
+
+ Element& Element::operator*=(const Element y) {return *this = *this * y; }
 
  Element& Element::operator=(const Element& y) {
   gr = y.gr;

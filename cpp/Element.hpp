@@ -1,8 +1,9 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include <string>
 #include <ostream>
+#include <string>
+#include <vector>
 
 namespace Groups {
  using namespace std;
@@ -23,14 +24,17 @@ namespace Groups {
  public:
   Element(const Element& y) : gr(y.gr), x(y.x) {x->retain(); }
   ~Element() {x->release(); }
-  const Group* group() const {return gr; }
-  Element inverse() const;
-  int order() const;
-  Element pow(int) const;
+
+  const Group*    group()   const {return gr; }
+  Element         inverse() const;
+  int             order()   const;
+  Element         pow(int)  const;
+  vector<Element> cycle()   const;
+
   const Element operator*(const Element&) const;
-  Element& operator*=(const Element);
-  Element& operator=(const Element&);
-  operator string() const;
+  Element&      operator*=(const Element);
+  Element&      operator=(const Element&);
+  operator      string() const;
 
   int cmp(const Element& y) const {
    return gr < y.gr ? -1 : gr > y.gr ? 1 : x->cmp(y.x);
