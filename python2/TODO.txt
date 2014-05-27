@@ -3,6 +3,7 @@
 - Implement all of the features in plan.txt
  - Features that the Python version is behind on:
   - alternating groups
+  - permutation groups
   - "boolean" group?
   - calculating all subgroups of a group
   - testing whether a group is abelian

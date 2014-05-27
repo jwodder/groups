@@ -19,7 +19,5 @@
 - Consider giving Elem an Ix instance that yields nonempty lists only when the
   groups of the bounds match; this will then make it possible to implement a
   group table function with type `Group -> Array (Elem, Elem) Elem`
-- Make the bulk of symdat.hs into yet another entry in Families.hs (named
-  "permutation", "permutationGroup", or "permGroup"?)
 - Actually make `Group`'s constructor private -- without messing up the
   definition of `mkgroup`

@@ -150,6 +150,28 @@ module Groups.Families where
 				    | a <- [2..n], b <- [a+1..n]]
 	 dex = array (0, facN-1) $ zip (sort $ map P.lehmer els) [0..]
 
+ permutation :: [P.Permutation] -> Group
+ permutation = mkgroup . permutation'
+
+ permutation' :: [P.Permutation] -> Group' P.Permutation
+ permutation' [] = symmetric' 1
+ permutation' perms = Group' {
+  g'size   = qty,
+  g'elems  = els,
+  g'index  = (!) dex . P.lehmer,
+  g'oper   = P.compose,
+  g'invert = P.invert,
+  g'order  = P.order,
+  g'id     = P.identity
+ } where els = closure2A P.compose perms
+	 -- Counting the quantity and largest Lehmer code while zipping should
+	 -- be faster than using `zip`, `length`, and `last` separately.
+	 (zipped, (qty, maxCode)) = zippy 0 $ sort $ map P.lehmer els
+	 zippy i [c] = ([(c,i)], (i+1, c))
+	 zippy i (c:xs) = (c,i) &: zippy (i+1) xs
+	 zippy _ [] = error "Impossible runtime error in permutation'"
+	 dex = array (0, maxCode) zipped
+
  multiplicN :: Int -> Group  -- Rename to "autCyclic"?
  multiplicN = mkgroup . multiplicN'
 

@@ -50,7 +50,10 @@ module Groups.Internals where
  view [] seen = ([], seen)
  view (x:xs) seen | ISet.member x seen = view xs seen
  view (x:xs) seen = x &: view xs (ISet.insert x seen)
-  where z &: (zs, w) = (z:zs, w)
+
+ infixr 5 &:
+ (&:) :: a -> ([a], b) -> ([a], b)
+ x &: (xs, y) = (x:xs, y)
 
  data TernaryBranch a = a :? a deriving (Eq, Ord, Read, Show, Bounded)
 
@@ -78,12 +81,6 @@ module Groups.Internals where
 				   | b' >  b = (b, as) : shove (b', a) xs
 	shove _ _ = undefined  -- to stop the compilation warnings
  -- classify f xs = Map.toList $ Map.fromListWith (flip (++)) [(f x, [x]) | x <- xs]
-
- splitElem :: Eq a => a -> [a] -> [[a]]
- -- split on all occurrences of an element
- splitElem _ [] = [[]]
- splitElem e xs = pre : if null post then [] else splitElem e (tail post)
-  where (pre, post) = break (== e) xs
 
  cartesian :: [a] -> [b] -> [(a,b)]
  cartesian a b = [(x,y) | x <- a, y <- b]
@@ -134,7 +131,6 @@ module Groups.Internals where
 	 where (k,x) = until (\(_,y) -> mod y p /= 0)
 			     (\(j,y) -> (j+1, div y p)) (0, m)
 	factor' (_:q) m = factor' q m
-	z &: (zs, w) = (z:zs, w)
 
  modInverse :: Integral a => a -> a -> Maybe a
  modInverse a n = invert (abs n) 0 (modulo a n) 1

@@ -40,7 +40,7 @@ least one language.
  * semidirect products
  * symmetric groups
  * alternating groups
- - permutation groups
+ * permutation groups
  - quotient groups
  - automorphism groups
  - holomorphs

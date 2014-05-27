@@ -26,6 +26,7 @@ FEATURES
  - semidirect products
  - symmetric groups
  - alternating groups
+ - permutation groups
  - multiplication modulo n?
 - Operations to add:
  - generating all powers of an element?
