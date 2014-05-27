@@ -1,53 +1,63 @@
-The following is a list of all features I desire/plan to implement:
+The following is a list of all features that I desire/plan to implement in this
+library.  Those marked with an asterisk are currently already implemented in at
+least one language.
 
-- There must exist a single type G (i.e., not a type of the form `T a` where
+* There must exist a single type G (i.e., not a type of the form `T a` where
   `a` is a type variable) for representing all possible isomorphism types of
   finite groups (not necessarily uniquely).
 - The following operations must be possible for all groups & elements thereof:
- - getting the identity
- - the group operation
- - inversion
- - getting the order of a group
- - getting the order of an element
- - getting a list of all elements in a group
- - testing whether an element is in a group
- - getting whether a group is abelian
- - algebraic closures
- - calculating centralizers, centers, and normalizers
- - calculating all subgroups
- - determining whether a subgroup is normal
+ * getting the identity
+ * the group operation
+ * inversion
+ * getting the order of a group
+ * getting the order of an element
+ * generating all powers of an element
+ * getting a list of all elements in a group
+ * testing whether an element is in a group
+ * getting whether a group is abelian
+ * algebraic closures
+ * calculating centralizers, centers, and normalizers
+ * calculating all subgroups
+ * determining whether a subgroup is normal
  - calculating automorphisms and groups thereof
  - determining whether two groups are isomorphic
  - calculating commutators
+ * calculating nilpotence classes
  - Family-specific operations:
-  - getting the parities of elements of symmetric groups
+  * getting the parities of elements of symmetric groups
 - Types of groups to implement:
- - trivial group
- - Klein 4-group
- - cyclic groups
- - multiplication modulo n
- - dihedral groups
+ * trivial group
+ * "boolean" group (Z_2) ?
+ * Klein 4-group
+ * cyclic groups
+ * multiplication modulo n
+ * dihedral groups
   - generalized dihedral groups
- - dicyclic groups
-  - generalized quaternion groups
-   - quaternion group
- - direct products
- - semidirect products
- - symmetric groups
- - alternating groups
+ * dicyclic groups
+  * generalized quaternion groups
+   * quaternion group
+ * direct products
+ * semidirect products
+ * symmetric groups
+ * alternating groups
+ - permutation groups
  - quotient groups
  - automorphism groups
  - holomorphs
  - wreath products
  - elementary abelian groups
- - subgroups
+ - subgroups of other groups
 - It should be possible to "deconstruct" any group to obtain its family
   (cyclic, dicyclic, semidirect product of G and H, etc.) and any values used
   to construct it (e.g., order for cyclic groups, homomorphism for semidirect
   products).
+* Given a group object, it should be possible to construct an arbitrary element
+  of that group from one or more values of types specific to the group's
+  family.
+- It should be possible to "deconstruct" any element to obtain the
+  family-specific values used to construct it.
+- There should exist a type for representing group homomorphisms -- and *only*
+  valid homomorphisms.
 - It should be possible, given a group, to convert any element thereof to a
   human-readable string representation with the ability to configure the
   representations of the group's generators.
-- It should be possible to construct arbitrary group elements without having to
-  fetch all of a group's elements (e.g., `dihedralElem :: Int -> (Bool, Int) ->
-  Elem`).

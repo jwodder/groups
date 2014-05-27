@@ -1,8 +1,29 @@
+- Add a Makefile
+- Rename `Group::order()` to `size`?
+- The constructors for Dihedral and Dicyclic should throw exceptions when
+  passed 0 or 1
+ - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
+- quaternion() should throw an exception when given an invalid argument
+- Rethink the memory management of Group objects passed to Direct's constructor
+  (including those used in Direct::copy())
+- Consider making showElem() (and other methods?) private and having Element
+  befriend Group
+- Protect elem objects from being used directly by unwanted code
+- Make the names of the methods for constructing arbitrary elements (currently
+  Cyclic::residue and Direct::pair) consistent
+- Make the default generator names for dicyclic groups less quaternion-like
+- Consider replacing Element with an abstract class, with elements of groups
+  being instances of public classes within the groups' namespaces that
+  implement Element; e.g., elements of a cyclic group would have public type
+  Cyclic::Element (or Cyclic<n>::Element?)
+- Rethink the way Element manages its Group* (Use Group& instead?)
+
+FEATURES
+- Implement all of the features in plan.txt
 - Types of groups to implement:
  - the trivial group
  - Klein 4-group
- - semidirect products (somehow)
- - quotient groups
+ - semidirect products
  - symmetric groups
  - alternating groups
  - multiplication modulo n?
@@ -12,9 +33,8 @@
  - calculating centralizers & centers
  - calculating normalizers
  - determining all subgroups of a group
- - calculating commutators
  - determining whether a subgroup is normal
- - calculating automorphisms and groups thereof
+ - calculating nilpotence classes
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
  - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,
@@ -31,45 +51,15 @@
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- The constructors for Dihedral and Dicyclic should throw exceptions when
-  passed 0 or 1
- - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
-- quaternion() should throw an exception when given an invalid argument
-- Rethink the memory management of Group objects passed to Direct's constructor
-  (including those used in Direct::copy())
-- Consider making showElem() (and other methods?) private and having Element
-  befriend Group
-- Protect elem objects from being used directly by unwanted code
 - Add a way for the user to create abitrary elements of a Dihedral or Dicyclic
   group
-- Make the names of the methods for constructing arbitrary elements (currently
-  Cyclic::residue and Direct::pair) consistent
-- Consider adding a method to Group for comparing two Groups (at least for
-  equality)
-- Make the default generator names for dicyclic groups less quaternion-like
-- Consider adding an alternative to or replacement for quaternion() that takes
-  the cardinality of the desired group
-- Add in a way to represent subgroups
-- Considering adding an isIdentity() method to Element
+- Add a method to Group for comparing two Groups? (at least for equality)
+- Add an alternative to/replacement for quaternion() that takes the cardinality
+  of the desired group?
+- Add an isIdentity() method to Element?
  - Alternatively, overload `Element::operator bool()` to test for
    non-identity-ness
-- Consider replacing Element with an abstract class, with elements of groups
-  being instances of public classes within the groups' namespaces that
-  implement Element; e.g., elements of a cyclic group would have public type
-  Cyclic::Element (or Cyclic<n>::Element?)
-- Rethink the way Element manages its Group* (Use Group& instead?)
-- Replace `elem` and `Element` with an `Element<G>` template class?
 - Add a Group subtype to which any other Group can be converted that represents
   its elements as integers that are operated on via a lookup table
   (essentially, Group.hs)
-- Rename `Group::order()` to `size`?
-- Add a Makefile
 - Add closure functions that send their output to supplied output iterators?
-
-- Future features:
- - Add a way for the user to query the "type" of a group (cyclic, dihedral,
-   etc.)
- - Add ways for the user to query what parameters were used to construct a
-   given group
- - Add ways for the user to deconstruct Elements (e.g., determining the parts
-   of a Direct::delem or the residue of a Cyclic::celem)

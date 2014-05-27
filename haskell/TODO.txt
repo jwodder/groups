@@ -1,20 +1,14 @@
 - Document everything!
 - Handle all of the sections marked "TODO" in the code
-- Implement the following:
- - generalized dihedral groups
- - calculating automorphisms and groups thereof
- - determining whether two groups are isomorphic
- - calculating commutators
- - quotient groups
- - automorphism groups
- - holomorphs
- - wreath products
- - elementary abelian groups
- - subgroups
- - Groups/Types/Subset.hs:
-  - ss_fromIntSet :: Group -> IntSet -> Subset
-  - conversion to & from [Int]
-  - ∈ ???
+- Add a Makefile
+- Implement all of the features in plan.txt
+ - Features that the Haskell version is behind on:
+  - Converting elements to strings
+  - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
+- Implement the following in Groups/Types/Subset.hs:
+ - ss_fromIntSet :: Group -> IntSet -> Subset
+ - conversion to & from [Int]
+ - ∈ ???
 - Rename `Elem` to `Element`?
 - Prefix the `Group`, `Elem`, and `Subset` constructors with "Mk"?
 - Make most(?) of the functions in `Ops.hs` that use `[Elem]`s use `Subset`s
@@ -25,18 +19,7 @@
 - Consider giving Elem an Ix instance that yields nonempty lists only when the
   groups of the bounds match; this will then make it possible to implement a
   group table function with type `Group -> Array (Elem, Elem) Elem`
-- It should be possible to "deconstruct" any group to obtain its family
-  (cyclic, dicyclic, semidirect product of G and H, etc.) and any values used
-  to construct it (e.g., order for cyclic groups, homomorphism for semidirect
-  products).
-- It should be possible, given a group, to convert any element thereof to a
-  human-readable string representation with the ability to configure the
-  representations of the group's generators.
-- It should be possible to construct arbitrary group elements (e.g.,
-  `dihedralElem :: Int -> (Bool, Int) -> Elem`)
- - cf. mkelem in misc.hs
 - Make the bulk of symdat.hs into yet another entry in Families.hs (named
   "permutation", "permutationGroup", or "permGroup"?)
 - Actually make `Group`'s constructor private -- without messing up the
   definition of `mkgroup`
-- Add a Makefile

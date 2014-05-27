@@ -1,16 +1,18 @@
 - Document everything!
-- Implement the following:
- - alternating groups
- - "boolean" group?
- - calculating all subgroups of a group
- - testing whether a group is abelian
- - calculating nilpotence classes
- - configurable element showing
- - __copy__ and __deepcopy__ methods (see the `copy` module)
-  - Element.copy()
- - an inverse method to `indexElem`?
- - Element construction of the form `Element(paramTuple, group)` (where Element
-   is the base class rather than a group's derived class) ?
+- Handle all of the sections marked "TODO" in the code
+- Implement all of the features in plan.txt
+ - Features that the Python version is behind on:
+  - alternating groups
+  - "boolean" group?
+  - calculating all subgroups of a group
+  - testing whether a group is abelian
+  - calculating nilpotence classes
+- Implement configurable element showing
+- Implement Element construction of the form `Element(paramTuple, group)`
+  (where Element is the base class rather than a group's derived class) ?
+- Add __copy__ and __deepcopy__ methods (see the `copy` module)
+ - Add Element.copy()
+- Implement an inverse method to `indexElem`?
 - Make `identity` a property?
 - Rewrite Group.__contains__ and/or Group.elem to ensure that the Element
   objects in question actually appear in their respective Groups?  cf. the
