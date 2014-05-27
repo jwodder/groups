@@ -24,7 +24,6 @@ FEATURES
  - the trivial group
  - Klein 4-group
  - semidirect products
- - symmetric groups
  - alternating groups
  - permutation groups
  - multiplication modulo n?
