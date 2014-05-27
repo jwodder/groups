@@ -1,6 +1,6 @@
 module GrList (groupList, o32nonA) where
  import Groups
- import Groups.Internals  -- isSublist and Ternary
+ import Groups.Internals ((?:), TernaryBranch(:?))
 
  type GrEntry = (String, Group, [String])
 
@@ -156,3 +156,7 @@ module GrList (groupList, o32nonA) where
  binop x op y = (isSublist "times" x ?: '(' : x ++ ")" :? x) ++ op
 	     ++ (head y' `elem` "\\(){}" ?: "" :? "{}") ++ y'
   where y' = isSublist "times" y ?: '(' : y ++ ")" :? y
+
+ isSublist :: Eq a => [a] -> [a] -> Bool
+ isSublist sub list = any (isPrefixOf sub . (`drop` list))
+			  (elemIndices (head sub) list)

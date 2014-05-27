@@ -2,16 +2,20 @@ import Control.Monad (liftM2)
 import System.Environment (getArgs)
 import qualified Data.IntSet as ISet
 import Groups
-import Closure (view)
-import Groups.Internals (fromHead)
+import Groups.Internals (view)
 import Permutation
 
+main :: IO ()
 main = do
  n <- getArgs >>= readIO . fromHead "5"
- print $ gdiameter (symmetric n)
-  -- TODO: The below has not been updated for the new Group type yet.
-  -- $ map (setDegree' n . transpose 1) [2..n]
-  $ (fromCycle [1..n] :) $ if n == 1 then [] else [setDegree' n $ transpose 1 2]
+ let group = symmetric' n
+ --let gens = map (transpose 1) [2..n]
+ let gens = (fromCycle [1..n] :) $ if n == 1 then [] else [transpose 1 2]
+ print $ gdiameter (mkgroup group) $ map (g'index group) gens
+
+fromHead :: a -> [a] -> a
+fromHead a [] = a
+fromHead _ (b:_) = b
 
 -- |Given a group @g@ and a list of generators @gens@, @gdiameter g gens@
 -- returns the number of "iterations of the closure algorithm" needed to

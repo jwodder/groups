@@ -65,14 +65,6 @@ module Groups.Internals where
  True  ?: (y :? _) = y
  False ?: (_ :? z) = z
 
- fromHead :: a -> [a] -> a
- fromHead a [] = a
- fromHead _ (b:_) = b
-
- isSublist :: Eq a => [a] -> [a] -> Bool
- isSublist sub list = any (isPrefixOf sub . (`drop` list))
-  (elemIndices (head sub) list)
-
  classify :: Ord b => (a -> b) -> [a] -> [(b, [a])]
  classify f = foldr shove [] . map (\x -> (f x, x))
   where shove (b', a) [] = [(b', [a])]
