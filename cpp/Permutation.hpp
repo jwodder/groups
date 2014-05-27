@@ -19,7 +19,7 @@ namespace Groups {
   std::vector< std::vector<int> > toCycles() const;
   bool disjoint(const Permutation& other) const;
 
-  int operator[](int) const;
+  int operator()(int) const;
   Permutation operator*(const Permutation&) const;
 
   /* Go to the next/previous Permutation, ordered by modified Lehmer codes */

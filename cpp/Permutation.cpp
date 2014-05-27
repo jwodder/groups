@@ -19,7 +19,7 @@ namespace Groups {
 
  Permutation Permutation::identity() {return Permutation(); }
 
- int Permutation::operator[](int i) const {
+ int Permutation::operator()(int i) const {
   if (0 < i && i <= (int) pmap.size()) return pmap[i-1];
   else return i;
  }
@@ -27,7 +27,7 @@ namespace Groups {
  Permutation Permutation::operator*(const Permutation& other) const {
   int newdeg = max(degree(), other.degree());
   vector<int> newmap(newdeg);
-  for (int i=0; i<newdeg; i++) newmap[i] = (*this)[other[i+1]];
+  for (int i=0; i<newdeg; i++) newmap[i] = (*this)(other(i+1));
   return Permutation(newmap, _even != -1 && other._even != -1 ? _even == other._even : -1);
  }
 
@@ -89,7 +89,7 @@ namespace Groups {
    list<int> left;
    for (int i=degree(); i>0; i--) left.push_back(i);
    for (int x=degree(); x>0; x--) {
-    int y = (*this)[x];
+    int y = (*this)(x);
     list<int>::iterator iter = left.begin();
     int i=0;
     while (*iter != y) {iter++; i++; }
@@ -130,11 +130,11 @@ namespace Groups {
    if (x == -1) return cycles;
    vector<int> cyke(1, x);
    used[x] = true;
-   int y = (*this)[x];
+   int y = (*this)(x);
    while (y != x) {
     cyke.push_back(y);
     used[y] = true;
-    y = (*this)[y];
+    y = (*this)(y);
    }
    if (cyke.size() > 1) cycles.push_back(cyke);
   }

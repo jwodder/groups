@@ -19,15 +19,14 @@ class Permutation(object):
     @classmethod
     def identity(cls): return cls()
 
-    def __getitem__(self, i):
-	### Add support for slices?
+    def __call__(self, i):
 	if 0 < i <= len(self._map):
 	    return self._map[i-1]
 	else:
 	    return i
 
     def __mul__(self, other):
-	return Permutation((self[other[i+1]]
+	return Permutation((self(other(i+1))
 			    for i in range(max(self.degree, other.degree))),
 			   even = self._even == other._even
 			       if self._even is not None
@@ -83,7 +82,7 @@ class Permutation(object):
 	    left = range(len(self._map), 0, -1)
 	    self._lehmer = 0
 	    for x in left[:]:
-		i = left.index(self[x])
+		i = left.index(self(x))
 		del left[i]
 		self._lehmer = self._lehmer * x + i
 	return self._lehmer
@@ -114,11 +113,11 @@ class Permutation(object):
 		return cycles
 	    cyke = [x]
 	    used[x] = True
-	    y = self[x]
+	    y = self(x)
 	    while y != x:
 		cyke.append(y)
 		used[y] = True
-		y = self[y]
+		y = self(y)
 	    if len(cyke) > 1:
 		cycles.append(tuple(cyke))
 
@@ -165,7 +164,7 @@ class Permutation(object):
 
     def disjoint(self, other):
 	for (i,(a,b)) in enumerate(zip(self._map, other._map)):
-	    if i+1 != a && i+1 != b: return False
+	    if i+1 != a and i+1 != b: return False
 	return True
 
 def gcd(x,y):
