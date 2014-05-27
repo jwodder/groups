@@ -3,7 +3,6 @@ module Groups.Internals where
  import Data.Array
  import Data.Bits (bit, testBit)
  import Data.Maybe (fromJust)
- import Data.List (isPrefixOf, elemIndices)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
  import Groups.Types

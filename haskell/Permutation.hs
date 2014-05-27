@@ -8,7 +8,7 @@ module Permutation (
   -- * Deconstruction
   toCycles, showCycles,
   -- * Properties
-  order, isEven, isOdd, degree, lehmer, disjoint
+  order, isEven, isOdd, sign, degree, lehmer, disjoint
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
@@ -93,6 +93,9 @@ module Permutation (
  isEven, isOdd :: Permutation -> Bool
  isEven = even . sum . map (pred . length) . toCycles
  isOdd  = not . isEven
+
+ sign :: Num a => Permutation -> a
+ sign s = if isEven s then 1 else -1
 
  degree :: Permutation -> Int
  degree (Perm σ) = snd $ bounds σ

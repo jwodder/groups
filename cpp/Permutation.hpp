@@ -14,6 +14,7 @@ namespace Groups {
   int  order()  const;
   bool isEven() const;
   bool isOdd()  const;
+  int  sign()   const;
   int  lehmer() const;
   Permutation inverse() const;
   std::vector< std::vector<int> > toCycles() const;

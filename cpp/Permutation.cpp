@@ -83,6 +83,8 @@ namespace Groups {
 
  bool Permutation::isOdd() const {return !isEven(); }
 
+ int Permutation::sign() const {return isEven() ? 1 : -1; }
+
  int Permutation::lehmer() const {
   if (_lehmer == -1) {
    _lehmer = 0;

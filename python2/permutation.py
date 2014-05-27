@@ -77,6 +77,9 @@ class Permutation(object):
     def isOdd(self): return not self.isEven()
 
     @property
+    def sign(self): return 1 if self.isEven else -1
+
+    @property
     def lehmer(self):
 	if self._lehmer is None:
 	    left = range(len(self._map), 0, -1)
@@ -166,6 +169,7 @@ class Permutation(object):
 	for (i,(a,b)) in enumerate(zip(self._map, other._map)):
 	    if i+1 != a and i+1 != b: return False
 	return True
+
 
 def gcd(x,y):
     (a,b) = (abs(x), abs(y))

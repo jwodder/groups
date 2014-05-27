@@ -1,4 +1,5 @@
 module GrList (groupList, o32nonA) where
+ import Data.List (isPrefixOf, elemIndices)
  import Groups
  import Groups.Internals ((?:), TernaryBranch(:?))
 
