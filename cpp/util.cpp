@@ -17,6 +17,7 @@ namespace Groups {
  ostream& expgen(ostream& out, const string& gen, int n, const string& def) {
   if (n == 0) return out << def;
   else if (n == 1) return out << gen;
+  else if (1 < n && n < 10) return out << gen << '^' << n;
   else return out << gen << "^{" << n << '}';
  }
 
