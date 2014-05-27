@@ -51,15 +51,12 @@ FEATURES
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- Add a way for the user to create abitrary elements of a Dihedral or Dicyclic
-  group
+- Add a way for the user to create abitrary elements of a Dicyclic, Dihedral,
+  Symmetric, or Tabular group
 - Add a method to Group for comparing two Groups? (at least for equality)
 - Add an alternative to/replacement for quaternion() that takes the cardinality
   of the desired group?
 - Add an isIdentity() method to Element?
  - Alternatively, overload `Element::operator bool()` to test for
    non-identity-ness
-- Add a Group subtype to which any other Group can be converted that represents
-  its elements as integers that are operated on via a lookup table
-  (essentially, Group.hs)
 - Add closure functions that send their output to supplied output iterators?
