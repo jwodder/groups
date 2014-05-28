@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 module Groups.Internals where
  import Control.Monad (guard)
  import Data.Array

@@ -1,6 +1,6 @@
 - Document everything!
 - Handle all of the sections marked "TODO" in the code
-- Add a Makefile
+- Add a Makefile for dev/ and tests/
 - Implement all of the features in plan.txt
  - Features that the Haskell version is behind on:
   - Converting elements to strings

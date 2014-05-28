@@ -94,6 +94,8 @@ module Permutation (
  isEven = even . sum . map (pred . length) . toCycles
  isOdd  = not . isEven
 
+ -- |Returns the sign of the given 'Permutation' &#x2014; 1 if it is even, -1
+ -- if it is odd
  sign :: Num a => Permutation -> a
  sign s = if isEven s then 1 else -1
 
