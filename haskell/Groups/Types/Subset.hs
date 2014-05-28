@@ -1,4 +1,5 @@
 module Groups.Types.Subset where
+ import Data.Array (inRange, bounds)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
  import Groups.Types.Element (Element(..))
@@ -15,8 +16,14 @@ module Groups.Types.Subset where
  toIntSet :: Subset -> IntSet
  toIntSet (Subset (_, is)) = is
 
+ fromIntSet :: Group -> IntSet -> Subset
+ fromIntSet g is = Subset (g, ISet.filter (inRange $ bounds $ gr_dat g) is)
+
  toInts :: Subset -> [Int]
  toInts (Subset (_, is)) = ISet.toList is
+
+ fromInts :: Group -> [Int] -> Subset
+ fromInts g is = Subset (g, ISet.fromList $ filter (inRange $ bounds $ gr_dat g) is)
 
  elements :: Subset -> [Element]
  elements (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]

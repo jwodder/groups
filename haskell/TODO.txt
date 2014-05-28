@@ -5,12 +5,10 @@
  - Features that the Haskell version is behind on:
   - Converting elements to strings
   - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
-- Implement the following in Groups/Types/Subset.hs:
- - fromIntSet :: Group -> IntSet -> Subset
- - conversion from [Int]
 - Prefix the `Group`, `Element`, and `Subset` constructors with "Mk"?
 - Make most(?) of the functions in `Ops.hs` that use `[Element]`s use `Subset`s
   instead
+- Make Subgroups.hs use `Subset`s instead of `IntSet`s
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
   then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &
   `Ops.hs` so that they all use the same (conflicting) names for the same
