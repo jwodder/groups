@@ -22,10 +22,6 @@ module Groups.Internals where
  toElems :: Group -> [Int] -> [Element]
  toElems g xs = [Element (i,g) | i <- xs]
 
- -- |@centers g h x@ tests whether @x@ commutes with every element of @h@
- centers :: Group -> [Int] -> Int -> Bool
- centers g h x = all (\j -> g_oper g x j == g_oper g j x) h
-
  closure' :: Group -> ([Int], IntSet) -> IntSet
  closure' g (xs, is) = close (xs, is)
   where func ys = [g_oper g y x | y <- ys, x <- xs]

@@ -22,17 +22,22 @@ module Groups.Ops where
   | ISet.null is = Sub.trivial g
   | otherwise    = Subset (g, closure' g (ISet.toList is, is))
 
- centralizer :: Subset -> Subset
- centralizer (Subset (g,is)) = Subset (g, ISet.fromDistinctAscList $ filter (centers g $ ISet.toList is) $ g_elems g)
+ -- |@centers g h x@ tests whether @x@ commutes with every element of @h@
+ centers :: Subset -> Int -> Bool
+ centers h x = all (\j -> x `op` j == j `op` x) $ Sub.toInts h
+  where op = g_oper $ Sub.getGroup h
 
- center :: Group -> [Element]
- center g = toElems g $ filter (centers g els) els where els = g_elems g
+ centralizer :: Subset -> Subset
+ centralizer h = Sub.filter (centers h) $ Sub.total $ Sub.getGroup h
+
+ center :: Group -> Subset
+ center g = Sub.filter (centers g') g' where g' = Sub.total g
 
  isAbelian :: Group -> Bool
  -- TODO: Try to reimplement this using information about @g@'s family rather
  -- than brute force.
- isAbelian g = all (centers g $ g_elems g) $ g_elems g
- --isAbelian g = all [centers g xs x | x:xs <- tails $ g_elems g]
+ isAbelian g = all (centers $ Sub.total g) $ g_elems g
+ --isAbelian g = all [centers (Sub.fromInts g xs) x | x:xs <- tails $ g_elems g]
 
  -- |@norms h x@ tests whether @h@ is invariant under conjugation by @x@ (i.e.,
  -- whether @x@ normalizes @h@).  If @x@ is not in @h@'s group, 'False' is
@@ -44,8 +49,7 @@ module Groups.Ops where
 	x' = g_invert g x
 
  normalizer :: Subset -> Subset
- normalizer h = Subset (g, ISet.fromDistinctAscList $ filter (norms h) $ g_elems g)
-  where g = Sub.getGroup h
+ normalizer h = Sub.filter (norms h) $ Sub.total $ Sub.getGroup h
 
  isNormal :: Subset -> Bool
  -- Whether or not the subset is actually a subgroup is not checked.

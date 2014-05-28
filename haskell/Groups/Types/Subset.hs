@@ -23,7 +23,7 @@ module Groups.Types.Subset where
  toInts (Subset (_, is)) = ISet.toList is
 
  fromInts :: Group -> [Int] -> Subset
- fromInts g is = Subset (g, ISet.fromList $ filter (inRange $ bounds $ gr_dat g) is)
+ fromInts g is = Subset (g, ISet.fromList $ Prelude.filter (inRange $ bounds $ gr_dat g) is)
 
  elements :: Subset -> [Element]
  elements (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]
@@ -33,11 +33,11 @@ module Groups.Types.Subset where
  fromElems xs = do (ys, g) <- Groups.Internals.fromElems xs
 		   return $ Subset (g, ISet.fromList ys)
 
- trivial :: Group -> Subset
- trivial g = Subset (g, ISet.singleton 0)
-
  empty :: Group -> Subset
  empty g = Subset (g, ISet.empty)
+
+ trivial :: Group -> Subset
+ trivial g = Subset (g, ISet.singleton 0)
 
  total :: Group -> Subset
  total g = Subset (g, ISet.fromDistinctAscList $ g_elems g)
@@ -67,3 +67,9 @@ module Groups.Types.Subset where
  Subset (gr1, is1) ∖ Subset (gr2, is2)
   | gr1 == gr2 = Subset (gr1, ISet.difference is1 is2)
   | otherwise = error "Subset.∖: group mismatch"
+
+ filter :: (Int -> Bool) -> Subset -> Subset
+ filter p (Subset (g, is)) = Subset (g, ISet.filter p is)
+
+ filter' :: (Element -> Bool) -> Subset -> Subset
+ filter' p (Subset (g, is)) = Subset (g, ISet.filter (\x -> p $ Element (x,g)) is)
