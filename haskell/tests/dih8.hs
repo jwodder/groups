@@ -24,5 +24,5 @@ ciska' (True, 0) = "s"
 ciska' (s, 1) = (if s then "s" else "") ++ "r"
 ciska' (s, r) = (if s then "s" else "") ++ "r^" ++ show r
 
-mkelem :: Group' a -> a -> Elem
-mkelem g x = Elem (g'index g x, mkgroup g)
+mkelem :: Group' a -> a -> Element
+mkelem g x = Element (g'index g x, mkgroup g)

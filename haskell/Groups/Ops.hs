@@ -5,15 +5,15 @@ module Groups.Ops where
  import Groups.Types
  import Groups.Internals
 
- gexp :: Elem -> Int -> Elem
- gexp (Elem (i, g)) n = n' == 0 ?: identity g
-				:? Elem (expfa (g_oper g) n'' i', g)
+ gexp :: Element -> Int -> Element
+ gexp (Element (i, g)) n = n' == 0 ?: identity g
+				   :? Element (expfa (g_oper g) n'' i', g)
   where (inv, ordr) = gr_dat g ! i
 	n' = mod n ordr
 	(n'', i') = ordr - n' < div ordr 2 ?: (ordr - n', inv) :? (n', i)
 
- gcycle :: Elem -> [Elem]
- gcycle (Elem (x,g)) = toElems g $ g_cycle g x
+ gcycle :: Element -> [Element]
+ gcycle (Element (x,g)) = toElems g $ g_cycle g x
 
  gclosure :: Subset -> Subset
  gclosure (Subset (g,is))
@@ -23,7 +23,7 @@ module Groups.Ops where
  centralizer :: Subset -> Subset
  centralizer (Subset (g,is)) = Subset (g, ISet.fromDistinctAscList $ filter (centers g $ ISet.toList is) $ g_elems g)
 
- center :: Group -> [Elem]
+ center :: Group -> [Element]
  center g = toElems g $ filter (centers g els) els where els = g_elems g
 
  isAbelian :: Group -> Bool
@@ -32,20 +32,20 @@ module Groups.Ops where
  isAbelian g = all (centers g $ g_elems g) $ g_elems g
  --isAbelian g = all [centers g xs x | x:xs <- tails $ g_elems g]
 
- normalizer :: [Elem] -> [Elem]
+ normalizer :: [Element] -> [Element]
  normalizer [] = []
  normalizer h = toElems g $ filter (norms g h') $ g_elems g
   where (h', g) = mksubset h
 
- isNormal :: [Elem] -> Bool
+ isNormal :: [Element] -> Bool
  -- Whether or not the supplied list is actually a subgroup is not checked.
  isNormal [] = False
  isNormal h = all (norms g h') $ g_elems g where (h', g) = mksubset h
 
- isSubset :: [Elem] -> Bool
+ isSubset :: [Element] -> Bool
  isSubset = isJust . getGroup'
 
- isSubgroup :: [Elem] -> Bool
+ isSubgroup :: [Element] -> Bool
  isSubgroup h = all ((h' !) . uncurry (g_oper g)) $ cartesian els els
   where (h', g) = mksubset h
 	els = [i | (i, True) <- assocs h']

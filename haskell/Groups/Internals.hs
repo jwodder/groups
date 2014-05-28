@@ -12,20 +12,20 @@ module Groups.Internals where
  cycOrd :: Int -> Int -> Int
  cycOrd n x = n `div` gcd x n
 
- fromElems :: [Elem] -> Maybe ([Int], Group)
+ fromElems :: [Element] -> Maybe ([Int], Group)
  fromElems [] = Nothing
- fromElems xs@(Elem (_,g) : _) = fromels xs
-  where fromels (Elem (y,h) : ys) = do guard (g == h)
-				       (zs, g') <- fromels ys
-				       Just (y:zs, g')
+ fromElems xs@(Element (_,g) : _) = fromels xs
+  where fromels (Element (y,h) : ys) = do guard (g == h)
+					  (zs, g') <- fromels ys
+					  Just (y:zs, g')
 	fromels [] = Just ([], g)
 
- toElems :: Group -> [Int] -> [Elem]
- toElems g xs = [Elem (i,g) | i <- xs]
+ toElems :: Group -> [Int] -> [Element]
+ toElems g xs = [Element (i,g) | i <- xs]
 
  type ASubset = Array Int Bool
 
- mksubset :: [Elem] -> (ASubset, Group)
+ mksubset :: [Element] -> (ASubset, Group)
  mksubset [] = undefined
  mksubset xs = (accumArray (const id) False (bounds $ gr_dat g)
   $ map (flip (,) True) xs', g)

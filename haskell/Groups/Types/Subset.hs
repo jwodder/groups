@@ -2,7 +2,7 @@ module Groups.Types.Subset where
  import Control.Monad (guard)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
- import Groups.Types.Elem
+ import Groups.Types.Element
  import Groups.Types.Group
 
  newtype Subset = Subset (Group, IntSet) deriving (Eq, Ord, Read, Show)
@@ -14,13 +14,13 @@ module Groups.Types.Subset where
  ss_toIntSet :: Subset -> IntSet
  ss_toIntSet (Subset (_, is)) = is
 
- ss_elems :: Subset -> [Elem]
- ss_elems (Subset (gr, is)) = [Elem (i, gr) | i <- ISet.toList is]
+ ss_elems :: Subset -> [Element]
+ ss_elems (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]
 
- ss_fromElems :: [Elem] -> Maybe Subset
+ ss_fromElems :: [Element] -> Maybe Subset
  ss_fromElems [] = Nothing
- ss_fromElems xs@(Elem (_,g) : _) = fmap (\els -> Subset (g, ISet.fromList els)) $ fromels xs
-  where fromels (Elem (y,h) : ys) = guard (g == h) >> fmap (y :) (fromels ys)
+ ss_fromElems xs@(Element (_,g) : _) = fmap (\els -> Subset (g, ISet.fromList els)) $ fromels xs
+  where fromels (Element (y,h) : ys) = guard (g == h) >> fmap (y :) (fromels ys)
 	fromels [] = Just []
 
  ss_trivial :: Group -> Subset

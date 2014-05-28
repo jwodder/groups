@@ -1,5 +1,5 @@
- mkelem :: Group' a -> a -> Elem
- mkelem g x = Elem (g'index g x, mkgroup g)
+ mkelem :: Group' a -> a -> Element
+ mkelem g x = Element (g'index g x, mkgroup g)
 
  newtype Subgroup = Subgroup (Subset, Group)
 
@@ -9,10 +9,10 @@
   -- * mapping from automorphism IDs to group IDs to automorphed group IDs
   -- * group of which this is the Aut
 
- (≤) :: [Elem] -> Group -> Bool
- (⊴) :: [Elem] -> Group -> Bool
- quotient :: Group -> [Elem] -> Group
- mksubgroup :: [Elem] -> Group
+ (≤) :: [Element] -> Group -> Bool
+ (⊴) :: [Element] -> Group -> Bool
+ quotient :: Group -> [Element] -> Group
+ mksubgroup :: [Element] -> Group
  (⨯) = direct
 
  -- Given a group $G$ and a subgroup $H$, returns a list of arbitrarily-chosen

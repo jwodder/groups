@@ -9,15 +9,15 @@
  - ss_fromIntSet :: Group -> IntSet -> Subset
  - conversion to & from [Int]
  - ∈ ???
-- Rename `Elem` to `Element`?
-- Prefix the `Group`, `Elem`, and `Subset` constructors with "Mk"?
-- Make most(?) of the functions in `Ops.hs` that use `[Elem]`s use `Subset`s
+- Prefix the `Group`, `Element`, and `Subset` constructors with "Mk"?
+- Make most(?) of the functions in `Ops.hs` that use `[Element]`s use `Subset`s
   instead
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
-  then rename the functions in `Group.hs`, `Elem.hs`, `Subset.hs`, & `Ops.hs`
-  so that they all use the same (conflicting) names for the same things
-- Consider giving Elem an Ix instance that yields nonempty lists only when the
-  groups of the bounds match; this will then make it possible to implement a
-  group table function with type `Group -> Array (Elem, Elem) Elem`
+  then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &
+  `Ops.hs` so that they all use the same (conflicting) names for the same
+  things
+- Consider giving Element an Ix instance that yields nonempty lists only when
+  the groups of the bounds match; this will then make it possible to implement
+  a group table function with type `Group -> Array (Element, Element) Element`
 - Actually make `Group`'s constructor private -- without messing up the
   definition of `mkgroup`
