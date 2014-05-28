@@ -33,3 +33,6 @@ module Groups.Types.Group where
 
  g_cycle :: Group -> Int -> [Int]
  g_cycle g x = 0 : takeWhile (> 0) (iterate (g_oper g x) x)
+
+ g_in :: Int -> Group -> Bool
+ g_in x g = inRange (bounds $ gr_dat g) x

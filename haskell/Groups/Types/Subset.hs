@@ -1,7 +1,8 @@
 module Groups.Types.Subset where
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
- import Groups.Types.Element
+ import Groups.Types.Element (Element(..))
+ import qualified Groups.Types.Element as E
  import Groups.Types.Group
  import qualified Groups.Internals
 
@@ -13,6 +14,9 @@ module Groups.Types.Subset where
 
  toIntSet :: Subset -> IntSet
  toIntSet (Subset (_, is)) = is
+
+ toInts :: Subset -> [Int]
+ toInts (Subset (_, is)) = ISet.toList is
 
  elements :: Subset -> [Element]
  elements (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]
@@ -33,6 +37,14 @@ module Groups.Types.Subset where
 
  size :: Subset -> Int
  size (Subset (_, is)) = ISet.size is
+
+ inSubset :: Int -> Subset -> Bool
+ -- Consider renaming this.
+ inSubset x (Subset (_, is)) = ISet.member x is
+
+ (∈) :: Element -> Subset -> Bool
+ -- Consider renaming this.
+ x ∈ Subset (g, is) = E.getGroup x == g && ISet.member (E.elemID x) is
 
  (∪) :: Subset -> Subset -> Subset
  Subset (gr1, is1) ∪ Subset (gr2, is2)

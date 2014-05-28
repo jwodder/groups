@@ -34,23 +34,29 @@ module Groups.Ops where
  isAbelian g = all (centers g $ g_elems g) $ g_elems g
  --isAbelian g = all [centers g xs x | x:xs <- tails $ g_elems g]
 
- normalizer :: [Element] -> [Element]
- normalizer [] = []
- normalizer h = toElems g $ filter (norms g h') $ g_elems g
-  where (h', g) = mksubset h
+ -- |@norms h x@ tests whether @h@ is invariant under conjugation by @x@ (i.e.,
+ -- whether @x@ normalizes @h@).  If @x@ is not in @h@'s group, 'False' is
+ -- returned.
+ norms :: Subset -> Int -> Bool
+ norms h x = g_in x g && all (`Sub.inSubset` h) [g_oper g (g_oper g x i) x'
+						 | i <- Sub.toInts h]
+  where g = Sub.getGroup h
+	x' = g_invert g x
 
- isNormal :: [Element] -> Bool
- -- Whether or not the supplied list is actually a subgroup is not checked.
- isNormal [] = False
- isNormal h = all (norms g h') $ g_elems g where (h', g) = mksubset h
+ normalizer :: Subset -> Subset
+ normalizer h = Subset (g, ISet.fromDistinctAscList $ filter (norms h) $ g_elems g)
+  where g = Sub.getGroup h
+
+ isNormal :: Subset -> Bool
+ -- Whether or not the subset is actually a subgroup is not checked.
+ isNormal h = all (norms h) $ g_elems $ Sub.getGroup h
 
  isSubset :: [Element] -> Bool
  isSubset = isJust . getGroup'
 
- isSubgroup :: [Element] -> Bool
- isSubgroup h = all ((h' !) . uncurry (g_oper g)) $ cartesian els els
-  where (h', g) = mksubset h
-	els = [i | (i, True) <- assocs h']
+ isSubgroup :: Subset -> Bool
+ isSubgroup (Subset (g,h)) = all ((`ISet.member` h) . uncurry (g_oper g))
+  $ cartesian (ISet.toList h) (ISet.toList h)
 
  nilpotence :: Group -> Maybe Int
  nilpotence g | g_size g == 1 = Just 0

@@ -1,10 +1,8 @@
 {-# OPTIONS_HADDOCK hide #-}
 
 module Groups.Internals where
- import Control.Monad (guard)
- import Data.Array
+ import Control.Monad (guard, liftM2)
  import Data.Bits (bit, testBit)
- import Data.Maybe (fromJust)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
  import Groups.Types
@@ -23,20 +21,6 @@ module Groups.Internals where
 
  toElems :: Group -> [Int] -> [Element]
  toElems g xs = [Element (i,g) | i <- xs]
-
- type ASubset = Array Int Bool
-
- mksubset :: [Element] -> (ASubset, Group)
- mksubset [] = undefined
- mksubset xs = (accumArray (const id) False (bounds $ gr_dat g)
-  $ map (flip (,) True) xs', g)
-  where (xs', g) = fromJust $ fromElems xs
-
- -- |@norms g h x@ tests whether the subgroup @h@ of @g@ is invariant under
- -- conjugation by @x@ (i.e., whether @x@ normalizes @h@).
- norms :: Group -> ASubset -> Int -> Bool
- norms g h x = all (h !) [g_oper g (g_oper g x i) x' | (i, True) <- assocs h]
-  where x' = g_invert g x
 
  -- |@centers g h x@ tests whether @x@ commutes with every element of @h@
  centers :: Group -> [Int] -> Int -> Bool
@@ -77,8 +61,8 @@ module Groups.Internals where
  -- classify f xs = Map.toList $ Map.fromListWith (flip (++)) [(f x, [x]) | x <- xs]
 
  cartesian :: [a] -> [b] -> [(a,b)]
- cartesian a b = [(x,y) | x <- a, y <- b]
- -- cartesian = liftM2 (,)
+ -- cartesian a b = [(x,y) | x <- a, y <- b]
+ cartesian = liftM2 (,)
 
  -- |@cross list@ returns the list of all lists that are formed by taking one
  -- element from each sublist of @list@.
