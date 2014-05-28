@@ -13,10 +13,11 @@ all : $(OBJS)
 	$(HC) -c $< $(HC_OPTS)
 
 Groups.o : Groups/Families.o Groups/Ops.o Groups/Types.o
-Groups/Types.o : Groups/Types/Element.o Groups/Types/Group.o Groups/Types/Subset.o
+Groups/Types.o : Groups/Types/Element.o Groups/Types/Group.o
 Groups/Types/Element.o : Groups/Types/Group.o
-Groups/Types/Subset.o : Groups/Types/Element.o Groups/Types/Group.o
+Groups/Types/Subset.o : Groups/Types/Element.o Groups/Types/Group.o Groups/Internals.o
 Groups/Families.o Groups/Ops.o Groups/Subgroups.o : Groups/Types.o Groups/Internals.o
+Groups/Ops.o : Groups/Types/Subset.o
 Groups/Internals.o : Groups/Types.o
 
 doc : Closure.hs Permutation.hs Groups.hs Groups/*.hs Groups/Types/*.hs

@@ -6,9 +6,9 @@
   - Converting elements to strings
   - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
 - Implement the following in Groups/Types/Subset.hs:
- - ss_fromIntSet :: Group -> IntSet -> Subset
+ - fromIntSet :: Group -> IntSet -> Subset
  - conversion to & from [Int]
- - ∈ ???
+ - ∈ (or some other name for a membership test)
 - Prefix the `Group`, `Element`, and `Subset` constructors with "Mk"?
 - Make most(?) of the functions in `Ops.hs` that use `[Element]`s use `Subset`s
   instead
@@ -19,5 +19,4 @@
 - Consider giving Element an Ix instance that yields nonempty lists only when
   the groups of the bounds match; this will then make it possible to implement
   a group table function with type `Group -> Array (Element, Element) Element`
-- Actually make `Group`'s constructor private -- without messing up the
-  definition of `mkgroup`
+- Actually make the `Group`, `Element`, and `Subset` constructors private

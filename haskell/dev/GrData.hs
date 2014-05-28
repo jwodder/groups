@@ -7,6 +7,7 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups
+import qualified Groups.Types.Subset as Sub
 import Groups.Internals  -- factor and Ternary
 
 grdata :: (String, Group, [String]) -> String
@@ -47,7 +48,7 @@ grdata (name, g, props) = unlines [
 	 subQtys  = freqArray (1,n) $ map ISet.size $ Map.keys subs
 	 normQtys = freqArray (1,n) $ map ISet.size $ filter (isNormal' g)
 						    $ Map.keys subs
-	 ccQtys   = freqArray (1,n) $ map ss_size $ conjugacies g
+	 ccQtys   = freqArray (1,n) $ map Sub.size $ conjugacies g
 	 abel     = isAbelian g
 	 nilpot   = abel || and [subQtys ! (p^a) == normQtys ! (p^a)
 				 | (p,a) <- factor n]

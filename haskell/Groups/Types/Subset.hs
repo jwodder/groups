@@ -1,39 +1,38 @@
 module Groups.Types.Subset where
- import Control.Monad (guard)
  import Data.IntSet (IntSet)
  import qualified Data.IntSet as ISet
  import Groups.Types.Element
  import Groups.Types.Group
+ import qualified Groups.Internals
 
  newtype Subset = Subset (Group, IntSet) deriving (Eq, Ord, Read, Show)
-  -- The constructor needs to be kept private!
+  -- TODO: This constructor needs to be kept private!
 
- ss_group :: Subset -> Group
- ss_group (Subset (gr, _)) = gr
+ getGroup :: Subset -> Group
+ getGroup (Subset (gr, _)) = gr
 
- ss_toIntSet :: Subset -> IntSet
- ss_toIntSet (Subset (_, is)) = is
+ toIntSet :: Subset -> IntSet
+ toIntSet (Subset (_, is)) = is
 
- ss_elems :: Subset -> [Element]
- ss_elems (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]
+ elements :: Subset -> [Element]
+ elements (Subset (gr, is)) = [Element (i, gr) | i <- ISet.toList is]
 
- ss_fromElems :: [Element] -> Maybe Subset
- ss_fromElems [] = Nothing
- ss_fromElems xs@(Element (_,g) : _) = fmap (\els -> Subset (g, ISet.fromList els)) $ fromels xs
-  where fromels (Element (y,h) : ys) = guard (g == h) >> fmap (y :) (fromels ys)
-	fromels [] = Just []
+ fromElems :: [Element] -> Maybe Subset
+ fromElems [] = Nothing
+ fromElems xs = do (ys, g) <- Groups.Internals.fromElems xs
+		   return $ Subset (g, ISet.fromList ys)
 
- ss_trivial :: Group -> Subset
- ss_trivial g = Subset (g, ISet.singleton 0)
+ trivial :: Group -> Subset
+ trivial g = Subset (g, ISet.singleton 0)
 
- ss_empty :: Group -> Subset
- ss_empty g = Subset (g, ISet.empty)
+ empty :: Group -> Subset
+ empty g = Subset (g, ISet.empty)
 
- ss_all :: Group -> Subset
- ss_all g = Subset (g, ISet.fromDistinctAscList $ g_elems g)
+ total :: Group -> Subset
+ total g = Subset (g, ISet.fromDistinctAscList $ g_elems g)
 
- ss_size :: Subset -> Int
- ss_size (Subset (_, is)) = ISet.size is
+ size :: Subset -> Int
+ size (Subset (_, is)) = ISet.size is
 
  (∪) :: Subset -> Subset -> Subset
  Subset (gr1, is1) ∪ Subset (gr2, is2)

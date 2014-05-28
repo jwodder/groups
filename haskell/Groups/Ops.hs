@@ -3,6 +3,8 @@ module Groups.Ops where
  import Data.Maybe (isJust)
  import qualified Data.IntSet as ISet
  import Groups.Types
+ import Groups.Types.Subset (Subset(..))
+ import qualified Groups.Types.Subset as Sub
  import Groups.Internals
 
  gexp :: Element -> Int -> Element
@@ -17,7 +19,7 @@ module Groups.Ops where
 
  gclosure :: Subset -> Subset
  gclosure (Subset (g,is))
-  | ISet.null is = ss_trivial g
+  | ISet.null is = Sub.trivial g
   | otherwise    = Subset (g, closure' g (ISet.toList is, is))
 
  centralizer :: Subset -> Subset
@@ -53,10 +55,10 @@ module Groups.Ops where
  nilpotence :: Group -> Maybe Int
  nilpotence g | g_size g == 1 = Just 0
  nilpotence g = nil 1 whole $ tail lowerCentral
-  where whole = ss_all g
+  where whole = Sub.total g
 	lowerCentral = iterate (commutators whole) whole
 	nil i g' (g'':xs) | g' == g'' = Nothing
-			  | ss_size g'' == 1 = Just i
+			  | Sub.size g'' == 1 = Just i
 			  | otherwise = nil (i+1) g'' xs
 	nil _ _ [] = undefined
 
@@ -68,7 +70,7 @@ module Groups.Ops where
   | otherwise = error "commutators: group mismatch"
 
  conjugacies :: Group -> [Subset]
- conjugacies g = ss_trivial g : conj (ISet.fromDistinctAscList [1..g_size g-1])
+ conjugacies g = Sub.trivial g : conj (ISet.fromDistinctAscList [1..g_size g-1])
   where conj left | ISet.null left = []
 		  | otherwise = Subset (g, cc) : conj (ISet.difference left cc)
 		   where least = ISet.findMin left

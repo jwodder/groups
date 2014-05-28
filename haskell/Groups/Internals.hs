@@ -13,6 +13,7 @@ module Groups.Internals where
  cycOrd n x = n `div` gcd x n
 
  fromElems :: [Element] -> Maybe ([Int], Group)
+ -- TODO: Move this to Element.hs?
  fromElems [] = Nothing
  fromElems xs@(Element (_,g) : _) = fromels xs
   where fromels (Element (y,h) : ys) = do guard (g == h)

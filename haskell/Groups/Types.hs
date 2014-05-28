@@ -1,13 +1,11 @@
 module Groups.Types (
   module Groups.Types.Element,
   module Groups.Types.Group,
-  module Groups.Types.Subset,
   Group'(..), mkgroup, unmkgroup
  ) where
  import Data.Array
  import Groups.Types.Element
  import Groups.Types.Group
- import Groups.Types.Subset
 
  data Group' a = Group' {
   g'size   :: Int,
