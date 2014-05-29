@@ -20,18 +20,15 @@ class Permutation(object):
     def identity(cls): return cls()
 
     def __call__(self, i):
-	if 0 < i <= len(self._map):
-	    return self._map[i-1]
-	else:
-	    return i
+	return self._map[i-1] if 0 < i <= len(self._map) else i
 
     def __mul__(self, other):
-	return Permutation((self(other(i+1))
-			    for i in range(max(self.degree, other.degree))),
-			   even = self._even == other._even
-			       if self._even is not None
-				   and other._even is not None
-			       else None)
+	return self.__class__((self(other(i+1))
+			       for i in range(max(self.degree, other.degree))),
+			      even = self._even == other._even
+				  if self._even is not None
+				      and other._even is not None
+				  else None)
 
     #__rmul__ = __mul__
 
@@ -59,7 +56,7 @@ class Permutation(object):
 	newMap = [None] * len(self._map)
 	for (a,b) in enumerate(self._map):
 	    newMap[b-1] = a+1
-	return Permutation(newMap, even=self._even, order=self._order)
+	return self.__class__(newMap, even=self._even, order=self._order)
 
     @property
     def order(self):
@@ -169,6 +166,48 @@ class Permutation(object):
 	for (i,(a,b)) in enumerate(zip(self._map, other._map)):
 	    if i+1 != a and i+1 != b: return False
 	return True
+
+    @classmethod
+    def firstOfDegree(cls, n):
+	"""Returns the first `Permutation` of degree ``n`` in modified Lehmer
+	   code order.  If ``n`` is 0 or 1 (or anything less than 0), this is
+	   the identity.  For higher degrees, this is
+	   ``Permutation.transposition(n, n-1)``."""
+	return cls.identity() if n < 2 else cls.transposition(n, n-1)
+
+    def next(self):
+	"""Returns the next `Permutation` in modified Lehmer code order"""
+	if self.degree < 2:
+	    return self.transposition(1,2)
+	else:
+	    lehmer2 = self._lehmer+1 if self._lehmer is not None else None
+	    map2 = list(self._map)
+	    for i in range(1, len(map2)):
+		if map2[i] > map2[i-1]:
+		    i2 = 0
+		    while map2[i] <= map2[i2]:
+			i2 += 1
+		    map2[i], map2[i2] = map2[i2], map2[i]
+		    map2[:i] = reversed(map2[:i])
+		    return self.__class__(map2, lehmer=lehmer2)
+	    return self.firstOfDegree(self.degree+1)
+
+    def prev(self):
+	"""Returns the previous `Permutation` in modified Lehmer code order.
+	   If ``self`` is the identity (which has Lehmer code 0), a
+	   `ValueError` is raised."""
+	if self.degree < 2:
+	    raise ValueError('cannot decrement identity')
+	lehmer2 = self._lehmer-1 if self._lehmer is not None else None
+	map2 = list(self._map)
+	for i in range(1, len(map2)):
+	    if map2[i] < map2[i-1]:
+		i2 = 0
+		while map2[i] >= map2[i2]:
+		    i2 += 1
+		map2[i], map2[i2] = map2[i2], map2[i]
+		map2[:i] = reversed(map2[:i])
+		return self.__class__(map2, lehmer=lehmer2)
 
 
 def gcd(x,y):
