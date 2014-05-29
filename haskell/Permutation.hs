@@ -15,7 +15,14 @@ module Permutation (
  import Data.List (intercalate)
  import Data.Monoid
 
- newtype Permutation = Perm (Array Int Int) deriving (Eq, Ord)
+ newtype Permutation = Perm (Array Int Int) deriving (Eq)
+
+ instance Ord Permutation where
+  -- This comparison method produces the same ordering as the modified Lehmer
+  -- codes.
+  compare s@(Perm σ) t@(Perm τ) = compare (degree s, map (τ A.!) xedni)
+					  (degree t, map (σ A.!) xedni)
+   where xedni = [degree s, degree s-1 .. 1]
 
  instance Read Permutation where
   readsPrec p = readParen (p > 10) $ \r -> do ("fromCycles", s) <- lex r

@@ -44,7 +44,10 @@ class Permutation(object):
     def __nonzero__(self): return self._map != ()
 
     def __cmp__(self, other):
-	return cmp(type(self), type(other)) or cmp(self._map, other._map)
+	# This comparison method produces the same ordering as the modified
+	# Lehmer codes.
+	return cmp(type(self), type(other)) or cmp(self.degree, other.degree) \
+	    or cmp(other._map[::-1], self._map[::-1])
 
     def __hash__(self): return hash(self._map)
 
