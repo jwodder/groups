@@ -4,7 +4,10 @@ module Permutation (
   -- * Basic operations
   (!), compose, invert,
   -- * Construction
-  identity, transpose, fromCycle, fromCycles, fromLehmer,
+  identity, transpose,
+  next, prev, firstOfDegree,
+  fromLehmer,
+  fromCycle, fromCycles,
   -- * Deconstruction
   toCycles, showCycles,
   -- * Properties
@@ -130,6 +133,37 @@ module Permutation (
  disjoint :: Permutation -> Permutation -> Bool
  disjoint (Perm σ) (Perm τ) = not $ any (\((i,a),b) -> i /= a && i /= b)
 				  $ zip (assocs σ) (elems τ)
+
+
+ -- |@firstOfDegree n@ returns the first 'Permutation' of degree @n@ in
+ -- modified Lehmer code order.  If @n@ is 0 or 1 (or anything less than 0),
+ -- this is the identity.  For higher degrees, this is @transpose(n, n-1)@.
+ firstOfDegree :: Int -> Permutation
+ firstOfDegree n | n < 2     = identity
+		 | otherwise = transpose n (n-1)
+
+ -- |Returns the next 'Permutation' in modified Lehmer code order
+ next :: Permutation -> Permutation
+ next s | degree s < 2 = transpose 1 2
+ next (Perm σ) = case [i | i <- [2..n], σ A.! i > σ A.! (i-1)] of
+		  []  -> firstOfDegree (n+1)
+		  i:_ -> let (xs, y:ys) = span (σ A.! i <=) $ elems σ
+			     (zs, _:ws) = splitAt (i - length xs - 2) ys
+			 in trim $ Perm $ listArray (1,n)
+				 $ reverse (xs ++ (σ A.! i) : zs) ++ y : ws
+  where n = degree (Perm σ)
+
+ -- |Returns the previous @Permutation@ in modified Lehmer code order.  If the
+ -- identity (which has Lehmer code 0) is passed to this function, it is an
+ -- error.
+ prev :: Permutation -> Permutation
+ prev s | degree s < 2 = error "Permutation.prev: cannot decrement identity"
+ prev (Perm σ) = trim $ Perm $ listArray (1,n) $ reverse (xs ++ (σ A.! i) : zs)
+						  ++ y : ws
+  where n = degree (Perm σ)
+	i = head [j | j <- [2..n], σ A.! j < σ A.! (j-1)]
+	(xs, y:ys) = span (σ A.! i >=) $ elems σ
+	(zs, _:ws) = splitAt (i - length xs - 2) ys
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

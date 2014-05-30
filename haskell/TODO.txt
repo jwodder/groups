@@ -19,3 +19,6 @@
  - Rename `Element.getGroup'` to `getGroup`?
 - Ops.hs: Make `norms` and `centers` take `Element`s intead of `Int`s
 - Element.hs: Add a function for constructing from an `Int`
+- Figure out what extensions I need to enable to be able to define a Group
+  typeclass such that each instance is associated with a specific "element"
+  type that its methods operate on
