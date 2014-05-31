@@ -9,7 +9,7 @@ main = do argv@(_:_) <- getArgs
 	  let perms = map (P.fromCycles . map (map read . splitElem ',')
 					. splitElem '/') argv
 	      name  = '⟨' : intercalate ", " (map P.showCycles perms) ++ "⟩"
-	  putStr $ grdata (name, permutation perms, [])
+	  putStr $ grdata' (name, permutation perms, [])
 
 splitElem :: Eq a => a -> [a] -> [[a]]
 -- split on all occurrences of an element

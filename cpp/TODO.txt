@@ -17,6 +17,7 @@
   implement Element; e.g., elements of a cyclic group would have public type
   Cyclic::Element (or Cyclic<n>::Element?)
 - Rethink the way Element manages its Group* (Use Group& instead?)
+- Could the creation of Group subclasses be simplified using templates somehow?
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -34,6 +35,7 @@ FEATURES
  - determining all subgroups of a group
  - determining whether a subgroup is normal
  - calculating nilpotence classes
+ - calculating conjugacy classes
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
  - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,

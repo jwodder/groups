@@ -3,7 +3,7 @@ import GrData
 import GrList
 
 main :: IO ()
-main = mapM_ (putStrLn . grdata) groups
+main = mapM_ (putStrLn . grdata') groups
 
 groups :: [(String, Group, [String])]
 groups = groupList

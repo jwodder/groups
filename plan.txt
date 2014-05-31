@@ -23,6 +23,11 @@ least one language.
  - determining whether two groups are isomorphic
  - calculating commutators
  * calculating nilpotence classes
+ - determining whether a group is solvable
+ - determining whether a group is simple
+ - calculating a group's generating set-rank
+ - calculating a group's exponent
+ * calculating conjugacy classes
  - Family-specific operations:
   * getting the parities of elements of symmetric groups
 - Types of groups to implement:

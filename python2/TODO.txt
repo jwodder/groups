@@ -10,6 +10,7 @@
   - calculating all subgroups of a group
   - determining whether a subgroup is normal
   - calculating nilpotence classes
+  - calculating conjugacy classes
 - Implement configurable element showing
 - Implement Element construction of the form `Element(paramTuple, group)`
   (where Element is the base class rather than a group's derived class) ?
