@@ -4,7 +4,6 @@ import qualified Data.IntSet as ISet
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups (subgroups)
-import Groups.Internals (classify)
 
 --group = cycSemiCyc 8 4 (-1)
 group = cycSemiCyc 8 4 3
@@ -43,3 +42,12 @@ isNormal' g h = all norms $ g_elems g
  where (⋅) = g_oper g
        norms x = all (`ISet.member` h) $ map ((⋅ g_invert g x) . (x ⋅)) 
 				       $ ISet.toList h
+
+classify :: Ord b => (a -> b) -> [a] -> [(b, [a])]
+classify f = foldr shove [] . map (\x -> (f x, x))
+ where shove (b', a) [] = [(b', [a])]
+       shove (b', a) ((b, as):xs) | b' == b = (b, a:as) : xs
+				  | b' <  b = (b', [a]) : (b, as) : xs
+				  | b' >  b = (b, as) : shove (b', a) xs
+       shove _ _ = undefined  -- to stop the compilation warnings
+-- classify f xs = Map.toList $ Map.fromListWith (flip (++)) [(f x, [x]) | x <- xs]

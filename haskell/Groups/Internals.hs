@@ -47,15 +47,6 @@ module Groups.Internals where
  True  ?: (y :? _) = y
  False ?: (_ :? z) = z
 
- classify :: Ord b => (a -> b) -> [a] -> [(b, [a])]
- classify f = foldr shove [] . map (\x -> (f x, x))
-  where shove (b', a) [] = [(b', [a])]
-	shove (b', a) ((b, as):xs) | b' == b = (b, a:as) : xs
-				   | b' <  b = (b', [a]) : (b, as) : xs
-				   | b' >  b = (b, as) : shove (b', a) xs
-	shove _ _ = undefined  -- to stop the compilation warnings
- -- classify f xs = Map.toList $ Map.fromListWith (flip (++)) [(f x, [x]) | x <- xs]
-
  cartesian :: [a] -> [b] -> [(a,b)]
  -- cartesian a b = [(x,y) | x <- a, y <- b]
  cartesian = liftM2 (,)

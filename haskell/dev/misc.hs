@@ -24,19 +24,6 @@
 	 x:_ -> x &: cosify (c // [(y, Just x) | y <- map (g_oper g x) h])
 	 []  -> ([], fmap fromJust c)
 
- lattice :: Array Int IntSet -> (Array (Int, Int) Bool, Array (Int, Int) Bool)
- lattice subgrs = (graphTbl, ixmap (bounds graphTbl) (\(g,h) -> (h,g)) graphTbl)
-  where byOrdr = classify (ISet.size . (subgrs !)) $ indices subgrs
-	-- For all ((h,g), tf) in graphTbl, tf is True iff g covers h under the
-	-- subgroup relation.
-	graphTbl = fst $ until (null . snd) (\(graph, (i,ss):xs) ->
-	 (graph // concat [((s,g), True) : [((h,g), False) | h <- below graph s]
-			   | s <- ss, (gn, gxs) <- xs, mod gn i == 0, g <- gxs,
-			     ISet.isSubsetOf (subgrs ! s) (subgrs ! g)], xs))
-	 (listArray ((0,0), (n,n)) $ repeat False, byOrdr)
-	n = snd $ bounds subgrs
-	below tbl g = [h | ((h, g'), True) <- assocs tbl, g' == g]
-
  data GroupType = Trivial
 		| Boolean
 		| Klein4
