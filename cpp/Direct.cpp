@@ -6,7 +6,7 @@
 using namespace std;
 
 namespace Groups {
- Direct& operator=(const Direct& d) {
+ Direct& Direct::operator=(const Direct& d) {
   if (this != &d) {
    delete left;
    delete right;

@@ -1,4 +1,3 @@
-- Add a Makefile
 - Rename `Group::order()` to `size`?
 - The constructors for Dihedral and Dicyclic should throw exceptions when
   passed 0 or 1
