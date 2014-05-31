@@ -50,7 +50,10 @@ grdata g = GrData {
 				 | (p,a) <- factor n]
 
 grdata' :: (String, Group, [String]) -> String
-grdata' (name, g, props) | g_size g == 1 = unlines [
+grdata' (name, g, props) = showData (name, grdata g, props)
+
+showData :: (String, GrData, [String]) -> String
+showData (name, dat, props) | gd_order dat == 1 = unlines [
   name,
   intercalate " " $ "1 abelian nilpotent solvable" : props,
   "1",
@@ -58,7 +61,7 @@ grdata' (name, g, props) | g_size g == 1 = unlines [
   "exp=1",
   "nilpotence=0"
  ]
-grdata' (name, g, props) = unlines [
+showData (name, dat, props) = unlines [
   name,
   intercalate " " $ [
    show $ gd_order dat,
@@ -74,7 +77,7 @@ grdata' (name, g, props) = unlines [
   "rank=" ++ show (gd_rank dat),
   "exp="  ++ show (gd_exponent dat),
   "nilpotence=" ++ maybe "nil" show (gd_nilpotence dat)
- ] where dat = grdata g
+ ]
 
 freqArray :: Ix a => (a,a) -> [a] -> Array a Int
 freqArray b = accumArray (+) 0 b . map (\x -> (x,1))
