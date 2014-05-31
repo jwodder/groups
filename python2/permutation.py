@@ -74,7 +74,7 @@ class Permutation(object):
 	return self._even
 
     @property
-    def isOdd(self): return not self.isEven()
+    def isOdd(self): return not self.isEven
 
     @property
     def sign(self): return 1 if self.isEven else -1

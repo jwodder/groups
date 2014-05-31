@@ -7,7 +7,7 @@ class GroupClass g e where
  op       :: g -> e -> e -> e
  inverse  :: g -> e -> e
  order    :: g -> e -> Int
- size     :: g -> Int
+ size     :: g -> Int  -- This is invalid, isn't it?
  elements :: g -> [e]
  (∈)      :: e -> g -> Bool
 

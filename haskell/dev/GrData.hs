@@ -10,7 +10,7 @@ import qualified Groups.Types.Subset as Sub
 import Groups.Internals  -- factor and Ternary
 
 data GrData = GrData {
- gd_order      :: Int,
+ gd_order      :: Int,  -- Rename "gd_size"?
  gd_abelian    :: Bool,
  gd_nilpotence :: Maybe Int,
  gd_solvable   :: Bool,

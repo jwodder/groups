@@ -66,10 +66,22 @@ module Groups.Types.Subset where
  (∖) :: Subset -> Subset -> Subset
  Subset (gr1, is1) ∖ Subset (gr2, is2)
   | gr1 == gr2 = Subset (gr1, ISet.difference is1 is2)
-  | otherwise = error "Subset.∖: group mismatch"
+  | otherwise = Subset (gr1, is1)
 
  filter :: (Int -> Bool) -> Subset -> Subset
  filter p (Subset (g, is)) = Subset (g, ISet.filter p is)
 
  filter' :: (Element -> Bool) -> Subset -> Subset
  filter' p (Subset (g, is)) = Subset (g, ISet.filter (\x -> p $ Element (x,g)) is)
+
+ (⊆) :: Subset -> Subset -> Bool
+ Subset (gr1, is1) ⊆ Subset (gr2, is2) = gr1 == gr2 && ISet.isSubsetOf is1 is2
+
+ (⊇) :: Subset -> Subset -> Bool
+ (⊇) = flip (⊆)
+
+ (⊂) :: Subset -> Subset -> Bool
+ Subset (gr1, is1) ⊂ Subset (gr2, is2) = gr1 == gr2 && ISet.isProperSubsetOf is1 is2
+
+ (⊃) :: Subset -> Subset -> Bool
+ (⊃) = flip (⊂)
