@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+#if defined(__cplusplus) && __cplusplus >= 201103L
+#include <iterator>  /* begin, end */
+#endif
+
 namespace Groups {
  class Permutation {
  public:
@@ -22,6 +26,7 @@ namespace Groups {
 
   int operator()(int) const;
   Permutation operator*(const Permutation&) const;
+  Permutation& operator*=(const Permutation&);
 
   /* Go to the next/previous Permutation, ordered by modified Lehmer codes */
   Permutation& operator++();
@@ -69,8 +74,15 @@ namespace Groups {
 
   template<class Iter>
   static Permutation fromCycles(Iter first, Iter last) {
-   Permutation p();
-   while (first != last) p *= fromCycle(*first++);
+   Permutation p;
+   while (first != last) {
+#if defined(__cplusplus) && __cplusplus >= 201103L
+    p *= fromCycle(std::begin(*first), std::end(*first));
+#else
+    p *= fromCycle(first->begin(), first->end());
+#endif
+    first++;
+   }
    return p;
   }
 

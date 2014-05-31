@@ -31,6 +31,11 @@ namespace Groups {
   return Permutation(newmap, _even != -1 && other._even != -1 ? _even == other._even : -1);
  }
 
+ Permutation& Permutation::operator*=(const Permutation& other) {
+  *this = *this * other;
+  return *this;
+ }
+
  Permutation::operator string() const {
   vector< vector<int> > cycles = toCycles();
   if (cycles.empty()) return string("1");
