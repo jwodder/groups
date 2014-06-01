@@ -15,7 +15,7 @@ module Permutation (
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
- import Data.List (intercalate)
+ import Data.List (intercalate, (\\))
  import Data.Monoid
 
  newtype Permutation = Perm (Array Int Int) deriving (Eq)
@@ -81,16 +81,10 @@ module Permutation (
  fromCycles = mconcat . map fromCycle
 
  toCycles :: Permutation -> [[Int]]
- toCycles (Perm σ) = cyke $ accumArray const False (bounds σ) []
-  where cyke used = case [x | (x, False) <- assocs used] of
-		     [] -> []
-		     x:_ | σ A.! x == x -> cyke $ used // [(x, True)]
-			 | otherwise    -> (x:c) : cyke sh
-			 where (c, sh) = cykeAt (σ A.! x) $ used // [(x, True)]
-			       cykeAt q sh' = if q == x then ([], sh')
-					      else q &: (cykeAt (σ A.! q)
-							 $ sh' // [(q, True)])
-			       z &: (zs, w) = (z:zs, w)
+ toCycles (Perm σ) = cyke [a | (a,b) <- assocs σ, a /= b]
+  where cyke [] = []
+	cyke (x:xs) = (x:c) : cyke (xs \\ c)
+	 where c = takeWhile (/= x) $ tail $ iterate (σ A.!) x
 
  showCycles :: Permutation -> String
  showCycles σ = case toCycles σ of
