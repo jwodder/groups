@@ -19,3 +19,6 @@
  - Rename `Element.getGroup'` to `getGroup`?
 - Ops.hs: Make `norms` and `centers` take `Element`s intead of `Int`s
 - Element.hs: Add a function for constructing from an `Int`
+- Add a function for testing whether a given Subset is normal within another
+  Subset
+- Permutation.hs: Rename `isEven` and `isOdd` to `even` and `odd`?

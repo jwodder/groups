@@ -126,25 +126,24 @@ namespace Groups {
  }
 
  vector< vector<int> > Permutation::toCycles() const {
-  vector<bool> used(degree()+1, false);
-  used[0] = true;
+  vector<int> cmap(pmap);
   vector< vector<int> > cycles;
-  for (;;) {
-   int x = -1;
-   for (size_t i=0; i<used.size(); i++) {
-    if (used[i] == false) {x = i; break; }
+  for (int i=0; i<(int)cmap.size(); i++) {
+   if (cmap[i] != 0 && cmap[i] != i+1) {
+    int x = i+1;
+    vector<int> cyke(1, x);
+    int y = cmap[x-1];
+    cmap[x-1] = 0;
+    while (y != x) {
+     cyke.push_back(y);
+     int next = cmap[y-1];
+     cmap[y-1] = 0;
+     y = next;
+    }
+    cycles.push_back(cyke);
    }
-   if (x == -1) return cycles;
-   vector<int> cyke(1, x);
-   used[x] = true;
-   int y = (*this)(x);
-   while (y != x) {
-    cyke.push_back(y);
-    used[y] = true;
-    y = (*this)(y);
-   }
-   if (cyke.size() > 1) cycles.push_back(cyke);
   }
+  return cycles;
  }
 
  /* Returns the permutation representing the transposition of the positive

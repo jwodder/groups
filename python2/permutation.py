@@ -107,22 +107,21 @@ class Permutation(object):
 	return p
 
     def toCycles(self):
-	used = [True] + [False] * len(self._map)
+	cmap = list(self._map)
 	cycles = []
-	while True:
-	    try:
-		x = used.index(False, 1)
-	    except ValueError:
-		return cycles
-	    cyke = [x]
-	    used[x] = True
-	    y = self(x)
-	    while y != x:
-		cyke.append(y)
-		used[y] = True
-		y = self(y)
-	    if len(cyke) > 1:
+	for i in range(len(cmap)):
+	    if cmap[i] != 0 and cmap[i] != i+1:
+	        x = i+1
+		cyke = [x]
+		y = cmap[x-1]
+		cmap[x-1] = 0
+		while y != x:
+		    cyke.append(y)
+		    next = cmap[y-1]
+		    cmap[y-1] = 0
+		    y = next
 		cycles.append(tuple(cyke))
+	return cycles
 
     @classmethod
     def transposition(cls, a, b):

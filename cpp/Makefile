@@ -44,4 +44,4 @@ tests/perminc01 : Permutation.o util.o
 tests/perminc01.o : Permutation.hpp
 
 clean :
-	rm -f *.o tests/*.o
+	rm -f *.o tests/*.o $(TESTS)

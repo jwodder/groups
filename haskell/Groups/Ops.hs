@@ -51,8 +51,10 @@ module Groups.Ops where
  normalizer :: Subset -> Subset
  normalizer h = Sub.filter (norms h) $ Sub.total $ Sub.getGroup h
 
+ -- |Tests whether a given 'Subset' (assumed to be a subgroup) is normal within
+ -- its containing 'Group'.  Whether or not the subset is actually a subgroup
+ -- is not checked.
  isNormal :: Subset -> Bool
- -- Whether or not the subset is actually a subgroup is not checked.
  isNormal h = all (norms h) $ g_elems $ Sub.getGroup h
 
  isSubset :: [Element] -> Bool
