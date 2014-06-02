@@ -5,6 +5,10 @@
 #include <queue>
 #include <set>
 
+/* `Iter` is an iterator over values of `T`.
+ * `Func` is a type that can be called with two `T` arguments to obtain another
+ *     `T` value.
+ */
 template<class T, class Func, class Iter>
 std::set<T> closure2(Func f, Iter first, Iter last) {
  std::set<T> seen(first, last);
@@ -28,7 +32,10 @@ std::set<T> closure2(Func f, Iter first, Iter last) {
  return seen;
 }
 
-/* For use when `f` is associative */
+/* `Iter` is an iterator over values of `T`.
+ * `Func` is a type that can be called with two `T` arguments to obtain another
+ *     `T` value.  Its operation is assumed to be associative.
+ */
 template<class T, class Func, class Iter>
 std::set<T> closure2A(Func f, Iter first, Iter last) {
  const std::set<T> start(first, last);
@@ -49,6 +56,14 @@ std::set<T> closure2A(Func f, Iter first, Iter last) {
  return seen;
 }
 
+/* `Iter` is an iterator over values of `T`.
+ * `U` is a type with `begin` and `end` methods that return iterators of type
+ *     `U::iterator` that iterate over values of `T`.  Alternatively, in C++11
+ *     or later, it is any type that can be iterated over with a range-based
+ *     `for` loop to produce `T` values.
+ * `Func` is a type that can be called with a single `T` argument to obtain a
+ *     `U` value.
+ */
 template<class T, class Func, class Iter, class U>
 std::set<T> closure1m(Func f, Iter first, Iter last) {
  std::set<T> seen(first, last);
@@ -56,10 +71,16 @@ std::set<T> closure1m(Func f, Iter first, Iter last) {
  while (!nova.empty()) {
   U newVals = f(nova.front());
   nova.pop();
+#if defined(__cplusplus) && __cplusplus >= 201103L
+  for (U uval : newVals) {
+   if (seen.insert(uval).second) nova.push(uval);
+  }
+#else
   typename U::iterator uiter;
   for (uiter = newVals.begin(); uiter != newVals.end(); uiter++) {
    if (seen.insert(*uiter).second) nova.push(*uiter);
   }
+#endif
  }
  return seen;
 }
