@@ -6,45 +6,45 @@ using namespace std;
 
 namespace Groups {
  Element Dicyclic::op(const Element& x, const Element& y) const {
-  const delem *xp = getElem<delem>(x), *yp = getElem<delem>(y);
-  int i = xp->i + (xp->j ? -1 : 1) * yp->i;
-  if (xp->j && yp->j) i += n;
+  elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
+  int i = xp.first + (xp.second ? -1 : 1) * yp.first;
+  if (xp.second && yp.second) i += n;
   i %= 2*n;
-  return mkElem(new delem(i, xp->j ^ yp->j));
+  return mkElem<elem_t>(elem_t(i, xp.second ^ yp.second));
  }
 
- Element Dicyclic::identity() const {return mkElem(new delem(0, false)); }
+ Element Dicyclic::identity() const {return mkElem<elem_t>(elem_t(0, false)); }
 
  vector<Element> Dicyclic::elements() const {
   vector<Element> elems(4*n, identity());
   vector<Element>::iterator iter = elems.begin();
   int i=1;
-  for (iter++; i<2*n; i++, iter++) *iter = mkElem(new delem(i, false));
+  for (iter++; i<2*n; i++, iter++) *iter = mkElem<elem_t>(elem_t(i, false));
   i=0;
-  for (; i<2*n; i++, iter++) *iter = mkElem(new delem(i, true));
+  for (; i<2*n; i++, iter++) *iter = mkElem<elem_t>(elem_t(i, true));
   return elems;
  }
 
  Element Dicyclic::invert(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  if (xp->j) return mkElem(new delem((xp->i + n) % (2*n), true));
-  else return mkElem(new delem(-xp->i % (2*n), false));
+  elem_t xp = getElem<elem_t>(x);
+  return mkElem<elem_t>(elem_t((xp.second ? xp.first + n : -xp.first) % (2*n),
+			       xp.second));
  }
 
  int Dicyclic::order() const {return 4 * n; }
 
  int Dicyclic::order(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  return xp->j ? 4 : 2*n / gcd(xp->i, 2*n);
+  elem_t xp = getElem<elem_t>(x);
+  return xp.second ? 4 : 2*n / gcd(xp.first, 2*n);
  }
 
  string Dicyclic::showElem(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
+  elem_t xp = getElem<elem_t>(x);
   ostringstream out;
-  int i = xp->i;
+  int i = xp.first;
   if (i >= n) {out << '-'; i -= n; }
-  if (i == 0 && !xp->j) out << "1";
-  else {expgen(out, "i", i, ""); if (xp->j) out << 'j'; }
+  if (i == 0 && !xp.second) out << "1";
+  else {expgen(out, "i", i, ""); if (xp.second) out << 'j'; }
   return out.str();
  }
 

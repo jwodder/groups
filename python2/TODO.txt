@@ -11,6 +11,7 @@
   - determining whether a subgroup is normal
   - calculating nilpotence classes
   - calculating conjugacy classes
+  - a "tabular" group
 - Implement configurable element showing
 - Implement Element construction of the form `Element(paramTuple, group)`
   (where Element is the base class rather than a group's derived class) ?
@@ -25,3 +26,7 @@
   outside the Group?
 - Should Element.order and/or Element.index cache their results?
 - permutation.py: Make fewer things properties?
+- Idea: Further cut down on boilerplate by writing group methods as though the
+  element types were their "natural" types (ints for Cyclic, (bool,int) pair
+  for Dihedral, etc.) and having Metagroup define the actual methods as
+  wrappers around those

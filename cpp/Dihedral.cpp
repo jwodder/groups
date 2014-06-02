@@ -6,42 +6,43 @@ using namespace std;
 
 namespace Groups {
  Element Dihedral::op(const Element& x, const Element& y) const {
-  const delem *xp = getElem<delem>(x), *yp = getElem<delem>(y);
-  return mkElem(yp->s ? new delem(!xp->s, (yp->r - xp->r) % n)
-   : new delem(xp->s, (xp->r + yp->r) % n));
+  elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
+  return mkElem<elem_t>(yp.first
+   ? elem_t(!xp.first, (yp.second - xp.second) % n)
+   : elem_t(xp.first,  (xp.second + yp.second) % n));
  }
 
- Element Dihedral::identity() const {return mkElem(new delem(false, 0)); }
+ Element Dihedral::identity() const {return mkElem<elem_t>(elem_t(false, 0)); }
 
  vector<Element> Dihedral::elements() const {
   vector<Element> elems(2*n, identity());
   vector<Element>::iterator iter = elems.begin();
   int r=1;
-  for (iter++; r<n; r++, iter++) *iter = mkElem(new delem(false, r));
+  for (iter++; r<n; r++, iter++) *iter = mkElem<elem_t>(elem_t(false, r));
   r=0;
-  for (; r<n; r++, iter++) *iter = mkElem(new delem(true, r));
+  for (; r<n; r++, iter++) *iter = mkElem<elem_t>(elem_t(true, r));
   return elems;
  }
 
  Element Dihedral::invert(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  return xp->s ? x : mkElem(new delem(false, -xp->r % n));
+  elem_t xp = getElem<elem_t>(x);
+  return xp.first ? x : mkElem<elem_t>(elem_t(false, -xp.second % n));
  }
 
  int Dihedral::order() const {return 2 * n; }
 
  int Dihedral::order(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  return xp->s ? 2 : n/gcd(xp->r, n);
+  elem_t xp = getElem<elem_t>(x);
+  return xp.first ? 2 : n/gcd(xp.second, n);
  }
 
  string Dihedral::showElem(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  if (!xp->s && xp->r == 0) return "1";
+  elem_t xp = getElem<elem_t>(x);
+  if (!xp.first && xp.second == 0) return "1";
   else {
    ostringstream out;
-   if (xp->s) out << "s";
-   expgen(out, "r", xp->r, "");
+   if (xp.first) out << "s";
+   expgen(out, "r", xp.second, "");
    return out.str();
   }
  }

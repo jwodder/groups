@@ -17,13 +17,14 @@ namespace Groups {
  }
 
  Element Direct::op(const Element& x, const Element& y) const {
-  const delem* xp = getElem<delem>(x);
-  const delem* yp = getElem<delem>(y);
-  return mkElem(new delem(left->op(xp->a, yp->a), right->op(xp->b, yp->b)));
+  elem_t xp = getElem<elem_t>(x);
+  elem_t yp = getElem<elem_t>(y);
+  return mkElem<elem_t>(elem_t(left->op(xp.first, yp.first),
+			       right->op(xp.second, yp.second)));
  }
 
  Element Direct::identity() const {
-  return mkElem(new delem(left->identity(), right->identity()));
+  return mkElem<elem_t>(elem_t(left->identity(), right->identity()));
  }
 
  vector<Element> Direct::elements() const {
@@ -35,7 +36,7 @@ namespace Groups {
   riter++;
   for (; liter != lems.end(); liter++, riter = rems.begin()) {
    for (; riter != rems.end(); riter++) {
-    *iter = mkElem(new delem(*liter, *riter));
+    *iter = mkElem<elem_t>(elem_t(*liter, *riter));
     iter++;
    }
   }
@@ -43,29 +44,31 @@ namespace Groups {
  }
 
  Element Direct::invert(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  return mkElem(new delem(xp->a.inverse(), xp->b.inverse()));
+  elem_t xp = getElem<elem_t>(x);
+  return mkElem<elem_t>(elem_t(xp.first.inverse(), xp.second.inverse()));
  }
 
  int Direct::order() const {return left->order() * right->order(); }
 
  int Direct::order(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  return lcm(xp->a.order(), xp->b.order());
+  elem_t xp = getElem<elem_t>(x);
+  return lcm(xp.first.order(), xp.second.order());
  }
 
  string Direct::showElem(const Element& x) const {
-  const delem* xp = getElem<delem>(x);
-  if (xp->a == left->identity() && xp->b == right->identity()) return "1";
-  else {
+  elem_t xp = getElem<elem_t>(x);
+  if (xp.first == left->identity() && xp.second == right->identity()) {
+   return "1";
+  } else {
    ostringstream out;
-   out << '(' << xp->a << ", " << xp->b << ')';
+   out << '(' << xp.first << ", " << xp.second << ')';
    return out.str();
   }
  }
 
  Element Direct::pair(const Element& x, const Element& y) const {
-  if (x.group() == left && y.group() == right) return mkElem(new delem(x, y));
+  if (x.group() == left && y.group() == right)
+   return mkElem<elem_t>(elem_t(x,y));
   else throw invalid_argument("Direct::pair: group mismatch");
  }
 

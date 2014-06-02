@@ -35,34 +35,33 @@ namespace Groups {
     abel(t.abel) { }
 
  Element Tabular::op(const Element& x, const Element& y) const {
-  const telem *xp = getElem<telem>(x), *yp = getElem<telem>(y);
-  return mkElem(new telem(table[xp->x][yp->x]));
+  return mkElem<elem_t>(table[getElem<elem_t>(x)][getElem<elem_t>(y)]);
  }
 
- Element Tabular::identity() const {return mkElem(new telem(0)); }
+ Element Tabular::identity() const {return mkElem<elem_t>(0); }
 
  vector<Element> Tabular::elements() const {
   vector<Element> elems(table.size(), identity());
   vector<Element>::iterator iter = elems.begin();
   int i=0;
   for (iter++, i++; iter != elems.end(); iter++, i++) {
-   *iter = mkElem(new telem(i));
+   *iter = mkElem<elem_t>(i);
   }
   return elems;
  }
 
  Element Tabular::invert(const Element& x) const {
-  return mkElem(new telem(inverses[getElem<telem>(x)->x]));
+  return mkElem<elem_t>(inverses[getElem<elem_t>(x)]);
  }
 
  int Tabular::order() const {return table.size(); }
 
  int Tabular::order(const Element& x) const {
-  return orders[getElem<telem>(x)->x];
+  return orders[getElem<elem_t>(x)];
  }
 
  string Tabular::showElem(const Element& x) const {
-  return strs[getElem<telem>(x)->x];
+  return strs[getElem<elem_t>(x)];
  }
 
  bool Tabular::abelian() const {return abel; }

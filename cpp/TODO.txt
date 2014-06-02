@@ -7,7 +7,7 @@
   (including those used in Direct::copy())
 - Consider making showElem() (and other methods?) private and having Element
   befriend Group
-- Protect elem objects from being used directly by unwanted code
+- Protect elem and gelem<T> objects from being used directly by unwanted code
 - Make the names of the methods for constructing arbitrary elements (currently
   Cyclic::residue and Direct::pair) consistent
 - Make the default generator names for dicyclic groups less quaternion-like
@@ -15,8 +15,9 @@
   being instances of public classes within the groups' namespaces that
   implement Element; e.g., elements of a cyclic group would have public type
   Cyclic::Element (or Cyclic<n>::Element?)
-- Rethink the way Element manages its Group* (Use Group& instead?)
+- Rethink the way Element manages its Group*
 - Could the creation of Group subclasses be simplified using templates somehow?
+- Add a "group_mismatch" exception?
 
 FEATURES
 - Implement all of the features in plan.txt

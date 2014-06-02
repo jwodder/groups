@@ -21,9 +21,11 @@ namespace Groups {
   virtual Group* copy() const = 0;
   inline bool contains(const Element& x) {return x.gr == this; }
  protected:
-  Element mkElem(const elem* x) const {return Element(this, x); }
-  template<class T> const T* getElem(const Element& x) const {
-   if (x.gr == this) return static_cast<const T*>(x.x);
+  template<class T>
+  Element mkElem(const T& x) const {return Element(this, new gelem<T>(x)); }
+
+  template<class T> const T getElem(const Element& x) const {
+   if (x.gr == this) return static_cast<const gelem<T>*>(x.x)->val;
    else throw std::invalid_argument("Group::getElem: group mismatch");
   }
  };

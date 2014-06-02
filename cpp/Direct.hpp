@@ -1,6 +1,7 @@
 #ifndef DIRECT_H
 #define DIRECT_H
 
+#include <utility>  /* pair */
 #include "Group.hpp"
 
 namespace Groups {
@@ -28,16 +29,8 @@ namespace Groups {
 
  private:
   Group *left, *right;
-  struct delem : public elem {
-   const Element a, b;
-   delem(const Element& x, const Element& y) : a(x), b(y) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this < p;
-    const delem* d = static_cast<const delem*>(p);
-    int ca = a.cmp(d->a);
-    return ca == 0 ? b.cmp(d->b) : ca;
-   }
-  };
+  typedef std::pair<Element,Element> elem_t;
+  typedef gelem<elem_t> element;
  };
 }
 #endif

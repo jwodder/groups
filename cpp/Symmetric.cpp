@@ -5,12 +5,12 @@ using namespace std;
 
 namespace Groups {
  Element Symmetric::op(const Element& x, const Element& y) const {
-  const selem *xp = getElem<selem>(x), *yp = getElem<selem>(y);
-  return mkElem(new selem(xp->s * yp->s));
+  elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
+  return mkElem<elem_t>(xp * yp);
  }
 
  Element Symmetric::identity() const {
-  return mkElem(new selem(Permutation::identity()));
+  return mkElem<elem_t>(Permutation::identity());
  }
 
  vector<Element> Symmetric::elements() const {
@@ -18,23 +18,23 @@ namespace Groups {
   vector<Element>::iterator iter = elems.begin();
   Permutation p = Permutation::identity();
   for (iter++, p++; iter != elems.end(); iter++, p++) {
-   *iter = mkElem(new selem(p));
+   *iter = mkElem<elem_t>(p);
   }
   return elems;
  }
 
  Element Symmetric::invert(const Element& x) const {
-  return mkElem(new selem(getElem<selem>(x)->s.inverse()));
+  return mkElem<elem_t>(getElem<elem_t>(x).inverse());
  }
 
  int Symmetric::order() const {return factorial(degree); }
 
  int Symmetric::order(const Element& x) const {
-  return getElem<selem>(x)->s.order();
+  return getElem<elem_t>(x).order();
  }
 
  string Symmetric::showElem(const Element& x) const {
-  return string(getElem<selem>(x)->s);
+  return string(getElem<elem_t>(x));
  }
 
  bool Symmetric::abelian() const {return degree < 3; }

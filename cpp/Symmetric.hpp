@@ -21,15 +21,8 @@ namespace Groups {
   virtual Symmetric* copy() const;
  private:
   int degree;
-  struct selem : public elem {
-   const Permutation s;
-   selem(const Permutation& t) : s(t) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this - p;
-    const selem* x = static_cast<const selem*>(p);
-    return s.cmp(x->s);
-   }
-  };
+  typedef Permutation elem_t;
+  typedef gelem<elem_t> element;
  };
 }
 

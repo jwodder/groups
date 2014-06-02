@@ -1,7 +1,8 @@
 #ifndef DICYCLIC_H
 #define DICYCLIC_H
 
-#include <cstdlib>
+#include <cstdlib>  /* abs */
+#include <utility>  /* pair */
 #include "Group.hpp"
 
 namespace Groups {
@@ -20,16 +21,8 @@ namespace Groups {
   virtual Dicyclic* copy() const;
  private:
   int n;
-  struct delem : public elem {
-   const int i;
-   const bool j;
-   delem(int k, bool l) : i(k), j(l) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this - p;
-    const delem* d = static_cast<const delem*>(p);
-    return i == d->i ? j - d->j : i - d->i;
-   }
-  };
+  typedef std::pair<int,bool> elem_t;  /* (i,j) */
+  typedef gelem<elem_t> element;
  };
 }
 

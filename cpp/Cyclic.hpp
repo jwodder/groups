@@ -1,7 +1,7 @@
 #ifndef CYCLIC_H
 #define CYCLIC_H
 
-#include <cstdlib>
+#include <cstdlib>  /* abs */
 #include "Group.hpp"
 
 namespace Groups {
@@ -21,15 +21,8 @@ namespace Groups {
   Element residue(int) const;
  private:
   int n;
-  struct celem : public elem {
-   const int x;
-   celem(int y) : x(y) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this - p;
-    const celem* c = static_cast<const celem*>(p);
-    return x - c->x;
-   }
-  };
+  typedef int elem_t;
+  typedef gelem<elem_t> element;
  };
 }
 

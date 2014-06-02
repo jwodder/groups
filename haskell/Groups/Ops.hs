@@ -76,7 +76,8 @@ module Groups.Ops where
 
  commutators :: Subset -> Subset -> Subset
  commutators (Subset (g1, is1)) (Subset (g2, is2))
-  | g1 == g2 = let xs = [g_oper g1 (g_invert g1 (g_oper g1 y x)) (g_oper g1 x y)
+  | g1 == g2 = let gop = g_oper g1
+		   xs = [g_invert g1 (gop y x) `gop` gop x y
 			 | x <- ISet.toList is1, y <- ISet.toList is2]
 	       in Subset (g1, closure' g1 (xs, ISet.fromList xs))
   | otherwise = error "commutators: group mismatch"

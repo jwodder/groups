@@ -23,16 +23,8 @@ namespace Groups {
   std::vector<int> inverses, orders;
   std::vector<std::string> strs;
   bool abel;
-
-  struct telem : public elem {
-   const int x;
-   telem(int y) : x(y) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this - p;
-    const telem* c = static_cast<const telem*>(p);
-    return x - c->x;
-   }
-  };
+  typedef int elem_t;
+  typedef gelem<elem_t> element;
  };
 }
 

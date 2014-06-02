@@ -7,7 +7,11 @@ class GroupClass g e where
  op       :: g -> e -> e -> e
  inverse  :: g -> e -> e
  order    :: g -> e -> Int
- size     :: g -> Int  -- This is invalid, isn't it?
+ size     :: g -> Int
+ -- ^This leads to ambiguities, and is thus invalid, right?  Could I get around
+ -- this by defining a `Sizable` typeclass that the `g` in `GroupClass` must
+ -- instantiate?  (This typeclass could also be instantiated by `Subset` for
+ -- further name reuse.)
  elements :: g -> [e]
  (∈)      :: e -> g -> Bool
 

@@ -1,7 +1,8 @@
 #ifndef DIHEDRAL_H
 #define DIHEDRAL_H
 
-#include <cstdlib>
+#include <cstdlib>  /* abs */
+#include <utility>  /* pair */
 #include "Group.hpp"
 
 namespace Groups {
@@ -20,16 +21,8 @@ namespace Groups {
   virtual Dihedral* copy() const;
  private:
   int n;
-  struct delem : public elem {
-   const bool s;
-   const int r;
-   delem(bool z, int l) : s(z), r(l) { }
-   virtual int cmp(const elem* p) const {
-    //if (typeid(*p) != typeid(*this)) return this - p;
-    const delem* d = static_cast<const delem*>(p);
-    return s < d->s ? -1 : s > d->s ? 1 : r - d->r;
-   }
-  };
+  typedef std::pair<bool,int> elem_t;  /* (s,r) */
+  typedef gelem<elem_t> element;
  };
 }
 
