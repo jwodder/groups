@@ -1,6 +1,6 @@
 #include <vector>
-#include "Symmetric.hpp"
-#include "util.hpp"
+#include "Groups/Families/Symmetric.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

@@ -1,14 +1,14 @@
-#ifndef TABULAR_H
-#define TABULAR_H
+#ifndef CYCLIC_H
+#define CYCLIC_H
 
-#include "Group.hpp"
+#include <cstdlib>  /* abs */
+#include "Groups/Group.hpp"
 
 namespace Groups {
- class Tabular : public Group {
+ class Cyclic : public Group {
  public:
-  Tabular(const Group&);
-  Tabular(const Tabular&);
-  virtual ~Tabular() { }
+  Cyclic(int m) : n(std::abs(m)) { }
+  virtual ~Cyclic() { }
   virtual Element op(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
@@ -17,12 +17,10 @@ namespace Groups {
   virtual int order(const Element&) const;
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
-  virtual Tabular* copy() const;
+  virtual Cyclic* copy() const;
+  Element residue(int) const;
  private:
-  std::vector< std::vector<int> > table;
-  std::vector<int> inverses, orders;
-  std::vector<std::string> strs;
-  bool abel;
+  int n;
   typedef int elem_t;
   typedef gelem<elem_t> element;
  };

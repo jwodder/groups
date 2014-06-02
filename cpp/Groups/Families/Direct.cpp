@@ -1,8 +1,8 @@
 #include <sstream>
 #include <stdexcept>  /* invalid_argument */
 #include <vector>
-#include "Direct.hpp"
-#include "util.hpp"
+#include "Groups/Families/Direct.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

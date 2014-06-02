@@ -3,8 +3,8 @@
 
 #include <map>
 #include <vector>
-#include "Tabular.hpp"
-#include "util.hpp"
+#include "Groups/Families/Tabular.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

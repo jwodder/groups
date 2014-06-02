@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "Permutation.hpp"
-#include "util.hpp"  /* lcm, factorial */
+#include "Groups/util.hpp"  /* lcm, factorial */
 using namespace std;
 
 namespace Groups {

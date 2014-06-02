@@ -1,14 +1,15 @@
-#ifndef CYCLIC_H
-#define CYCLIC_H
+#ifndef DIHEDRAL_H
+#define DIHEDRAL_H
 
 #include <cstdlib>  /* abs */
-#include "Group.hpp"
+#include <utility>  /* pair */
+#include "Groups/Group.hpp"
 
 namespace Groups {
- class Cyclic : public Group {
+ class Dihedral : public Group {
  public:
-  Cyclic(int m) : n(std::abs(m)) { }
-  virtual ~Cyclic() { }
+  Dihedral(int m) : n(std::abs(m)) { }
+  virtual ~Dihedral() { }
   virtual Element op(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
@@ -17,11 +18,10 @@ namespace Groups {
   virtual int order(const Element&) const;
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
-  virtual Cyclic* copy() const;
-  Element residue(int) const;
+  virtual Dihedral* copy() const;
  private:
   int n;
-  typedef int elem_t;
+  typedef std::pair<bool,int> elem_t;  /* (s,r) */
   typedef gelem<elem_t> element;
  };
 }

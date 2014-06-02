@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <string>
 #include <ostream>
-#include "util.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

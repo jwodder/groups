@@ -1,7 +1,7 @@
 #include <string>
 #include <ostream>
-#include "Element.hpp"
-#include "Group.hpp"
+#include "Groups/Element.hpp"
+#include "Groups/Group.hpp"
 
 namespace Groups {
  Element Element::inverse() const {return gr->invert(*this); }

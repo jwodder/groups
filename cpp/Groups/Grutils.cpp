@@ -2,8 +2,8 @@
 
 #include <functional>
 #include <set>
-#include "Grutils.hpp"
-#include "Element.hpp"
+#include "Groups/Grutils.hpp"
+#include "Groups/Element.hpp"
 #include "closure.hpp"
 
 namespace Groups {

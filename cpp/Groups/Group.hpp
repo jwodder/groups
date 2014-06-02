@@ -4,7 +4,7 @@
 #include <stdexcept>  /* invalid_argument */
 #include <string>
 #include <vector>
-#include "Element.hpp"
+#include "Groups/Element.hpp"
 
 namespace Groups {
  class Group {

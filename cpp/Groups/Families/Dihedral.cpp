@@ -1,7 +1,7 @@
 #include <sstream>
 #include <vector>
-#include "Dihedral.hpp"
-#include "util.hpp"
+#include "Groups/Families/Dihedral.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

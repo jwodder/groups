@@ -1,7 +1,7 @@
 #include <sstream>
 #include <vector>
-#include "Cyclic.hpp"
-#include "util.hpp"
+#include "Groups/Families/Cyclic.hpp"
+#include "Groups/util.hpp"
 using namespace std;
 
 namespace Groups {

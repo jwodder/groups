@@ -1,15 +1,14 @@
-#ifndef DIHEDRAL_H
-#define DIHEDRAL_H
+#ifndef TABULAR_H
+#define TABULAR_H
 
-#include <cstdlib>  /* abs */
-#include <utility>  /* pair */
-#include "Group.hpp"
+#include "Groups/Group.hpp"
 
 namespace Groups {
- class Dihedral : public Group {
+ class Tabular : public Group {
  public:
-  Dihedral(int m) : n(std::abs(m)) { }
-  virtual ~Dihedral() { }
+  Tabular(const Group&);
+  Tabular(const Tabular&);
+  virtual ~Tabular() { }
   virtual Element op(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
@@ -18,10 +17,13 @@ namespace Groups {
   virtual int order(const Element&) const;
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
-  virtual Dihedral* copy() const;
+  virtual Tabular* copy() const;
  private:
-  int n;
-  typedef std::pair<bool,int> elem_t;  /* (s,r) */
+  std::vector< std::vector<int> > table;
+  std::vector<int> inverses, orders;
+  std::vector<std::string> strs;
+  bool abel;
+  typedef int elem_t;
   typedef gelem<elem_t> element;
  };
 }

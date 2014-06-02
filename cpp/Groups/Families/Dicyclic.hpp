@@ -1,15 +1,15 @@
-#ifndef SYMMETRIC_H
-#define SYMMETRIC_H
+#ifndef DICYCLIC_H
+#define DICYCLIC_H
 
-#include <algorithm>  /* max */
-#include "Group.hpp"
-#include "Permutation.hpp"
+#include <cstdlib>  /* abs */
+#include <utility>  /* pair */
+#include "Groups/Group.hpp"
 
 namespace Groups {
- class Symmetric : public Group {
+ class Dicyclic : public Group {
  public:
-  Symmetric(int d) : degree(std::max(d,1)) { }
-  virtual ~Symmetric() { }
+  Dicyclic(int m) : n(std::abs(m)) { }
+  virtual ~Dicyclic() { }
   virtual Element op(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
@@ -18,10 +18,10 @@ namespace Groups {
   virtual int order(const Element&) const;
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
-  virtual Symmetric* copy() const;
+  virtual Dicyclic* copy() const;
  private:
-  int degree;
-  typedef Permutation elem_t;
+  int n;
+  typedef std::pair<int,bool> elem_t;  /* (i,j) */
   typedef gelem<elem_t> element;
  };
 }

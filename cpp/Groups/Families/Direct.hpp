@@ -2,7 +2,7 @@
 #define DIRECT_H
 
 #include <utility>  /* pair */
-#include "Group.hpp"
+#include "Groups/Group.hpp"
 
 namespace Groups {
  class Direct : public Group {

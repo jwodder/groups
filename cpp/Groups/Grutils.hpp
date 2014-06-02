@@ -3,8 +3,8 @@
 
 #include <functional>
 #include <set>
-#include "Element.hpp"
-#include "Dicyclic.hpp"
+#include "Groups/Element.hpp"
+#include "Groups/Families/Dicyclic.hpp"
 #include "closure.hpp"
 
 namespace Groups {
