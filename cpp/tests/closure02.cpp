@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Groups/Families/Cyclic.hpp"
-#include "Groups/Grutils.hpp"
+#include "Groups/Ops.hpp"
 using namespace std;
 using namespace Groups;
 

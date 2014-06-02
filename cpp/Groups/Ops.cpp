@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <set>
-#include "Groups/Grutils.hpp"
+#include "Groups/Ops.hpp"
 #include "Groups/Element.hpp"
 #include "closure.hpp"
 

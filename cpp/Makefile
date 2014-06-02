@@ -5,7 +5,7 @@ CC = $(CXX)  # for linking
 GRNAMES = Cyclic Dicyclic Dihedral Direct Symmetric Tabular
 GROUPS = $(foreach grp,$(GRNAMES),Groups/Families/$(grp).o)
 
-OBJS = $(GROUPS) Groups/Element.o Groups/Grutils.o Permutation.o Groups/util.o
+OBJS = $(GROUPS) Groups/Element.o Groups/Ops.o Permutation.o Groups/util.o
 
 TESTS = tests/closure01 tests/closure02 tests/fromCycles01 tests/lehmer02 \
  tests/lehmer03 tests/perminc01
@@ -18,7 +18,7 @@ $(foreach grp,$(GROUPS),$(grp)) : Groups/Families/%.o : Groups/Families/%.hpp
 Groups/Families/Symmetric.o : Permutation.hpp
 
 Groups/Element.o : Groups/Element.hpp Groups/Group.hpp
-Groups/Grutils.o : Groups/Grutils.hpp Groups/Element.hpp closure.hpp \
+Groups/Ops.o : Groups/Ops.hpp Groups/Element.hpp closure.hpp \
  Groups/Families/Dicyclic.hpp Groups/Group.hpp
 Groups/util.o : Groups/util.hpp
 Permutation.o : Permutation.hpp Groups/util.hpp
@@ -26,9 +26,9 @@ Permutation.o : Permutation.hpp Groups/util.hpp
 tests/closure01 : Permutation.o Groups/util.o
 tests/closure01.o : closure.hpp Permutation.hpp
 
-tests/closure02 : Groups/Families/Cyclic.o Groups/Grutils.o Groups/Element.o \
+tests/closure02 : Groups/Families/Cyclic.o Groups/Ops.o Groups/Element.o \
  Groups/util.o Groups/Families/Dicyclic.o
-tests/closure02.o : Groups/Families/Cyclic.hpp Groups/Grutils.hpp \
+tests/closure02.o : Groups/Families/Cyclic.hpp Groups/Ops.hpp \
  Groups/Group.hpp Groups/Element.hpp Groups/Families/Dicyclic.hpp closure.hpp
 
 tests/fromCycles01 : Permutation.o Groups/util.o
