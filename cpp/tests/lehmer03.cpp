@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Permutation.hpp"
 using namespace std;
-using namespace Groups;
 
 int main(void) {
  for (int i=2; i<13; i++) {

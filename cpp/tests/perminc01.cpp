@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Permutation.hpp"
 using namespace std;
-using namespace Groups;
 
 int main(void) {
  Permutation begin = Permutation::identity();

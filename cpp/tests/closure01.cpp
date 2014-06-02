@@ -4,7 +4,6 @@
 #include "closure.hpp"
 #include "Permutation.hpp"
 using namespace std;
-using namespace Groups;
 
 const int n = 5;
 
