@@ -43,18 +43,19 @@ namespace Groups {
   Element         pow(int)  const;
   vector<Element> cycle()   const;
 
-  const Element operator*(const Element&) const;
-  Element&      operator*=(const Element);
-  Element&      operator=(const Element&);
-  operator      string() const;
+  Element  operator*(const Element&) const;
+  Element& operator*=(const Element);
+  Element& operator=(const Element&);
+  operator string() const;
+  operator bool()   const;
 
   int cmp(const Element& y) const {
    return gr < y.gr ? -1 : gr > y.gr ? 1 : x->cmp(y.x);
   }
 
   bool operator==(const Element& y) const {return cmp(y) == 0; }
-  bool operator<(const Element& y) const {return cmp(y) < 0; }
-  bool operator>(const Element& y) const {return cmp(y) > 0; }
+  bool operator<(const Element& y)  const {return cmp(y) <  0; }
+  bool operator>(const Element& y)  const {return cmp(y) >  0; }
   bool operator>=(const Element& y) const {return cmp(y) >= 0; }
   bool operator<=(const Element& y) const {return cmp(y) <= 0; }
   bool operator!=(const Element& y) const {return cmp(y) != 0; }

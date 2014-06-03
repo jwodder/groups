@@ -31,9 +31,7 @@ namespace Groups {
   return pows;
  }
 
- const Element Element::operator*(const Element& y) const {
-  return gr->op(*this, y);
- }
+ Element Element::operator*(const Element& y) const {return gr->op(*this, y); }
 
  Element& Element::operator*=(const Element y) {return *this = *this * y; }
 
@@ -46,6 +44,8 @@ namespace Groups {
  }
 
  Element::operator string() const {return gr->showElem(*this); }
+
+ Element::operator bool() const {return *this != gr->identity(); }
 
  ostream& operator<<(ostream& out, const Element& x) {return out << string(x); }
 }
