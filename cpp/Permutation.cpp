@@ -108,20 +108,19 @@ int Permutation::lehmer() const {
 
 Permutation Permutation::fromLehmer(int x) {
  int x0 = x;
- vector<int> code;
- for (int f=1; x > 0; f++) {
-  code.push_back(x % f);
-  x /= f;
- }
  vector<int> mapping;
- mapping.reserve(code.size());
- for (int i=0; i<(int)code.size(); i++) {
-  mapping.insert(mapping.begin() + code[i], i+1);
+ vector<int>::iterator iter;
+ for (int f=1; x>0; x /= f++) {
+  int c = x % f;
+  for (iter = mapping.begin(); iter != mapping.end(); iter++) {
+   if (*iter >= c) (*iter)++;
+  }
+  mapping.push_back(c);
  }
- Permutation p(vector<int>(mapping.rbegin(), mapping.rend()));
- p = p.inverse();
- p._lehmer = max(x0,0);
- return p;
+ for (iter = mapping.begin(); iter != mapping.end(); iter++) {
+  *iter = mapping.size() - *iter;
+ }
+ return Permutation(mapping, -1, -1, max(x0,0));
 }
 
 vector< vector<int> > Permutation::toCycles() const {

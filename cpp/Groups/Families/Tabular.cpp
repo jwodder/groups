@@ -1,5 +1,5 @@
-/* This assumes the identity is always the first element of Group.elements().
- * Make sure this always holds. */
+/* IMPORTANT TODO: This assumes the identity is always the first element of
+ * Group.elements().  Make sure this always holds. */
 
 #include <map>
 #include <vector>

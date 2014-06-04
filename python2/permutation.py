@@ -93,18 +93,16 @@ class Permutation(object):
     @classmethod
     def fromLehmer(cls, x):
 	x0 = x
-	code = []
+	mapping = []
 	f = 1
 	while x > 0:
-	    code.append(x % f)
-	    x /= f
+	    c = x % f
+	    for (i,y) in enumerate(mapping):
+		if y >= c: mapping[i] += 1
+	    mapping.append(c)
+	    x //= f
 	    f += 1
-	mapping = []
-	for (i,c) in enumerate(code):
-	    mapping.insert(c, i+1)
-	p = cls(reversed(mapping)).inverse
-	p._lehmer = max(x0,0)
-	return p
+	return cls((len(mapping)-c for c in mapping), lehmer=max(x0,0))
 
     def toCycles(self):
 	cmap = list(self._map)
