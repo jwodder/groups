@@ -448,8 +448,8 @@ class Symmetric(Group):
 	   #               for i in range(2, self.n+1))
 	    return closure([Permutation.fromCycle(range(1, self.n+1)),
 			    Permutation.transposition(1,2)])
-	    ### Should this be forced to yield the identity at the beginning of
-	    ### the list?
+	    ### TODO: Should this be forced to yield the identity at the
+	    ### beginning of the list?
 
 
 def closure(iterable): return closure2A(operator.mul, iterable)
