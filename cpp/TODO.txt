@@ -9,7 +9,8 @@
 - Make the names of the methods for constructing arbitrary elements (currently
   Cyclic::residue and Direct::pair) consistent
 - Rethink the way Element manages its Group*
-- Could the creation of Group subclasses be simplified using templates somehow?
+- Could the creation of Group subclasses be simplified using templates and/or
+  std::function somehow?
 - Add a "group_mismatch" exception
 
 FEATURES
