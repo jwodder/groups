@@ -22,3 +22,41 @@ def normalizer(g, iterable):
 def isNormal(g, iterable):
     aset = set(iterable)
     return all(x*a/x in aset for x in g for a in aset)
+
+def isSubgroup(iterable):
+    hset = set(iterable)
+    return all(x/y in hset for x in hset for y in hset)
+
+def commutators(iterable1, iterable2):
+    aset = set(iterable1)
+    bset = set(iterable2)
+    return closure(~(y*x) * (x*y) for x in aset for y in bset)
+
+def conjugacies(g):
+    yield set([g.identity()])
+    left = set(g)
+    left.remove(g.identity())
+    while left:
+	least = minimum(left)
+	cc = set(x * least / x for x in left)
+	yield cc
+	left -= cc
+
+def nilpotence(g):
+    if len(g) == 1: return 0
+    def lowerCentrals():
+	whole = set(g)
+	h = whole
+	while True:
+	    yield h
+	    h = commutators(whole, h)
+    i = 1
+    lc = lowerCentral()
+    prev = lc.next()
+    for h in lc:
+	if h == prev: return None
+	if len(h) == 1: return i
+	i += 1
+	prev = h
+
+def isAbelian(g): return all(x*y == y*x for x in g for y in g)
