@@ -20,13 +20,14 @@ namespace Groups {
   virtual bool abelian() const = 0;
   virtual Group* copy() const = 0;
   virtual int cmp(const Group*) const = 0;
-  inline bool contains(const Element& x) {return x.gr == this; }
+  inline bool contains(const Element& x) const {return cmp(x.gr) == 0; }
+
  protected:
   template<class T>
   Element mkElem(const T& x) const {return Element(this, new gelem<T>(x)); }
 
   template<class T> const T getElem(const Element& x) const {
-   if (x.gr == this) return static_cast<const gelem<T>*>(x.x)->val;
+   if (contains(x)) return static_cast<const gelem<T>*>(x.x)->val;
    else throw std::invalid_argument("Group::getElem: group mismatch");
   }
  };

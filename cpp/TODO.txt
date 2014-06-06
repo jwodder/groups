@@ -12,6 +12,8 @@
 - Could the creation of Group subclasses be simplified using templates and/or
   std::function somehow?
 - Add a "group_mismatch" exception
+- Create a "smart pointer" container around Group* for general external use, à
+  la `Element` with `elem`?
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -31,6 +33,7 @@ FEATURES
  - calculating nilpotence classes
  - calculating conjugacy classes
  - calculating all abelian groups of a given order
+ - determining whether a group is abelian
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
  - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,

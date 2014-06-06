@@ -67,7 +67,7 @@ namespace Groups {
  }
 
  Element Direct::pair(const Element& x, const Element& y) const {
-  if (x.group() == left && y.group() == right)
+  if (left->contains(x) && right->contains(y))
    return mkElem<elem_t>(elem_t(x,y));
   else throw invalid_argument("Direct::pair: group mismatch");
  }
