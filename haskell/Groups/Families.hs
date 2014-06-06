@@ -182,7 +182,7 @@ module Groups.Families where
   g'elems = coprimes,
   g'index = (!) dex,
   g'oper = (\x y -> mod (x*y) n),
-  g'invert = (`modInverse'` n),
+  g'invert = (`modInverse` n),
   g'order = (\x -> succ $ length $ takeWhile (/= 1) $ iterate (\y -> mod (x*y) n) x),
   g'id = 1
  } where coprimes = filter ((== 1) . gcd n) [1..n]

@@ -97,17 +97,12 @@ module Groups.Internals where
 			     (\(j,y) -> (j+1, div y p)) (0, m)
 	factor' (_:q) m = factor' q m
 
- modInverse :: Integral a => a -> a -> Maybe a
- modInverse a n = invert (abs n) 0 (modulo a n) 1
-  where invert _ _ 1 x = Just $ modulo x n
-	invert _ _ 0 _ = Nothing
+ modInverse :: Integral a => a -> a -> a
+ modInverse a n = invert n' 0 (mod a n') 1
+  where invert _ _ 1 x = mod x n'
+	invert _ _ 0 _ = error "modInverse: value not invertible"
 	invert u uc l lc = invert l lc (mod u l) (uc - lc * div u l)
-	modulo a' n' = mod a' (abs n')
-
- modInverse' :: Integral a => a -> a -> a
- modInverse' a n = case modInverse a n of
-  Just x  -> x
-  Nothing -> error "Math.NumTheory.modInverse': no inverse exists"
+	n' = abs n
 
  partitions :: Int -> [[Int]]
  partitions n = if n < 1 then undefined else gen n n

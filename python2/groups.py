@@ -398,7 +398,7 @@ class AutCyclic(Group):  # formerly "MultiplicN"
 	    i += 1
 	return i
 
-    ### Rethink these:
+    ### TODO: Rethink these:
     def __str__(self):     return  'Z'          + sub(self.n)  + '^*'
     def __unicode__(self): return u'ℤ'          + subU(self.n) + u'ˣ'
     def LaTeX(self):       return r'\mathbb{Z}' + sub(self.n)  + r'^\times{}'
@@ -412,7 +412,7 @@ def HolCyclic(n):
     g = Cyclic(n)
     h = AutCyclic(n)
     return Semidirect(g, h, lambda y: lambda x: g.elem((x.i * y.i) % n))
-    ### Should __str__ etc. be overridden to show $\Hol(\Z_n)$?
+    ### TODO: Should __str__ etc. be overridden to show $\Hol(\Z_n)$?
 
 def CycSemiCyc(n,m,i):
     if n < 1 or m < 1:

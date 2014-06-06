@@ -1,7 +1,7 @@
 import Data.Array
 import Data.List (intercalate)
 import Groups
-import Groups.Internals (modInverse', cartesian)
+import Groups.Internals (modInverse, cartesian)
 
 group = holCyclic 3
 
@@ -18,7 +18,7 @@ multiplicN' n = Group' {
  g'elems = coprimes,
  g'index = dex,
  g'oper = (\x y -> mod (x*y) n),
- g'invert = (`modInverse'` n),
+ g'invert = (`modInverse` n),
  g'order = ordDex,
  g'id = 1
 } where (coprimes, dex, ordDex) = coprimedex n
