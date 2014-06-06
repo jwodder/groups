@@ -19,6 +19,7 @@ namespace Groups {
   virtual std::string showElem(const Element&) const = 0;
   virtual bool abelian() const = 0;
   virtual Group* copy() const = 0;
+  virtual int cmp(const Group*) const = 0;
   inline bool contains(const Element& x) {return x.gr == this; }
  protected:
   template<class T>

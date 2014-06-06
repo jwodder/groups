@@ -40,4 +40,11 @@ namespace Groups {
  bool Symmetric::abelian() const {return degree < 3; }
 
  Symmetric* Symmetric::copy() const {return new Symmetric(degree); }
+
+ int Symmetric::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Symmetric* c = static_cast<const Symmetric*>(other);
+  return degree - c->degree;
+ }
 }

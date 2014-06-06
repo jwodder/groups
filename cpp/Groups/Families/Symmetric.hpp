@@ -19,6 +19,7 @@ namespace Groups {
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
   virtual Symmetric* copy() const;
+  virtual int cmp(const Group*) const;
  private:
   int degree;
   typedef Permutation elem_t;

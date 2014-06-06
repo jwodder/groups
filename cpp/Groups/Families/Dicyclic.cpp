@@ -51,4 +51,11 @@ namespace Groups {
  bool Dicyclic::abelian() const {return false; }
 
  Dicyclic* Dicyclic::copy() const {return new Dicyclic(n); }
+
+ int Dicyclic::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Dicyclic* c = static_cast<const Dicyclic*>(other);
+  return n - c->n;
+ }
 }

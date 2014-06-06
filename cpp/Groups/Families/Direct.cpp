@@ -75,4 +75,13 @@ namespace Groups {
  bool Direct::abelian() const {return left->abelian() && right->abelian(); }
 
  Direct* Direct::copy() const {return new Direct(left, right); }
+
+ int Direct::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Direct* c = static_cast<const Direct*>(other);
+  int cmpLeft = left->cmp(c->left);
+  if (cmpLeft != 0) return cmpLeft;
+  return right->cmp(c->right);
+ }
 }

@@ -42,5 +42,12 @@ namespace Groups {
 
  Cyclic* Cyclic::copy() const {return new Cyclic(n); }
 
+ int Cyclic::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Cyclic* c = static_cast<const Cyclic*>(other);
+  return n - c->n;
+ }
+
  Element Cyclic::residue(int x) const {return mkElem<elem_t>(x % n); }
 }

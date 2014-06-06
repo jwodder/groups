@@ -18,6 +18,7 @@ namespace Groups {
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
   virtual Cyclic* copy() const;
+  virtual int cmp(const Group*) const;
   Element residue(int) const;
  private:
   int n;

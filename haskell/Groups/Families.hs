@@ -218,6 +218,8 @@ module Groups.Families where
  cycSemiCyc' n m i | mod (i^m) n/=1 = error "cycSemiCyc': invalid homomorphism"
  cycSemiCyc' n m i = semidirect' (cyclic' n) (cyclic' m) (\y x -> mod (x*i^y) n)
 
+ -- |@abelians n@ returns a list of all abelian groups of order @n@ together
+ -- with their invariant factors.
  abelians :: Int -> [(Group, [Int])]
  abelians n | n < 1 = []
  abelians n = map (\xs -> (foldl1 direct $ map cyclic xs, xs))

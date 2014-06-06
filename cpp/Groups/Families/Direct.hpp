@@ -20,10 +20,11 @@ namespace Groups {
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
   virtual Direct* copy() const;
+  virtual int cmp(const Group*) const;
 
-  Group* leftGroup() {return left; }
-  const Group* leftGroup() const {return left; }
-  Group* rightGroup() {return right; }
+	Group* leftGroup()        {return left; }
+  const Group* leftGroup()  const {return left; }
+	Group* rightGroup()       {return right; }
   const Group* rightGroup() const {return right; }
   Element pair(const Element&, const Element&) const;
 

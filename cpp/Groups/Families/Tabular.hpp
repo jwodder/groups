@@ -18,6 +18,7 @@ namespace Groups {
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
   virtual Tabular* copy() const;
+  virtual int cmp(const Group*) const;
  private:
   std::vector< std::vector<int> > table;
   std::vector<int> inverses, orders;

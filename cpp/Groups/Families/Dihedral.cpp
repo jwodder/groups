@@ -50,4 +50,11 @@ namespace Groups {
  bool Dihedral::abelian() const {return n < 3; }
 
  Dihedral* Dihedral::copy() const {return new Dihedral(n); }
+
+ int Dihedral::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Dihedral* c = static_cast<const Dihedral*>(other);
+  return n - c->n;
+ }
 }

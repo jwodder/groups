@@ -19,6 +19,7 @@ namespace Groups {
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
   virtual Dicyclic* copy() const;
+  virtual int cmp(const Group*) const;
  private:
   int n;
   typedef std::pair<int,bool> elem_t;  /* (i,j) */

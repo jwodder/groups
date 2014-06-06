@@ -30,6 +30,7 @@ FEATURES
  - determining whether a subgroup is normal
  - calculating nilpotence classes
  - calculating conjugacy classes
+ - calculating all abelian groups of a given order
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
  - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,
@@ -48,7 +49,6 @@ FEATURES
  - setting how to display i^n = j^2 in dicyclic groups
 - Add a way for the user to create abitrary elements of a Dicyclic, Dihedral,
   Symmetric, or Tabular group
-- Add a method to Group for comparing two Groups? (at least for equality)
 - Add an alternative to/replacement for quaternion() that takes the cardinality
   of the desired group?
 - Add closure functions that send their output to supplied output iterators?

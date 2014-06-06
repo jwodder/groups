@@ -67,4 +67,12 @@ namespace Groups {
  bool Tabular::abelian() const {return abel; }
 
  Tabular* Tabular::copy() const {return new Tabular(*this); }
+
+ int Tabular::cmp(const Group* other) const {
+  int ct = cmpTypes(*this, *other);
+  if (ct != 0) return ct;
+  const Tabular* c = static_cast<const Tabular*>(other);
+  return table < c->table ? -1 : table > c->table ? 1 : 0;
+  /* TODO: Should `strs` also take part in comparisons? */
+ }
 }
