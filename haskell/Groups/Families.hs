@@ -120,10 +120,7 @@ module Groups.Families where
  symmetric' n | n < 1 = undefined
  symmetric' n = Group' {
   g'size = product [1..n],
-  -- TODO: Compare the performances of the two methods for generating $S_n$
-  --g'elems = closure2A P.compose $ map (P.transpose 1) [2..n],
-  g'elems = if n == 1 then [P.identity]
-	    else closure2A P.compose [P.fromCycle [1..n], P.transpose 1 2],
+  g'elems = P.s_n n,
   g'index = P.lehmer,
   g'oper = P.compose,
   g'invert = P.invert,
@@ -145,10 +142,8 @@ module Groups.Families where
   g'order = P.order,
   g'id = P.identity
  } where facN = product [1..n]
-	 -- TODO: Prove that the below is correct!
-	 els = closure2A P.compose [P.fromCycle [1,a,b]
-				    | a <- [2..n], b <- [a+1..n]]
-	 dex = array (0, facN-1) $ zip (sort $ map P.lehmer els) [0..]
+	 els = filter P.isEven $ P.s_n n
+	 dex = array (0, facN-1) $ zip (map P.lehmer els) [0..]
 
  permutation :: [P.Permutation] -> Group
  permutation = mkgroup . permutation'

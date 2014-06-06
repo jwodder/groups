@@ -21,3 +21,4 @@
 - Element.hs: Add a function for constructing from an `Int`
 - Add a function for testing whether a given Subset is normal within another
   Subset
+- Give Permutation an Ix instance?

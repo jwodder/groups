@@ -5,7 +5,7 @@ module Permutation (
   (!), compose, invert,
   -- * Construction
   identity, transpose,
-  next, prev, firstOfDegree,
+  next, prev, firstOfDegree, s_n,
   fromLehmer,
   fromCycle, fromCycles,
   -- * Deconstruction
@@ -158,6 +158,9 @@ module Permutation (
 	i = head [j | j <- [2..n], σ A.! j < σ A.! (j-1)]
 	(xs, y:ys) = span (σ A.! i >=) $ elems σ
 	(zs, _:ws) = splitAt (i - length xs - 2) ys
+
+ s_n :: Int -> [Permutation]
+ s_n n = takeWhile ((<= n) . degree) $ iterate next identity
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

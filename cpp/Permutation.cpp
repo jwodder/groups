@@ -224,3 +224,13 @@ bool Permutation::disjoint(const Permutation& other) const {
  }
  return true;
 }
+
+vector<Permutation> Permutation::s_n(int degree) {
+ vector<Permutation> elems(Groups::factorial(degree), identity());
+ vector<Permutation>::iterator iter = elems.begin();
+ Permutation p = *iter;
+ for (iter++, p++; iter != elems.end(); iter++, p++) {
+  *iter = p;
+ }
+ return elems;
+}

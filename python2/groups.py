@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import itertools
 import operator
 import re
 from   closure     import closure2A
@@ -442,19 +442,8 @@ class Symmetric(Group):
     LaTeX = __str__
     def showElem(self,x):  return str(x.s)
     def LaTeXElem(self,x): return str(x.s).replace(' ', r'\>')
-
     def __iter__(self):
-	if self.n < 2:
-	    return iter([Permutation()])
-	else:
-	    ### TODO: Compare the performances of these two methods:
-	   #return closure(Permutation.transposition(1,i)
-	   #               for i in range(2, self.n+1))
-	    return closure([Permutation.fromCycle(range(1, self.n+1)),
-			    Permutation.transposition(1,2)])
-	    ### TODO: Should this be forced to yield the identity at the
-	    ### beginning of the list?
-
+	return itertools.imap(self.elem, Permutation.s_n(self.n))
 
 def closure(iterable): return closure2A(operator.mul, iterable)
  # assumes the iterable is over Elements of a single Group

@@ -209,6 +209,13 @@ class Permutation(object):
 		map2[:i] = reversed(map2[:i])
 		return self.__class__(map2, lehmer=lehmer2)
 
+    @classmethod
+    def s_n(cls, n):
+        p = cls()
+	while p.degree <= n:
+	    yield p
+	    p = p.next()
+
 
 def gcd(x,y):
     (a,b) = (abs(x), abs(y))

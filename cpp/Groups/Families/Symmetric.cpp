@@ -13,6 +13,15 @@ namespace Groups {
   return mkElem<elem_t>(Permutation::identity());
  }
 
+/* // I can't get this implementation to compile.
+ vector<Element> Symmetric::elements() const {
+  vector<Permutation> sn = Permutation::s_n(degree);
+  vector<Element> elems(sn.size(), identity());
+  transform(sn.begin(), sn.end(), elems.begin(), mkElem<elem_t>);
+  return elems;
+ }
+*/
+
  vector<Element> Symmetric::elements() const {
   vector<Element> elems(factorial(degree), identity());
   vector<Element>::iterator iter = elems.begin();

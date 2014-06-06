@@ -40,6 +40,7 @@ public:
  static Permutation fromLehmer(int);
  static Permutation transposition(int, int);
  static Permutation firstOfDegree(int);
+ static std::vector<Permutation> s_n(int);
 
  int cmp(const Permutation&) const;
  bool operator==(const Permutation& y) const {return cmp(y) == 0; }
