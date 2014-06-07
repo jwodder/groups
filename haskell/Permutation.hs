@@ -5,7 +5,7 @@ module Permutation (
   (!), compose, invert,
   -- * Construction
   identity, transpose,
-  firstOfDegree, s_n,
+  firstOfDegree, lastOfDegree, snBounds, s_n,
   fromLehmer,
   fromCycle, fromCycles,
   -- * Deconstruction
@@ -176,15 +176,30 @@ module Permutation (
 
  -- |@firstOfDegree n@ returns the first 'Permutation' of degree @n@ in
  -- modified Lehmer code order.  If @n@ is 0 or 1 (or anything less than 0),
- -- this is the identity.  For higher degrees, this is @transpose(n, n-1)@.
+ -- this is the identity.  For higher degrees, this is @transpose n (n-1)@.
  firstOfDegree :: Int -> Permutation
  firstOfDegree n | n < 2     = identity
 		 | otherwise = transpose n (n-1)
+
+ -- |@lastOfDegree n@ returns the last 'Permutation' of degree @n@ in
+ -- modified Lehmer code order.  If @n@ is 0 or 1 (or anything less than 0),
+ -- this is the identity.  For higher degrees, this is @pred $ firstOfDegree
+ -- (n+1)@.
+ lastOfDegree :: Int -> Permutation
+ lastOfDegree n | n < 2 = identity
+		| otherwise = Perm $ array (1,n) [(i, n-i+1) | i <- [1..n]]
 
  -- |@s_n n@ returns a sorted list of all 'Permutation's in $S_n$, i.e., all
  -- 'Permutation's of degree at most @n@.
  s_n :: Int -> [Permutation]
  s_n n = takeWhile ((<= n) . degree) $ iterate succ identity
+ -- s_n n = [identity .. lastOfDegree n]
+
+ -- |@snBounds n@ returns the smallest and largest 'Permutation' in $S_n$,
+ -- i.e., @(identity, lastOfDegree n)@.
+ snBounds :: Int -> (Permutation, Permutation)
+ snBounds n | n < 0 = error "Permutation.snBounds: invalid argument"
+	    | otherwise = (identity, lastOfDegree n)
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ
