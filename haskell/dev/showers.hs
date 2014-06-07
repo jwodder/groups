@@ -3,10 +3,11 @@
  multish xs "1" = xs
  multish xs ys = xs ++ ys
 
- shexp :: String -> Int -> String  -- helper function only
- shexp _ 0 = "1"
- shexp var 1 = var
- shexp var n = var ++ '^' : show n
+ showCyclic :: String -> Int -> String
+ showCyclic _ 0 = "1"
+ showCyclic var 1 = var
+ showCyclic var n | 1 < n && n < 10 = var ++ '^' : show n
+		  | otherwise       = var ++ "^{" ++ show n ++ "}"
 
  showKlein :: (Bool, Bool) -> String
  showKlein (False, False) = "1"
@@ -14,8 +15,17 @@
  showKlein (True,  False) = "b"
  showKlein (True,  True)  = "c"
 
- showAB :: (a -> String) -> (b -> String) -> (a,b) -> String
- showAB sha shb (a,b) = multish (sha a) (shb b)
+ showKlein' :: (Bool, Bool) -> String
+ showKlein' (False, False) = "1"
+ showKlein' (False, True)  = "a"
+ showKlein' (True,  False) = "b"
+ showKlein' (True,  True)  = "ab"
+
+ showCrossPair :: (a -> String) -> (b -> String) -> (a,b) -> String
+ showCrossPair sha shb (a,b) = '(' : sha a ++ ", " ++ shb b ++ ")"
+
+ showCrossAB :: (a -> String) -> (b -> String) -> (a,b) -> String
+ showCrossAB sha shb (a,b) = multish (sha a) (shb b)
 
  showSemiBA :: Group' (a,b) -> (a -> String) -> (b -> String) -> (a,b) -> String
  showSemiBA g sha shb (a,b) = multish (shb b) (sha a')
@@ -38,10 +48,10 @@
 
  showDicyclic :: Int -> (Int, Bool) -> String
  showDicyclic n (i,j) | i >= n = '-' : showDicyclic n (i-n, j)
- showDicyclic _ (i,j) = multish (shexp "i" i) (j ?: "j" :? "1")
+ showDicyclic _ (i,j) = multish (showCyclic "i" i) (j ?: "j" :? "1")
 
- showDih :: (Bool, Int) -> String
- showDih (s,r) = multish (s ?: "s" :? "1") (shexp "r" r)
+ showDihedral :: (Bool, Int) -> String
+ showDihedral (s,r) = multish (s ?: "s" :? "1") (showCyclic "r" r)
 
  -- custom shower for Q_8 ⋊ Z_2:
  showQ8sZ2 :: ((Int, Bool), Bool) -> String

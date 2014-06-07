@@ -5,7 +5,7 @@ module Permutation (
   (!), compose, invert,
   -- * Construction
   identity, transpose,
-  next, prev, firstOfDegree, s_n,
+  firstOfDegree, s_n,
   fromLehmer,
   fromCycle, fromCycles,
   -- * Deconstruction
@@ -18,11 +18,18 @@ module Permutation (
  import Data.List (intercalate, (\\))
  import Data.Monoid
 
+ -- |A permutation of finitely many positive integers.
+ --
+ -- The 'Ord' and 'Enum' instances are based on the ordering implied by the
+ -- modified Lehmer codes used by the 'lehmer' and 'fromLehmer' functions.
+ -- 'Ord' sorts 'Permutation's into the same order as their respective modified
+ -- Lehmer codes, and 'Enum' enumerates 'Permutation' values in modified Lehmer
+ -- code order.  'fromEnum' and 'toEnum' are equal to 'lehmer' and
+ -- 'fromLehmer', respectively.  The smallest modified Lehmer code, 0, belongs
+ -- to 'identity', the smallest 'Permutation'.  There is no upper bound.
  newtype Permutation = Perm (Array Int Int) deriving (Eq)
 
  instance Ord Permutation where
-  -- This comparison method produces the same ordering as the modified Lehmer
-  -- codes.
   compare s@(Perm σ) t@(Perm τ) = compare (degree s, map (τ A.!) xedni)
 					  (degree t, map (σ A.!) xedni)
    where xedni = [degree s, degree s-1 .. 1]
@@ -35,6 +42,33 @@ module Permutation (
  instance Show Permutation where
   showsPrec p σ = showParen (p > 10) $ showString "fromCycles "
 				     . shows (toCycles σ)
+
+ instance Enum Permutation where
+  fromEnum = lehmer
+  toEnum   = fromLehmer
+
+  -- The default implementations of `enumFrom` and `enumFromTo` listed in the
+  -- standard don't seem efficient enough for Permutation.  `enumFromThen` and
+  -- `enumFromThenTo`, on the other hand...
+  enumFrom = iterate succ
+  enumFromTo x z = takeWhile (<= z) $ iterate succ x
+
+  succ s | degree s < 2 = transpose 1 2
+  succ (Perm σ) = case [i | i <- [2..n], σ A.! i > σ A.! (i-1)] of
+		   []  -> firstOfDegree (n+1)
+		   i:_ -> let (xs, y:ys) = span (σ A.! i <=) $ elems σ
+			      (zs, _:ws) = splitAt (i - length xs - 2) ys
+			  in trim $ Perm $ listArray (1,n)
+				  $ reverse (xs ++ (σ A.! i) : zs) ++ y : ws
+   where n = degree (Perm σ)
+
+  pred s | degree s < 2 = error "pred(Permutation): cannot decrement identity"
+  pred (Perm σ) = trim $ Perm $ listArray (1,n) $ reverse (xs ++ (σ A.! i) : zs)
+						   ++ y : ws
+   where n = degree (Perm σ)
+	 i = head [j | j <- [2..n], σ A.! j < σ A.! (j-1)]
+	 (xs, y:ys) = span (σ A.! i >=) $ elems σ
+	 (zs, _:ws) = splitAt (i - length xs - 2) ys
 
  instance Monoid Permutation where
   mempty  = identity
@@ -136,31 +170,10 @@ module Permutation (
  firstOfDegree n | n < 2     = identity
 		 | otherwise = transpose n (n-1)
 
- -- |Returns the next 'Permutation' in modified Lehmer code order
- next :: Permutation -> Permutation
- next s | degree s < 2 = transpose 1 2
- next (Perm σ) = case [i | i <- [2..n], σ A.! i > σ A.! (i-1)] of
-		  []  -> firstOfDegree (n+1)
-		  i:_ -> let (xs, y:ys) = span (σ A.! i <=) $ elems σ
-			     (zs, _:ws) = splitAt (i - length xs - 2) ys
-			 in trim $ Perm $ listArray (1,n)
-				 $ reverse (xs ++ (σ A.! i) : zs) ++ y : ws
-  where n = degree (Perm σ)
-
- -- |Returns the previous @Permutation@ in modified Lehmer code order.  If the
- -- identity (which has Lehmer code 0) is passed to this function, it is an
- -- error.
- prev :: Permutation -> Permutation
- prev s | degree s < 2 = error "Permutation.prev: cannot decrement identity"
- prev (Perm σ) = trim $ Perm $ listArray (1,n) $ reverse (xs ++ (σ A.! i) : zs)
-						  ++ y : ws
-  where n = degree (Perm σ)
-	i = head [j | j <- [2..n], σ A.! j < σ A.! (j-1)]
-	(xs, y:ys) = span (σ A.! i >=) $ elems σ
-	(zs, _:ws) = splitAt (i - length xs - 2) ys
-
+ -- |@s_n n@ returns a sorted list of all 'Permutation's in $S_n$, i.e., all
+ -- 'Permutation's of degree at most @n@.
  s_n :: Int -> [Permutation]
- s_n n = takeWhile ((<= n) . degree) $ iterate next identity
+ s_n n = takeWhile ((<= n) . degree) $ iterate succ identity
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

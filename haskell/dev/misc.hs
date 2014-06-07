@@ -1,19 +1,17 @@
  mkelem :: Group' a -> a -> Element
  mkelem g x = Element (g'index g x, mkgroup g)
 
- newtype Subgroup = Subgroup (Subset, Group)
+ newtype Subgroup = Subgroup Subset
+
+ newtype NormalSub = NormalSub Subgroup
+
+ newtype Homomorph = HM (Group, Group, Array Int Int)
 
  newtype Aut = Aut (Group, Array (Int, Int) Int, Group)
   -- Fields:
   -- * structure of the automorphism group
   -- * mapping from automorphism IDs to group IDs to automorphed group IDs
   -- * group of which this is the Aut
-
- (≤) :: [Element] -> Group -> Bool
- (⊴) :: [Element] -> Group -> Bool
- quotient :: Group -> [Element] -> Group
- mksubgroup :: [Element] -> Group
- (⨯) = direct
 
  -- Given a group $G$ and a subgroup $H$, returns a list of arbitrarily-chosen
  -- representatives of left cosets of $H$ (in ascending order) and a mapping
