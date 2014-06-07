@@ -213,8 +213,8 @@ class Element(object):
 
 class Cyclic(Group):
 ### Should steps be taken to ensure that n is always positive?
-    groupParams = ['n']
-    elemParams  = ['i']
+    groupParams = ('n',)
+    elemParams  = ('i',)
     def identity(self):    return self.elem(0)
     def oper(self,x,y):    return self.elem((x.i + y.i) % self.n)
     def invert(self,x):    return self.elem(-x.i % self.n)
@@ -232,12 +232,12 @@ class Cyclic(Group):
 
 
 class Semidirect(Group):
-    groupParams = ['g', 'h', 'phi']
+    groupParams = ('g', 'h', 'phi')
     # It is the user's responsibility to ensure that phi is an actual valid
     # homomorphism from the Elements of h to the automorphism group on the
     # Elements of g.
 
-    elemParams  = ['a', 'b']
+    elemParams  = ('a', 'b')
     # Note that the parameters of the elements here are Element objects of the
     # component classes, not raw parameter tuples.  Will I regret this later?
 
@@ -281,8 +281,8 @@ class Semidirect(Group):
 
 
 class DirectProduct(Semidirect):
-    groupParams = ['g', 'h']
-    elemParams  = ['a', 'b']
+    groupParams = ('g', 'h')
+    elemParams  = ('a', 'b')
     def oper(self, x, y):  return self.elem(x.a * y.a, x.b * y.b)
     def invert(self, x):   return self.elem(~x.a, ~x.b)
     def order(self,x):     return lcm(x.a.order, x.b.order)
@@ -302,8 +302,8 @@ class DirectProduct(Semidirect):
 
 class Dicyclic(Group):
 ### Should steps be taken to ensure that n is always positive?
-    groupParams = ['n']
-    elemParams  = ['i', 'j']
+    groupParams = ('n',)
+    elemParams  = ('i', 'j')
 
     def identity(self): return self.elem(0, False)
 
@@ -345,8 +345,8 @@ def Quaternion(n=2):
 
 
 class Dihedral(Group):
-    groupParams = ['n']   ### n must be positive.
-    elemParams  = ['s', 'r']
+    groupParams = ('n',)   ### n must be positive.
+    elemParams  = ('s', 'r')
 
     def identity(self): return self.elem(False, 0)
     def invert(self,x): return x if x.s else self.elem(False, -x.r % self.n)
@@ -370,8 +370,8 @@ class Dihedral(Group):
 
 
 class Trivial(Group):
-    groupParams = []
-    elemParams  = []
+    groupParams = ()
+    elemParams  = ()
     def identity(self):    return self.elem()
     def oper(self,x,y):    return x
     def invert(self,x):    return x
@@ -386,8 +386,8 @@ class Trivial(Group):
 
 
 class Klein4(Group):
-    groupParams = []
-    elemParams  = ['a', 'b']
+    groupParams = ()
+    elemParams  = ('a', 'b')
     def identity(self):    return self.elem(False, False)
     def oper(self,x,y):    return self.elem(x.a != y.a, x.b != y.b)
     def invert(self,x):    return x
@@ -404,8 +404,8 @@ class Klein4(Group):
 
 
 class AutCyclic(Group):  # formerly "MultiplicN"
-    groupParams = ['n']
-    elemParams  = ['i']
+    groupParams = ('n',)
+    elemParams  = ('i',)
 
     def __init__(self, n):
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
@@ -455,8 +455,8 @@ def CycSemiCyc(n,m,i):
 
 
 class Symmetric(Group):
-    groupParams = ['n']  ### Must be a nonnegative integer
-    elemParams  = ['s']  # `s` is a Permutation object
+    groupParams = ('n',)  ### Must be a nonnegative integer
+    elemParams  = ('s',)  # `s` is a Permutation object
     def identity(self):    return self.elem(Permutation())
     def oper(self,x,y):    return self.elem(x.s * y.s)
     def invert(self,x):    return self.elem(x.s.inverse)
