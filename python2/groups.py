@@ -10,9 +10,8 @@ __all__ = ["Group", "Element",
 	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
 	   "CycSemiCyc", "Symmetric",
 	   "getGroup",
-	   "closure", "isHomomorphism", "isHomomorphismFrom", "centralizer",
-	   "center", "normalizer", "isNormal", "isSubgroup", "commutators",
-	   "conjugacies", "nilpotence", "isAbelian"]
+	   "closure", "isHomomorphism", "isHomomorphismFrom", "isClosed",
+	   "commutators"]
 
 class Metagroup(type):
     def __new__(mcs, name, bases, dict):
@@ -99,27 +98,53 @@ class Group(object):
 
     def centralizer(self, elems):
 	elems = list(elems)
-	return filter(lambda x: all(x*y == y*x for y in elems), iter(self))
-	### Should this use `itertools.ifilter` instead?
+	return filter(lambda x: all(x*y == y*x for y in elems), self)
 
-    def center(self): return self.centralizer(self.elements())
+    def center(self): return self.centralizer(self)
 
     def normalizer(self, elems):
 	elems = set(elems)
-	return filter(lambda x: all(x * y * ~x in elems for y in elems),
-		      iter(self))
-	### Should this use `itertools.ifilter` instead?
+	return filter(lambda x: all(x*y/x in elems for y in elems), self)
 
     def isNormal(self, elems):
 	# whether `elems` is actually a subgroup is not checked
 	elems = set(elems)
-	return all(x * y * ~x in elems for x in self for y in elems)
+	return all(x*y/x in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
 	elems = set(elems)
 	return bool(elems) \
 	   and all(x in self for x in elems) \
 	   and all(x*y in elems for x in elems for y in elems)
+
+    def isAbelian(self): return all(x*y == y*x for x in self for y in self)
+
+    def conjugacies(self):
+	yield set([self.identity()])
+	left = set(self)
+	left.remove(self.identity())
+	while left:
+	    least = minimum(left)
+	    cc = set(x * least / x for x in left)
+	    yield cc
+	    left -= cc
+
+    def nilpotence(self):
+	if len(self) == 1: return 0
+	def lowerCentrals():
+	    whole = set(self)
+	    h = whole
+	    while True:
+		yield h
+		h = commutators(whole, h)
+	i = 1
+	lc = lowerCentral()
+	prev = lc.next()
+	for h in lc:
+	    if h == prev: return None
+	    if len(h) == 1: return i
+	    i += 1
+	    prev = h
 
 
 class Element(object):
@@ -476,57 +501,14 @@ def isHomomorphismFrom(phi, g):
        already known to return elements of a single group."""
     return all(phi(x)*phi(y) == phi(x*y) for x in group for y in group)
 
-def centralizer(g, iterable):
-    alist = list(iterable)
-    return [x for x in g if all(x*a/x == a for a in alist)]
-
-def center(g): return [x for x in g if all(x*a/x == a for a in g)]
-
-def normalizer(g, iterable):
-    aset = set(iterable)
-    return [x for x in g if all(x*a/x in aset for a in aset)]
-
-def isNormal(g, iterable):
-    aset = set(iterable)
-    return all(x*a/x in aset for x in g for a in aset)
-
-def isSubgroup(iterable):
+def isClosed(iterable):
     hset = set(iterable)
-    return all(x/y in hset for x in hset for y in hset)
+    return hset and all(x/y in hset for x in hset for y in hset)
 
 def commutators(iterable1, iterable2):
     aset = set(iterable1)
     bset = set(iterable2)
     return closure(~(y*x) * (x*y) for x in aset for y in bset)
-
-def conjugacies(g):
-    yield set([g.identity()])
-    left = set(g)
-    left.remove(g.identity())
-    while left:
-	least = minimum(left)
-	cc = set(x * least / x for x in left)
-	yield cc
-	left -= cc
-
-def nilpotence(g):
-    if len(g) == 1: return 0
-    def lowerCentrals():
-	whole = set(g)
-	h = whole
-	while True:
-	    yield h
-	    h = commutators(whole, h)
-    i = 1
-    lc = lowerCentral()
-    prev = lc.next()
-    for h in lc:
-	if h == prev: return None
-	if len(h) == 1: return i
-	i += 1
-	prev = h
-
-def isAbelian(g): return all(x*y == y*x for x in g for y in g)
 
 # Internal functions: ---------------------------------------------------------
 
