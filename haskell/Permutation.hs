@@ -70,6 +70,17 @@ module Permutation (
 	 (xs, y:ys) = span (σ A.! i >=) $ elems σ
 	 (zs, _:ws) = splitAt (i - length xs - 2) ys
 
+ instance Ix Permutation where
+  range (a,b) = [a..b]
+
+  index (a,b) x | inRange (a,b) x = lehmer x - lehmer a
+		| otherwise = error "index(Permutation): value not in range"
+
+  inRange (a,b) x = a <= x && x <= b
+
+  rangeSize (a,b) | a <= b = lehmer b - lehmer a + 1
+		  | otherwise = 0
+
  instance Monoid Permutation where
   mempty  = identity
   mappend = compose
