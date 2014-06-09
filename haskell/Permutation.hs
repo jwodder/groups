@@ -8,8 +8,9 @@ module Permutation (
   firstOfDegree, lastOfDegree, snBounds, s_n,
   fromLehmer,
   fromCycle, fromCycles,
+  fromArray,
   -- * Deconstruction
-  toCycles, showCycles,
+  toCycles, showCycles, toArray,
   -- * Properties
   order, isEven, isOdd, sign, degree, lehmer, disjoint
  ) where
@@ -200,6 +201,16 @@ module Permutation (
  snBounds :: Int -> (Permutation, Permutation)
  snBounds n | n < 0 = error "Permutation.snBounds: invalid argument"
 	    | otherwise = (identity, lastOfDegree n)
+
+ toArray :: Permutation -> Array Int Int
+ toArray (Perm σ) = σ
+
+ fromArray :: Array Int Int -> Permutation
+ fromArray σ | rangeSize (a,b) == 0 = identity
+	     | a < 1 = error "Permutation.fromArray: values must be positive"
+	     | all (== 1) $ elems $ accumArray (+) (0 :: Int) (a,b) [(x,1) | x <- elems σ] = trim $ Perm $ array (1,b) $ [(i,i) | i <- [1..a-1]] ++ assocs σ
+	     | otherwise = error "Permutation.fromArray: each index must be an element exactly once"
+	     where (a,b) = bounds σ
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ
