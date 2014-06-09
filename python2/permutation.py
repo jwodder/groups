@@ -216,6 +216,19 @@ class Permutation(object):
 	    yield p
 	    p = p.next()
 
+    def toImage(self): return self._map
+
+    @classmethod
+    def fromImage(cls, img):
+	img = tuple(img)
+	used = [False] * len(img)
+	for i in img:
+	    if i < 1: raise ValueError('values must be positive')
+	    if i > len(img): raise ValueError('value missing from input')
+	    if used[i-1]: raise ValueError('value repeated in input')
+	    used[i-1] = True
+	return cls(img)
+
 
 def gcd(x,y):
     (a,b) = (abs(x), abs(y))
