@@ -22,6 +22,7 @@ public:
  Permutation inverse() const;
  std::vector< std::vector<int> > toCycles() const;
  bool disjoint(const Permutation& other) const;
+ std::vector<int> toImage() const;
 
  int operator()(int) const;
  Permutation operator*(const Permutation&) const;
@@ -40,6 +41,7 @@ public:
  static Permutation fromLehmer(int);
  static Permutation transposition(int, int);
  static Permutation firstOfDegree(int);
+ static Permutation fromImage(const std::vector<int>&);
  static std::vector<Permutation> s_n(int);
 
  int cmp(const Permutation&) const;
@@ -49,6 +51,11 @@ public:
  bool operator>=(const Permutation& y) const {return cmp(y) >= 0; }
  bool operator<=(const Permutation& y) const {return cmp(y) <= 0; }
  bool operator!=(const Permutation& y) const {return cmp(y) != 0; }
+
+ template<class Iter>
+ static Permutation fromImage(Iter first, Iter last) {
+  return fromImage(std::vector<int>(first, last));
+ }
 
  template<class Iter>
  static Permutation fromCycle(Iter first, Iter last) {

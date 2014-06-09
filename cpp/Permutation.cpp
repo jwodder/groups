@@ -234,3 +234,20 @@ vector<Permutation> Permutation::s_n(int degree) {
  }
  return elems;
 }
+
+vector<int> Permutation::toImage() const {return pmap; }
+
+Permutation Permutation::fromImage(const vector<int>& img) {
+ vector<bool> used(img.size(), false);
+ vector<int>::const_iterator iter;
+ for (iter = img.begin(); iter != img.end(); iter++) {
+  if (*iter < 1)
+   throw invalid_argument("Permutation::fromImage: values must be positive");
+  if (*iter > (int) img.size())
+   throw invalid_argument("Permutation::fromImage: value missing from input");
+  if (used[*iter-1])
+   throw invalid_argument("Permutation::fromImage: value repeated in input");
+  used[*iter-1] = true;
+ }
+ return Permutation(img);
+}

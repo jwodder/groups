@@ -5,7 +5,6 @@
  - Features that the Haskell version is behind on:
   - Converting elements to strings
   - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
-- Prefix the `Group`, `Element`, and `Subset` constructors with "Mk"?
 - Make Subgroups.hs use `Subset`s instead of `IntSet`s
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
   then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &
@@ -20,4 +19,4 @@
 - Ops.hs: Make `norms` and `centers` take `Element`s intead of `Int`s
 - Element.hs: Add a function for constructing from an `Int`
 - Add a function for testing whether a given Subset is normal within another
-  Subset
+  Subset?
