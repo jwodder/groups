@@ -6,6 +6,7 @@ def abelians(n):
     """Returns an iterator over all abelian groups of order `n` paired with
        lists of their invariant factors"""
     if n < 1: return
+    elif n == 1: yield (Trivial, [])
     else:
 	vals = []
 	for (p,k) in factor(n):
