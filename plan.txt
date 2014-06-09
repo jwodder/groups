@@ -15,13 +15,15 @@ least one language.
  * all elements of a group
  * whether an element is in a group
  * whether a group is abelian
- * algebraic closures
+ * closures of subsets
  * centralizers, centers, and normalizers
  * subgroups of a group
  * whether a subgroup is normal
+ - whether a subgroup is characteristic
  - automorphisms and groups thereof
  - whether two groups are isomorphic
  - commutators
+ - lower central and upper central series
  * nilpotence class
  - whether a group is solvable
  - whether a group is simple

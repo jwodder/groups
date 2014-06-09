@@ -136,7 +136,7 @@ class Group(object):
 	    h = whole
 	    while True:
 		yield h
-		h = commutators(whole, h)
+		h = set(commutators(whole, h))
 	i = 1
 	lc = lowerCentral()
 	prev = lc.next()
@@ -473,7 +473,8 @@ class Symmetric(Group):
 def closure(iterable): return closure2A(operator.mul, iterable)
  # assumes the iterable is over Elements of a single Group
  # returns an iterator
- ### Should this be a method of Group instead of a function?
+ ### TODO: Should this be a method of Group instead of a function?
+ ### TODO: Should this return a set?
 
 def getGroup(iterable):
     """Returns the Group in which all of the elements of the iterable are
@@ -506,6 +507,7 @@ def isClosed(iterable):
     return hset and all(x/y in hset for x in hset for y in hset)
 
 def commutators(iterable1, iterable2):
+    ### TODO: Should this return a set?
     aset = set(iterable1)
     bset = set(iterable2)
     return closure(~(y*x) * (x*y) for x in aset for y in bset)
