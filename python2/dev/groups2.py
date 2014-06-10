@@ -45,21 +45,34 @@ class group(object):
 
     paramNames = None
 
-    ### __contains__
+    def identity(self):    raise NotImplementedError
+    def oper(self,x,y):    raise NotImplementedError
+    def invert(self,x):    raise NotImplementedError
+    def order(self,x):     raise NotImplementedError
+    def indexElem(self,x): raise NotImplementedError
+    def LaTeX(self):       raise NotImplementedError
+    def showElem(self,x):  raise NotImplementedError
+    def LaTeXElem(self,x): raise NotImplementedError
 
     def showUElem(self,x): return uniexp(self.showElem(x))
     def __unicode__(self): return uniexp(str(self))
+
+    # Subclasses also need to define __len__, __iter__, __str__, and
+    # (optionally) __unicode__.
+
+    ### __contains__
 
     @property
     def family(self): return self.__class__.__name__
 
     def __hash__(self): return hash((self.family, self.params))
-    def __mul__(self, other): return DirectProduct(self, other)
+
+    ###def __mul__(self, other): return DirectProduct(self, other)
 
     def __nonzero__(self): return len(self) > 1
 
     def __cmp__(self, other):
-	return cmp(type(self), type(other)) or cmp(self.group, other.group)
+	return cmp(type(self), type(other)) or cmp(self.params, other.params)
 
     def __repr__(self):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
@@ -70,34 +83,44 @@ class group(object):
 
     def centralizer(self, elems):
 	elems = list(elems)
-	return filter(lambda x: all(x*y == y*x for y in elems), self)
+	op = self.oper
+	return filter(lambda x: all(op(x,y) == op(y,x) for y in elems), self)
 
     def center(self): return self.centralizer(self)
 
     def normalizer(self, elems):
 	elems = set(elems)
-	return filter(lambda x: all(x*y/x in elems for y in elems), self)
+	op = self.oper
+	inv = self.invert
+	return filter(lambda x: all(op(op(x,y), inv(x)) in elems for y in elems), self)
 
     def isNormal(self, elems):
 	# whether `elems` is actually a subgroup is not checked
 	elems = set(elems)
-	return all(x*y/x in elems for x in self for y in elems)
+	op = self.oper
+	inv = self.invert
+	return all(op(op(x,y), inv(x)) in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
 	elems = set(elems)
+	op = self.oper
 	return bool(elems) \
 	   and all(x in self for x in elems) \
-	   and all(x*y in elems for x in elems for y in elems)
+	   and all(op(x,y) in elems for x in elems for y in elems)
 
-    def isAbelian(self): return all(x*y == y*x for x in self for y in self)
+    def isAbelian(self):
+	op = self.oper
+        return all(op(x,y) == op(y,x) for x in self for y in self)
 
     def conjugacies(self):
 	yield set([self.identity()])
 	left = set(self)
 	left.remove(self.identity())
+	op = self.oper
+	inv = self.invert
 	while left:
 	    least = minimum(left)
-	    cc = set(x * least / x for x in left)
+	    cc = set(op(op(x,least), inv(x)) for x in left)
 	    yield cc
 	    left -= cc
 
