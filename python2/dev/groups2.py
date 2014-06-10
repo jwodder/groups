@@ -13,80 +13,48 @@ __all__ = ["Group", "Element",
 	   "closure", "isHomomorphism", "isHomomorphismFrom", "isClosed",
 	   "commutators"]
 
-class Metagroup(type):
-    def __new__(mcs, name, bases, dict):
-	groupParams = dict.get('groupParams', None)
-	elemParams  = dict.get('elemParams',  None)
-	if groupParams is None:
-	    def badInit(self, *args):
-		raise NotImplementedError('groupParams is not defined')
-	    dict['__init__'] = badInit
-	elif elemParams is None:
-	    def badInit(self, *args):
-		raise NotImplementedError('elemParams is not defined')
-	    dict['__init__'] = badInit
-	else:
-	    def getParam(i): return property(lambda self: self._params[i])
-	    # getParam is needed to get around the fact that the lambdas
-	    # created by `for i in foo: x = lambda y: i` will end up returning
-	    # the value of `i` as of the end of the execution of the enclosing
-	    # function (__new__) rather than as of the lambdas' creations.
-	    # Creating a new namespace via a function definition avoids this.
-	    gpqty = len(groupParams)
-	    init0 = dict.get('__init__', None)
-	    def init(self, *args):
-		if len(args) != gpqty:
-		    raise TypeError('Constructor takes exactly %d argument%s'
-				     % (gpqty, 's' if gpqty != 1 else ''))
-		self._params = args
-		if init0 is not None: init0(self, *args)
-	    dict['__init__'] = init
-	    for i,p in enumerate(groupParams): dict[p] = getParam(i)
-	    epqty = len(elemParams)
-	    def elemInit(self, args, group):
-		if len(args) != epqty:
-		    raise TypeError('Constructor takes exactly %d argument%s'
-				     % (epqty, 's' if epqty != 1 else ''))
-		self._params = tuple(args)
-		self._group = group
-	    elemDict = {"__init__": elemInit, "elemParams": elemParams}
-	    for i,p in enumerate(elemParams): elemDict[p] = getParam(i)
-	    dict['Element'] = type('Element', (Element,), elemDict)
-	return type.__new__(mcs, name, bases, dict)
-
-
 class Group(object):
-    __metaclass__ = Metagroup
+    def __init__(self, rawGroup):
+        if isinstance(rawGroup, Group):
+	    self.group = rawGroup.group
+	else:
+	    self.group = rawGroup
 
-    groupParams = None
-    elemParams  = None
-    def identity(self):    raise NotImplementedError
-    def oper(self,x,y):    raise NotImplementedError
-    def invert(self,x):    raise NotImplementedError
-    def order(self,x):     raise NotImplementedError
-    def indexElem(self,x): raise NotImplementedError
-    def LaTeX(self):       raise NotImplementedError
-    def showElem(self,x):  raise NotImplementedError
-    def showUElem(self,x): return uniexp(self.showElem(x))
-    def LaTeXElem(self,x): raise NotImplementedError
-    def __unicode__(self): return uniexp(str(self))
+    def identity(self): return Element(self.group.identity(), self)
 
-    # Subclasses also need to define __len__, __iter__, __str__, and
-    # (optionally) __unicode__.
+    def oper(self,x,y): return Element(self.group.oper(x.value, y.value), self)
+
+    def invert(self,x): return Element(self.group.invert(x.value), self)
+
+    def order(self,x):     return self.group.order(x.value)
+    def indexElem(self,x): return self.group.indexElem(x.value)
+    def LaTeX(self):       return self.group.LaTeX()
+    def showElem(self,x):  return self.group.showElem(x.value)
+
+    #def showUElem(self,x): return uniexp(self.showElem(x))
+    def showUElem(self,x):  return self.group.showUElem(x.value)
+
+    def LaTeXElem(self,x): return self.group.LaTeXElem(x.value)
+
+    def __len__(self): return len(self.group)
+    def __iter__(self): return itertools.imap(lambda x: Element(x, self), self.group)
+
+    def __str__(self): return str(self.group)
+
+    #def __unicode__(self): return uniexp(str(self))
+    def __unicode__(self): return unicode(self.group)
 
     @property
-    def params(self): return self._params
-
-    @property
-    def family(self): return self.__class__.__name__
+    #def family(self): return self.__class__.__name__
+    def family(self): return self.group.__class__.__name__
 
     def __cmp__(self, other):
-	return cmp(type(self), type(other)) or cmp(self.params, other.params)
+	return cmp(type(self), type(other)) or cmp(self.group, other.group)
 
-    def __contains__(self, x): return x.group == self  ### Use `is` instead?
+    def __contains__(self, x): return x.group == self
     def __nonzero__(self): return len(self) > 1
-    def __hash__(self): return hash((self.family, self.params))
-    def __mul__(self, other): return DirectProduct(self, other)
+    ###def __hash__(self): return hash((self.family, self.params))
+    ###def __mul__(self, other): return DirectProduct(self, other)
 
     def __repr__(self):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
@@ -148,11 +116,9 @@ class Group(object):
 
 
 class Element(object):
-    @property
-    def params(self): return self._params
-
-    @property
-    def group(self): return self._group
+    def __init__(self, val, gr):
+        self.value = val
+	self.group = gr
 
     @property
     def order(self): return self.group.order(self)
@@ -167,7 +133,7 @@ class Element(object):
 
     def __repr__(self):
 	return '%s.Element(%r, %r)' \
-		% (self.group.family, self.params, self.group)
+		% (self.group.family, self.value, self.group)
 
     def __str__(self):     return self.group.showElem(self)
     def __unicode__(self): return self.group.showUElem(self)
@@ -176,12 +142,12 @@ class Element(object):
     def __cmp__(self, other):
     ### Should sorting be based on element indices instead of params?
 	return cmp(type(self), type(other)) or \
-	       cmp((self.group, self.params), (other.group, other.params))
+	       cmp((self.group, self.value), (other.group, other.value))
 
     def __hash__(self): return self.index
      ### Should type and/or group information also be included when hashing?
 
-    def __nonzero__(self): return self.params != self.group.identity().params
+    def __nonzero__(self): return self.value != self.group.identity().value
 
     def __pow__(self, n):
 	order = self.order
@@ -211,24 +177,22 @@ class Element(object):
 	while x: yield x; x *= self
 
 
-class Cyclic(Group):
+class Cyclic(object):
 ### Should steps be taken to ensure that n is always positive?
     groupParams = ('n',)
-    elemParams  = ('i',)
-    def identity(self):    return self.elem(0)
-    def oper(self,x,y):    return self.elem((x.i + y.i) % self.n)
-    def invert(self,x):    return self.elem(-x.i % self.n)
+    def identity(self):    return 0
+    def oper(self,x,y):    return (x + y) % self.n
+    def invert(self,x):    return -x.i % self.n
     def __len__(self):     return self.n
-    def __iter__(self):    return (self.elem(i) for i in range(self.n))
-    def order(self,x):     return cycOrd(self.n, x.i)
-    def indexElem(self,x): return x.i
+    def __iter__(self):    return xrange(self.n)
+    def order(self,x):     return cycOrd(self.n, x)
+    def indexElem(self,x): return x
     def __str__(self):     return  'Z' + sub(self.n)
     def __unicode__(self): return u'ℤ' + subU(self.n)
     def LaTeX(self):       return r'\mathbb{Z}' + sub(self.n)
-    def showElem(self,x):  return shexp('x', x.i)
+    def showElem(self,x):  return shexp('x', x)
      ### TODO: Add an option for changing the name of the variable
     LaTeXElem = showElem
-    def elem(self,i):      return self.Element((i % self.n,), self)
 
 
 class Semidirect(Group):
@@ -237,40 +201,40 @@ class Semidirect(Group):
     # homomorphism from the Elements of h to the automorphism group on the
     # Elements of g.
 
-    elemParams  = ('a', 'b')
-    # Note that the parameters of the elements here are Element objects of the
-    # component classes, not raw parameter tuples.  Will I regret this later?
+    def identity(self): return (self.g.identity(), self.h.identity())
 
-    def identity(self): return self.elem(self.g.identity(), self.h.identity())
-    def oper(self,x,y): return self.elem(x.a * self.phi(x.b)(y.a), x.b * y.b)
-    def invert(self,x): return self.elem(self.phi(~x.b)(~x.a), ~x.b)
+    def oper(self,x,y):
+        return (self.g.oper(x[0] * self.phi(x[1])(y[0])),
+		self.h.oper(x[1] * y[1]))
+
+    def invert(self,x):
+        return (self.phi(h.invert(x[1]))(g.invert(x[0])), h.invert(x[1]))
+
     def __len__(self):  return len(self.g) * len(self.h)
-    def __iter__(self): return (self.elem(a,b) for a in self.g for b in self.h)
-    def indexElem(self,x): return x.a.index * len(g) + x.b.index
+    def __iter__(self): return ((a,b) for a in self.g for b in self.h)
+    def indexElem(self,x): return g.indexElem(x[0]) * len(g) + h.indexElem(x[1])
 
     def order(self, x):
 	# Should the results be cached somehow?
 	i=1
 	val=x
-	while val.a and val.b:
-	    val *= x
+	while val[0] != self.g.identity() and val[1] != self.h.identity():
+	    val = self.oper(val, x)
 	    i += 1
-	return i * (val.a or val.b).order
+	if val[0] == self.g.identity(): return i * self.h.order(val[1])
+	else: return i * self.g.order(val[0])
 
     def showElem(self,x):
-	if x.a or x.b: return '(%s, %s)' % (x.a, x.b)
-	else: return '1'
+	if x == self.identity(): return '1'
+	else: return '(%s, %s)' % (self.g.showElem(x[0]), self.h.showElem(x[1]))
 
     def showUElem(self,x):
-	if x.a or x.b: return u'(%s, %s)' % (unicode(x.a), unicode(x.b))
-	# Testing seems to imply that the explicit calls to unicode() are
-	# unnecessary when formatting a Unicode string, but I can't find this
-	# behavior explicitly documented anywhere.
-	else: return u'1'
+	if x == self.identity(): return u'1'
+	else: return u'(%s, %s)' % (self.g.showUElem(x[0]), self.h.showUElem(x[1]))
 
     def LaTeXElem(self,x):
-	if x.a or x.b: return '(%s, %s)' % (x.a.LaTeX(), x.b.LaTeX())
-	else: return '1'
+	if x == self.identity(): return '1'
+	else: return '(%s, %s)' % (self.g.LaTeXElem(x[0]), self.h.LaTeXElem(x[1]))
 
     ### TODO: Add an option for turning on "ab"-style showing
 
@@ -282,10 +246,9 @@ class Semidirect(Group):
 
 class DirectProduct(Semidirect):
     groupParams = ('g', 'h')
-    elemParams  = ('a', 'b')
-    def oper(self, x, y):  return self.elem(x.a * y.a, x.b * y.b)
-    def invert(self, x):   return self.elem(~x.a, ~x.b)
-    def order(self,x):     return lcm(x.a.order, x.b.order)
+    def oper(self, x, y):  return (self.g.oper(x[0] * y[0]), self.h.oper(x[1] * y[1]))
+    def invert(self, x):   return (self.g.invert(x[0]), self.h.invert(x[1]))
+    def order(self,x):     return lcm(self.g.order(x[0]), self.h.order(x[1]))
     def __str__(self):     return showbinop(self.g,   '*', self.h)
     def __unicode__(self): return showbinopU(self.g, u'×', self.h)
 
@@ -303,34 +266,33 @@ class DirectProduct(Semidirect):
 class Dicyclic(Group):
 ### Should steps be taken to ensure that n is always positive?
     groupParams = ('n',)
-    elemParams  = ('i', 'j')
 
-    def identity(self): return self.elem(0, False)
+    def identity(self): return (0, False)
 
     def oper(self,x,y):
-	return self.elem((x.i + (-y.i if x.j else y.i)
-			      + (self.n if x.j and y.j else 0)) % (2*self.n),
-			 x.j != y.j)
+	return ((x[0] + (-y[0] if x[1] else y[0])
+		      + self.n * (x[1] and y[1])) % (2*self.n),
+		x[1] != y[1])
 
     def invert(self,x):
-	return self.elem((x.i+self.n if x.j else -x.i) % (2*self.n), x.j)
+	return ((x[0]+self.n if x[1] else -x[0]) % (2*self.n), x[1])
 
     def __len__(self): return 4*self.n
 
     def __iter__(self):
-	return (self.elem(i,j) for i in range(2*self.n) for j in [False, True])
+	return ((i,j) for i in range(2*self.n) for j in [False, True])
 
-    def order(self,x): return 4 if x.j else cycOrd(2*self.n, x.i)
+    def order(self,x): return 4 if x[1] else cycOrd(2*self.n, x[0])
 
-    def indexElem(self,x): return (2*self.n if x.j else 0) + x.i
+    def indexElem(self,x): return (2*self.n if x[1] else 0) + x[0]
 
     def __str__(self): return 'Dic' + sub(self.n)
 
     def LaTeX(self): return r'\operatorname{Dic}' + sub(self.n)
 
     def showElem(self,x):
-	(pre, i) = ('', x.i) if x.i < self.n else ('-', x.i - self.n)
-	return pre + multish(shexp('i', i), 'j' if x.j else '1')
+	(pre, i) = ('', x[0]) if x[0] < self.n else ('-', x[0] - self.n)
+	return pre + multish(shexp('i', i), 'j' if x[1] else '1')
 
     LaTeXElem = showElem
 
@@ -346,24 +308,23 @@ def Quaternion(n=2):
 
 class Dihedral(Group):
     groupParams = ('n',)   ### n must be positive.
-    elemParams  = ('s', 'r')
 
-    def identity(self): return self.elem(False, 0)
-    def invert(self,x): return x if x.s else self.elem(False, -x.r % self.n)
-    def order(self,x): return 2 if x.s else cycOrd(self.n, x.r)
-    def indexElem(self,x): return (self.n if x.s else 0) + x.r
+    def identity(self): return (False, 0)
+    def invert(self,x): return x if x[0] else (False, -x[1] % self.n)
+    def order(self,x): return 2 if x[0] else cycOrd(self.n, x[1])
+    def indexElem(self,x): return (self.n if x[0] else 0) + x[1]
     def __len__(self): return 2*self.n
     def __str__(self): return 'Dih' + sub(self.n)
     def LaTeX(self): return r'\operatorname{Dih}' + sub(self.n)
 
     def oper(self,x,y):
-	return self.elem(x.s != y.s, (y.r + (-x.r if y.s else x.r)) % self.n)
+	return (x[0] != y[0], (y[1] + (-x[1] if y[0] else x[1])) % self.n)
 
     def __iter__(self):
-	return (self.elem(s,r) for s in [False, True] for r in range(self.n))
+	return ((s,r) for s in [False, True] for r in range(self.n))
 
     def showElem(self,x):
-	return multish('s' if x.s else '1', shexp('r', x.r))
+	return multish('s' if x[0] else '1', shexp('r', x[1]))
     ### Should there be an option for showing the 'r' before the 's'?
 
     LaTeXElem = showElem
@@ -371,13 +332,12 @@ class Dihedral(Group):
 
 class Trivial(Group):
     groupParams = ()
-    elemParams  = ()
-    def identity(self):    return self.elem()
+    def identity(self):    return ()
     def oper(self,x,y):    return x
     def invert(self,x):    return x
     def order(self,x):     return 1
     def __len__(self):     return 1
-    def __iter__(self):    yield self.elem()
+    def __iter__(self):    yield ()
     def __str__(self):     return '1'
     def LaTeX(self):       return '1'
     def indexElem(self,x): return 0
@@ -387,43 +347,41 @@ class Trivial(Group):
 
 class Klein4(Group):
     groupParams = ()
-    elemParams  = ('a', 'b')
-    def identity(self):    return self.elem(False, False)
-    def oper(self,x,y):    return self.elem(x.a != y.a, x.b != y.b)
+    def identity(self):    return (False, False)
+    def oper(self,x,y):    return (x[0] != y[0], x[1] != y[1])
     def invert(self,x):    return x
     def order(self,x):     return 2 if x else 1
     def __len__(self):     return 4
-    def __iter__(self):    return (self.elem(a,b) for a in [False, True]
-						  for b in [False, True])
+    def __iter__(self):    return ((a,b) for a in [False, True]
+					 for b in [False, True])
     def __str__(self):     return 'V_4'
     def LaTeX(self):       return 'V_4'
-    def indexElem(self,x): return int(x.a) * 2 + int(x.b)
-    def showElem(self,x):  return multish('a' if x.a else '1',
-					  'b' if x.b else '1')
+    def indexElem(self,x): return int(x[0]) * 2 + int(x[1])
+    def showElem(self,x):  return multish('a' if x[0] else '1',
+					  'b' if x[1] else '1')
     LaTeXElem = showElem
 
 
 class AutCyclic(Group):  # formerly "MultiplicN"
     groupParams = ('n',)
-    elemParams  = ('i',)
 
     def __init__(self, n):
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
 	self._indices = dict(zip(self._elems, range(n)))
 
-    def identity(self):    return self.elem(1)
-    def oper(self,x,y):    return self.elem((x.i * y.i) % self.n)
-    def invert(self,x):    return self.elem(modInverse(x.i, self.n))
-    def indexElem(self,x): return self._indices[x.i]
+    def identity(self):    return 1
+    def oper(self,x,y):    return (x * y) % self.n
+    def invert(self,x):    return modInverse(x, self.n)
+    def indexElem(self,x): return self._indices[x]
     def __len__(self):     return len(self._elems)
-    def __iter__(self):    return (self.elem(i) for i in self._elems)
+    def __iter__(self):    return iter(self._elems)
 
     def order(self,x):
     ### Try to find a more efficient way to calculate this.
 	i=1
 	val=x
-	while val:
-	    val *= x
+	while val != 1:
+	    val = (val * x) % self.n
 	    i += 1
 	return i
 
@@ -431,16 +389,16 @@ class AutCyclic(Group):  # formerly "MultiplicN"
     def __str__(self):     return  'Z'          + sub(self.n)  + '^*'
     def __unicode__(self): return u'ℤ'          + subU(self.n) + u'ˣ'
     def LaTeX(self):       return r'\mathbb{Z}' + sub(self.n)  + r'^\times{}'
-    def showElem(self,x):  return  '*'       + str(x.i)     if x else  '1'
-    def showUElem(self,x): return u'⋅'       + unicode(x.i) if x else u'1'
-    def LaTeXElem(self,x): return r'\cdot{}' + str(x.i)     if x else  '1'
+    def showElem(self,x):  return  '*'       + str(x)     if x else  '1'
+    def showUElem(self,x): return u'⋅'       + unicode(x) if x else u'1'
+    def LaTeXElem(self,x): return r'\cdot{}' + str(x)     if x else  '1'
 
 
 def HolCyclic(n):
     if n<1: raise ValueError('n must be at least 1')
     g = Cyclic(n)
     h = AutCyclic(n)
-    return Semidirect(g, h, lambda y: lambda x: g.elem((x.i * y.i) % n))
+    return Semidirect(g, h, lambda y: lambda x: g.elem((x * y) % n))
     ### TODO: Should __str__ etc. be overridden to show $\Hol(\Z_n)$?
 
 def CycSemiCyc(n,m,i):
@@ -451,24 +409,22 @@ def CycSemiCyc(n,m,i):
     else:
 	g = Cyclic(n)
 	h = Cyclic(m)
-	return Semidirect(g, h, lambda y: lambda x: g.elem((x.i * i**y.i) % n))
+	return Semidirect(g, h, lambda y: lambda x: g.elem((x * i**y) % n))
 
 
 class Symmetric(Group):
     groupParams = ('n',)  ### Must be a nonnegative integer
-    elemParams  = ('s',)  # `s` is a Permutation object
-    def identity(self):    return self.elem(Permutation())
-    def oper(self,x,y):    return self.elem(x.s * y.s)
-    def invert(self,x):    return self.elem(x.s.inverse)
+    def identity(self):    return Permutation()
+    def oper(self,x,y):    return x * y
+    def invert(self,x):    return x.inverse
     def __len__(self):     return factorial(self.n)
-    def order(self,x):     return x.s.order
-    def indexElem(self,x): return x.s.lehmer
+    def order(self,x):     return x.order
+    def indexElem(self,x): return x.lehmer
     def __str__(self):     return 'S' + sub(self.n)
     LaTeX = __str__
-    def showElem(self,x):  return str(x.s)
-    def LaTeXElem(self,x): return str(x.s).replace(' ', r'\>')
-    def __iter__(self):
-	return itertools.imap(self.elem, Permutation.s_n(self.n))
+    def showElem(self,x):  return str(x)
+    def LaTeXElem(self,x): return str(x).replace(' ', r'\>')
+    def __iter__(self):    return Permutation.s_n(self.n)
 
 def closure(iterable): return closure2A(operator.mul, iterable)
  # assumes the iterable is over Elements of a single Group
