@@ -13,7 +13,40 @@ __all__ = ["Group", "Element",
 	   "closure", "isHomomorphism", "isHomomorphismFrom", "isClosed",
 	   "commutators"]
 
+class Metagroup(type):
+    def __new__(mcs, name, bases, dict):
+	paramNames = dict.get('paramNames', None)
+	if paramNames is None:
+	    def badInit(self, *args):
+		raise NotImplementedError('paramNames is not defined')
+	    dict['__init__'] = badInit
+	else:
+	    def getParam(i): return property(lambda self: self.params[i])
+	    # getParam is needed to get around the fact that the lambdas
+	    # created by `for i in foo: x = lambda y: i` will end up returning
+	    # the value of `i` as of the end of the execution of the enclosing
+	    # function (__new__) rather than as of the lambdas' creations.
+	    # Creating a new namespace via a function definition avoids this.
+	    gpqty = len(paramNames)
+	    init0 = dict.get('__init__', None)
+	    def init(self, *args):
+		if len(args) != gpqty:
+		    raise TypeError('Constructor takes exactly %d argument%s'
+				     % (gpqty, 's' if gpqty != 1 else ''))
+		self.params = args
+		if init0 is not None: init0(self, *args)
+	    dict['__init__'] = init
+	    for i,p in enumerate(paramNames): dict[p] = getParam(i)
+	return type.__new__(mcs, name, bases, dict)
+
+
 class group(object):
+    __metaclass__ = Metagroup
+
+    paramNames = None
+
+    ### __contains__
+
     def showUElem(self,x): return uniexp(self.showElem(x))
     def __unicode__(self): return uniexp(str(self))
 
@@ -27,8 +60,6 @@ class group(object):
 
     def __cmp__(self, other):
 	return cmp(type(self), type(other)) or cmp(self.group, other.group)
-
-    ### __contains__
 
     def __repr__(self):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
@@ -89,11 +120,11 @@ class group(object):
 
 
 class Group(group):
+    paramNames = ('group',)
+
     def __init__(self, rawGroup):
         if isinstance(rawGroup, Group):
-	    self.group = rawGroup.group
-	else:
-	    self.group = rawGroup
+	    self.params = (rawGroup.group,)
 
     def identity(self): return Element(self.group.identity(), self)
     def oper(self,x,y): return Element(self.group.oper(x.value, y.value), self)
@@ -181,7 +212,7 @@ class Element(object):
 
 class Cyclic(group):
 ### Should steps be taken to ensure that n is always positive?
-    groupParams = ('n',)
+    paramNames = ('n',)
     def identity(self):    return 0
     def oper(self,x,y):    return (x + y) % self.n
     def invert(self,x):    return -x.i % self.n
@@ -198,7 +229,7 @@ class Cyclic(group):
 
 
 class Semidirect(group):
-    groupParams = ('g', 'h', 'phi')
+    paramNames = ('g', 'h', 'phi')
     # It is the user's responsibility to ensure that phi is an actual valid
     # homomorphism from the Elements of h to the automorphism group on the
     # Elements of g.
@@ -247,7 +278,7 @@ class Semidirect(group):
 
 
 class DirectProduct(Semidirect):
-    groupParams = ('g', 'h')
+    paramNames = ('g', 'h')
     def oper(self, x, y):  return (self.g.oper(x[0] * y[0]), self.h.oper(x[1] * y[1]))
     def invert(self, x):   return (self.g.invert(x[0]), self.h.invert(x[1]))
     def order(self,x):     return lcm(self.g.order(x[0]), self.h.order(x[1]))
@@ -267,7 +298,7 @@ class DirectProduct(Semidirect):
 
 class Dicyclic(group):
 ### Should steps be taken to ensure that n is always positive?
-    groupParams = ('n',)
+    paramNames = ('n',)
 
     def identity(self): return (0, False)
 
@@ -309,7 +340,7 @@ def Quaternion(n=2):
 
 
 class Dihedral(group):
-    groupParams = ('n',)   ### n must be positive.
+    paramNames = ('n',)   ### n must be positive.
 
     def identity(self): return (False, 0)
     def invert(self,x): return x if x[0] else (False, -x[1] % self.n)
@@ -333,7 +364,7 @@ class Dihedral(group):
 
 
 class Trivial(group):
-    groupParams = ()
+    paramNames = ()
     def identity(self):    return ()
     def oper(self,x,y):    return x
     def invert(self,x):    return x
@@ -348,7 +379,7 @@ class Trivial(group):
 
 
 class Klein4(group):
-    groupParams = ()
+    paramNames = ()
     def identity(self):    return (False, False)
     def oper(self,x,y):    return (x[0] != y[0], x[1] != y[1])
     def invert(self,x):    return x
@@ -365,7 +396,7 @@ class Klein4(group):
 
 
 class AutCyclic(group):  # formerly "MultiplicN"
-    groupParams = ('n',)
+    paramNames = ('n',)
 
     def __init__(self, n):
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
@@ -415,7 +446,7 @@ def CycSemiCyc(n,m,i):
 
 
 class Symmetric(group):
-    groupParams = ('n',)  ### Must be a nonnegative integer
+    paramNames = ('n',)  ### Must be a nonnegative integer
     def identity(self):    return Permutation()
     def oper(self,x,y):    return x * y
     def invert(self,x):    return x.inverse
