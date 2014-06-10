@@ -13,53 +13,26 @@ __all__ = ["Group", "Element",
 	   "closure", "isHomomorphism", "isHomomorphismFrom", "isClosed",
 	   "commutators"]
 
-class Group(object):
-    def __init__(self, rawGroup):
-        if isinstance(rawGroup, Group):
-	    self.group = rawGroup.group
-	else:
-	    self.group = rawGroup
-
-    def identity(self): return Element(self.group.identity(), self)
-
-    def oper(self,x,y): return Element(self.group.oper(x.value, y.value), self)
-
-    def invert(self,x): return Element(self.group.invert(x.value), self)
-
-    def order(self,x):     return self.group.order(x.value)
-    def indexElem(self,x): return self.group.indexElem(x.value)
-    def LaTeX(self):       return self.group.LaTeX()
-    def showElem(self,x):  return self.group.showElem(x.value)
-
-    #def showUElem(self,x): return uniexp(self.showElem(x))
-    def showUElem(self,x):  return self.group.showUElem(x.value)
-
-    def LaTeXElem(self,x): return self.group.LaTeXElem(x.value)
-
-    def __len__(self): return len(self.group)
-    def __iter__(self): return itertools.imap(lambda x: Element(x, self), self.group)
-
-    def __str__(self): return str(self.group)
-
-    #def __unicode__(self): return uniexp(str(self))
-    def __unicode__(self): return unicode(self.group)
+class group(object):
+    def showUElem(self,x): return uniexp(self.showElem(x))
+    def __unicode__(self): return uniexp(str(self))
 
     @property
-    #def family(self): return self.__class__.__name__
-    def family(self): return self.group.__class__.__name__
+    def family(self): return self.__class__.__name__
+
+    def __hash__(self): return hash((self.family, self.params))
+    def __mul__(self, other): return DirectProduct(self, other)
+
+    def __nonzero__(self): return len(self) > 1
 
     def __cmp__(self, other):
 	return cmp(type(self), type(other)) or cmp(self.group, other.group)
 
-    def __contains__(self, x): return x.group == self
-    def __nonzero__(self): return len(self) > 1
-    ###def __hash__(self): return hash((self.family, self.params))
-    ###def __mul__(self, other): return DirectProduct(self, other)
+    ### __contains__
 
     def __repr__(self):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
 
-    def elem(self, *args): return self.Element(args, self)
     def elements(self): return list(iter(self))
     def copy(self): return self.__class__(*self.params)
     def product(self, xs): return reduce(self.oper, xs, self.identity())
@@ -115,6 +88,33 @@ class Group(object):
 	    prev = h
 
 
+class Group(group):
+    def __init__(self, rawGroup):
+        if isinstance(rawGroup, Group):
+	    self.group = rawGroup.group
+	else:
+	    self.group = rawGroup
+
+    def identity(self): return Element(self.group.identity(), self)
+    def oper(self,x,y): return Element(self.group.oper(x.value, y.value), self)
+    def invert(self,x): return Element(self.group.invert(x.value), self)
+    def order(self,x):     return self.group.order(x.value)
+    def indexElem(self,x): return self.group.indexElem(x.value)
+    def LaTeX(self):       return self.group.LaTeX()
+    def showElem(self,x):  return self.group.showElem(x.value)
+    def showUElem(self,x): return self.group.showUElem(x.value)
+    def LaTeXElem(self,x): return self.group.LaTeXElem(x.value)
+    def __len__(self): return len(self.group)
+    def __iter__(self): return itertools.imap(lambda x: Element(x, self), self.group)
+    def __str__(self): return str(self.group)
+    def __unicode__(self): return unicode(self.group)
+
+    @property
+    def family(self): return self.group.__class__.__name__
+
+    def __contains__(self, x): return x.group == self
+
+
 class Element(object):
     def __init__(self, val, gr):
         self.value = val
@@ -126,26 +126,26 @@ class Element(object):
     @property
     def index(self): return self.group.indexElem(self)
 
+    @property
+    def rawGroup(self): return self.group.group
+
     def __mul__(self, y): return self.group.oper(self,y)
     def __invert__(self): return self.group.invert(self)
     def __div__(self, y): return self * ~y
     __truediv__ = __div__
 
-    def __repr__(self):
-	return '%s.Element(%r, %r)' \
-		% (self.group.family, self.value, self.group)
+    def __repr__(self): return 'Element(%r, %r)' % (self.value, self.group)
 
     def __str__(self):     return self.group.showElem(self)
     def __unicode__(self): return self.group.showUElem(self)
     def LaTeX(self):       return self.group.LaTeXElem(self)
 
     def __cmp__(self, other):
-    ### Should sorting be based on element indices instead of params?
+    ### Should sorting be based on element indices instead of `value`?
 	return cmp(type(self), type(other)) or \
 	       cmp((self.group, self.value), (other.group, other.value))
 
-    def __hash__(self): return self.index
-     ### Should type and/or group information also be included when hashing?
+    def __hash__(self): return hash((self.rawGroup, self.index))
 
     def __nonzero__(self): return self.value != self.group.identity().value
 
@@ -174,10 +174,12 @@ class Element(object):
     def cycle(self):
 	yield self.group.identity()
 	x = self
-	while x: yield x; x *= self
+	while x:
+	    yield x
+	    x *= self
 
 
-class Cyclic(object):
+class Cyclic(group):
 ### Should steps be taken to ensure that n is always positive?
     groupParams = ('n',)
     def identity(self):    return 0
@@ -195,7 +197,7 @@ class Cyclic(object):
     LaTeXElem = showElem
 
 
-class Semidirect(Group):
+class Semidirect(group):
     groupParams = ('g', 'h', 'phi')
     # It is the user's responsibility to ensure that phi is an actual valid
     # homomorphism from the Elements of h to the automorphism group on the
@@ -263,7 +265,7 @@ class DirectProduct(Semidirect):
     def phi(self): return lambda y: lambda x: x
 
 
-class Dicyclic(Group):
+class Dicyclic(group):
 ### Should steps be taken to ensure that n is always positive?
     groupParams = ('n',)
 
@@ -306,7 +308,7 @@ def Quaternion(n=2):
     ### 'k'.
 
 
-class Dihedral(Group):
+class Dihedral(group):
     groupParams = ('n',)   ### n must be positive.
 
     def identity(self): return (False, 0)
@@ -330,7 +332,7 @@ class Dihedral(Group):
     LaTeXElem = showElem
 
 
-class Trivial(Group):
+class Trivial(group):
     groupParams = ()
     def identity(self):    return ()
     def oper(self,x,y):    return x
@@ -345,7 +347,7 @@ class Trivial(Group):
     LaTeXElem = showElem
 
 
-class Klein4(Group):
+class Klein4(group):
     groupParams = ()
     def identity(self):    return (False, False)
     def oper(self,x,y):    return (x[0] != y[0], x[1] != y[1])
@@ -362,7 +364,7 @@ class Klein4(Group):
     LaTeXElem = showElem
 
 
-class AutCyclic(Group):  # formerly "MultiplicN"
+class AutCyclic(group):  # formerly "MultiplicN"
     groupParams = ('n',)
 
     def __init__(self, n):
@@ -412,7 +414,7 @@ def CycSemiCyc(n,m,i):
 	return Semidirect(g, h, lambda y: lambda x: g.elem((x * i**y) % n))
 
 
-class Symmetric(Group):
+class Symmetric(group):
     groupParams = ('n',)  ### Must be a nonnegative integer
     def identity(self):    return Permutation()
     def oper(self,x,y):    return x * y

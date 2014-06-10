@@ -21,7 +21,3 @@
   outside the Group?
 - Should Element.order and/or Element.index cache their results?
 - permutation.py: Make fewer things properties?
-- Idea: Further cut down on boilerplate by writing group methods as though the
-  element types were their "natural" types (ints for Cyclic, (bool,int) pair
-  for Dihedral, etc.) and having Metagroup define the actual methods as
-  wrappers around those
