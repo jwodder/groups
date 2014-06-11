@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 import itertools
-import operator
 import re
 from   closure     import closure2A
 from   permutation import Permutation
 
-__all__ = ["Group", "Element",
+__all__ = ["group",
 	   "Cyclic", "Semidirect", "DirectProduct", "Dicyclic", "Quaternion",
 	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
 	   "CycSemiCyc", "Symmetric",
-	   "getGroup",
-	   "closure", "isHomomorphism", "isHomomorphismFrom", "isClosed",
-	   "commutators"]
+	   "Group", "Element",
+	   "isHomomorphism"]
 
 class Metagroup(type):
     def __new__(mcs, name, bases, dict):
@@ -138,6 +136,21 @@ class group(object):
 	    if len(h) == 1: return i
 	    i += 1
 	    prev = h
+
+    def closure(self, iterable): return closure2A(self.oper, iterable)
+     # assumes the iterable is over elements of `self`
+     # returns an iterator
+     ### TODO: Should this return a set?
+
+    def commutator(self, x, y):
+	return self.oper(self.invert(self.oper(y,x)), self.oper(x,y))
+
+    def commutators(self, iterable1, iterable2):
+	# assumes the iterables are over elements of `self`
+	### TODO: Should this return a set?
+	aset = set(iterable1)
+	bset = set(iterable2)
+	return closure(self.commutator(x,y) for x in aset for y in bset)
 
 
 class Group(group):
@@ -480,47 +493,15 @@ class Symmetric(group):
     def LaTeXElem(self,x): return str(x).replace(' ', r'\>')
     def __iter__(self):    return Permutation.s_n(self.n)
 
-def closure(iterable): return closure2A(operator.mul, iterable)
- # assumes the iterable is over Elements of a single Group
- # returns an iterator
- ### TODO: Should this be a method of Group instead of a function?
- ### TODO: Should this return a set?
-
-def getGroup(iterable):
-    """Returns the Group in which all of the elements of the iterable are
-       contained; raises a `TypeError` if two or more elements are from
-       different Groups and a `ValueError` if the iterable is empty"""
-    group = None
-    for x in iterable:
-	if group is None:
-	    group = x.group
-	elif x not in group:
-	    raise TypeError('Elements are from different Groups')
-    if group is None:
-	raise ValueError('no Elements supplied')
-    else:
-	return group
 
 def isHomomorphism(phi, g, h):
     """Tests whether the callable object `phi` is a homomorphism from the group
        `g` to the group `h`"""
-    return all(phi(x) in h for x in g) and isHomomorphismFrom(phi, g)
+    gop = g.oper
+    hop = h.oper
+    return all(phi(x) in h for x in g) \
+       and all(hop(phi(x), phi(y)) == phi(gop(x,y)) for x in g for y in g)
 
-def isHomomorphismFrom(phi, g):
-    """Tests whether the callable object `phi` is a homomorphism from the group
-       `g` to an unspecified group.  This function is useful when `phi` is
-       already known to return elements of a single group."""
-    return all(phi(x)*phi(y) == phi(x*y) for x in group for y in group)
-
-def isClosed(iterable):
-    hset = set(iterable)
-    return hset and all(x/y in hset for x in hset for y in hset)
-
-def commutators(iterable1, iterable2):
-    ### TODO: Should this return a set?
-    aset = set(iterable1)
-    bset = set(iterable2)
-    return closure(~(y*x) * (x*y) for x in aset for y in bset)
 
 # Internal functions: ---------------------------------------------------------
 
