@@ -47,7 +47,7 @@ class group(object):
     def oper(self,x,y):    raise NotImplementedError
     def invert(self,x):    raise NotImplementedError
     def order(self,x):     raise NotImplementedError
-    def indexElem(self,x): raise NotImplementedError
+    def indexElem(self,x): raise NotImplementedError  ### TODO: Remove?
     def LaTeX(self):       raise NotImplementedError
     def showElem(self,x):  raise NotImplementedError
     def LaTeXElem(self,x): raise NotImplementedError

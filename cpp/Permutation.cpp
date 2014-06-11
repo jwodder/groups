@@ -9,7 +9,7 @@
 #include "Groups/util.hpp"  /* lcm, factorial */
 using namespace std;
 
-Permutation::Permutation() : pmap(), _even(1), _order(1), _lehmer(0) { }
+Permutation::Permutation() : pmap(0), _even(1), _order(1), _lehmer(0) { }
 
 Permutation::Permutation(const vector<int>& mapping, int ev, int ord, int lehm)
   : pmap(mapping), _even(ev), _order(ord), _lehmer(lehm) {

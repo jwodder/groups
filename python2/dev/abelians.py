@@ -1,6 +1,4 @@
-# This requires implementing `partitions` first.
-
-# Also, it requires Python v.2.6+.
+# This requires Python v.2.6+.
 
 def abelians(n):
     """Returns an iterator over all abelian groups of order `n` paired with
@@ -18,3 +16,12 @@ def abelians(n):
 	for xs in itertools.product(*vals):
 	    xs2 = reduce(lambda a,b: map(mully, a, b), xs)
 	    yield (reduce(DirectProduct, map(Cyclic, xs2)), xs2)
+
+def partitions(n):
+    ### TODO: Try to make this more efficient.
+    def gen(qty, mx):
+	if qty == 0: return [[]]
+	else: return([i] + xs for i  in range(min(qty,mx), 0, -1)
+			      for xs in gen(qty-i, i))
+    if n < 1: raise ValueError('value must be positive')
+    return gen(n,n)
