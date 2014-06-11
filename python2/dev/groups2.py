@@ -78,8 +78,12 @@ class group(object):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
 
     def elements(self): return list(iter(self))
+
     def copy(self): return self.__class__(*self.params)
+
     def product(self, xs): return reduce(self.oper, xs, self.identity())
+
+    def conjugate(self, x, y): return self.oper(self.oper(y,x), self.invert(y))
 
     def centralizer(self, elems):
 	elems = list(elems)
@@ -90,16 +94,12 @@ class group(object):
 
     def normalizer(self, elems):
 	elems = set(elems)
-	op = self.oper
-	inv = self.invert
-	return filter(lambda x: all(op(op(x,y), inv(x)) in elems for y in elems), self)
+	return filter(lambda x: all(self.conjugate(y,x) in elems for y in elems), self)
 
     def isNormal(self, elems):
 	# whether `elems` is actually a subgroup is not checked
 	elems = set(elems)
-	op = self.oper
-	inv = self.invert
-	return all(op(op(x,y), inv(x)) in elems for x in self for y in elems)
+	return all(self.conjugate(y,x) in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
 	elems = set(elems)
@@ -116,11 +116,9 @@ class group(object):
 	yield set([self.identity()])
 	left = set(self)
 	left.remove(self.identity())
-	op = self.oper
-	inv = self.invert
 	while left:
 	    least = minimum(left)
-	    cc = set(op(op(x,least), inv(x)) for x in left)
+	    cc = set(self.conjugate(least,x) for x in left)
 	    yield cc
 	    left -= cc
 
