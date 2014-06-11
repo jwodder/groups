@@ -120,16 +120,17 @@ class group(object):
 	    yield cc
 	    left -= cc
 
+    def lowerCentral(self):
+	whole = frozenset(self)
+	h = whole
+	while True:
+	    yield h
+	    h = frozenset(commutators(whole, h))
+
     def nilpotence(self):
 	if len(self) == 1: return 0
-	def lowerCentrals():
-	    whole = set(self)
-	    h = whole
-	    while True:
-		yield h
-		h = set(commutators(whole, h))
 	i = 1
-	lc = lowerCentral()
+	lc = self.lowerCentral()
 	prev = lc.next()
 	for h in lc:
 	    if h == prev: return None
@@ -138,9 +139,9 @@ class group(object):
 	    prev = h
 
     def closure(self, iterable): return closure2A(self.oper, iterable)
-     # assumes the iterable is over elements of `self`
-     # returns an iterator
-     ### TODO: Should this return a set?
+	# assumes the iterable is over elements of `self`
+	# returns an iterator
+	### TODO: Should this return a set?
 
     def commutator(self, x, y):
 	return self.oper(self.invert(self.oper(y,x)), self.oper(x,y))

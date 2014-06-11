@@ -66,13 +66,15 @@ module Groups.Ops where
 
  nilpotence :: Group -> Maybe Int
  nilpotence g | g_size g == 1 = Just 0
- nilpotence g = nil 1 whole $ tail lowerCentral
-  where whole = Sub.total g
-	lowerCentral = iterate (commutators whole) whole
+ nilpotence g = nil 1 l lc
+  where (l:lc) = lowerCentral g
 	nil i g' (g'':xs) | g' == g'' = Nothing
 			  | Sub.size g'' == 1 = Just i
 			  | otherwise = nil (i+1) g'' xs
 	nil _ _ [] = undefined
+
+ lowerCentral :: Group -> [Subset]
+ lowerCentral g = iterate (commutators $ Sub.total g) $ Sub.total g
 
  commutators :: Subset -> Subset -> Subset
  commutators (Subset (g1, is1)) (Subset (g2, is2))

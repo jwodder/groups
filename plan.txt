@@ -23,7 +23,9 @@ least one language.
  - automorphisms and groups thereof
  - whether two groups are isomorphic
  - commutators
- - lower central and upper central series
+ - commutator subgroup
+ * lower central series
+ - upper central series
  * nilpotence class
  - whether a group is solvable
  - whether a group is simple
@@ -33,7 +35,7 @@ least one language.
  - cosets
  - decompositions of elements into products of elements of a given generating
    set?
- - the Thompson subgroup of a group
+ - Thompson subgroup
 - Types of groups to implement:
  * trivial group
  * Klein 4-group
