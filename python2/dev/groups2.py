@@ -55,10 +55,8 @@ class group(object):
     def showUElem(self,x): return uniexp(self.showElem(x))
     def __unicode__(self): return uniexp(str(self))
 
-    # Subclasses also need to define __len__, __iter__, __str__, and
-    # (optionally) __unicode__.
-
-    ### __contains__
+    # Subclasses also need to define __len__, __iter__, __contains__, __str__,
+    # and (optionally) __unicode__.
 
     @property
     def family(self): return self.__class__.__name__
@@ -108,7 +106,7 @@ class group(object):
 
     def isAbelian(self):
 	op = self.oper
-        return all(op(x,y) == op(y,x) for x in self for y in self)
+	return all(op(x,y) == op(y,x) for x in self for y in self)
 
     def conjugacies(self):
 	yield set([self.identity()])
@@ -158,7 +156,7 @@ class Group(group):
     paramNames = ('group',)
 
     def __init__(self, rawGroup):
-        if isinstance(rawGroup, Group):
+	if isinstance(rawGroup, Group):
 	    self.params = (rawGroup.group,)
 
     def identity(self): return Element(self.group.identity(), self)
@@ -178,12 +176,12 @@ class Group(group):
     @property
     def family(self): return self.group.__class__.__name__
 
-    def __contains__(self, x): return x.group == self
+    def __contains__(self, x): return isinstance(x, Element) and x.group == self
 
 
 class Element(object):
     def __init__(self, val, gr):
-        self.value = val
+	self.value = val
 	self.group = gr
 
     @property
@@ -253,6 +251,7 @@ class Cyclic(group):
     def invert(self,x):    return -x.i % self.n
     def __len__(self):     return self.n
     def __iter__(self):    return xrange(self.n)
+    def __contains__(self,x): return 0 <= x < self.n
     def order(self,x):     return cycOrd(self.n, x)
     def indexElem(self,x): return x
     def __str__(self):     return  'Z' + sub(self.n)
@@ -272,14 +271,19 @@ class Semidirect(group):
     def identity(self): return (self.g.identity(), self.h.identity())
 
     def oper(self,x,y):
-        return (self.g.oper(x[0] * self.phi(x[1])(y[0])),
+	return (self.g.oper(x[0] * self.phi(x[1])(y[0])),
 		self.h.oper(x[1] * y[1]))
 
     def invert(self,x):
-        return (self.phi(h.invert(x[1]))(g.invert(x[0])), h.invert(x[1]))
+	return (self.phi(h.invert(x[1]))(g.invert(x[0])), h.invert(x[1]))
 
     def __len__(self):  return len(self.g) * len(self.h)
+
     def __iter__(self): return ((a,b) for a in self.g for b in self.h)
+
+    def __contains__(self, x):
+	return isPair(x) and x[0] in self.g and x[1] in self.h
+
     def indexElem(self,x): return g.indexElem(x[0]) * len(g) + h.indexElem(x[1])
 
     def order(self, x):
@@ -323,9 +327,10 @@ class DirectProduct(Semidirect):
     def LaTeX(self):
 	return showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
 
-    # identity, indexElem, __len__, __iter__, showElem, showUElem, and
-    # LaTeXElem are inherited from semidirect (though the last three might have
-    # to be overridden if "ba"-style showing is ever implemented).
+    # identity, indexElem, __len__, __iter__, __contains__, showElem,
+    # showUElem, and LaTeXElem are inherited from semidirect (though the last
+    # three might have to be overridden if "ba"-style showing is ever
+    # implemented).
 
     @property
     def phi(self): return lambda y: lambda x: x
@@ -349,6 +354,9 @@ class Dicyclic(group):
 
     def __iter__(self):
 	return ((i,j) for i in range(2*self.n) for j in [False, True])
+
+    def __contains__(self, x):
+	return isPair(x) and 0 <= x[0] < 2*self.n and 0 <= x[1] < 2
 
     def order(self,x): return 4 if x[1] else cycOrd(2*self.n, x[0])
 
@@ -391,6 +399,9 @@ class Dihedral(group):
     def __iter__(self):
 	return ((s,r) for s in [False, True] for r in range(self.n))
 
+    def __contains__(self, x):
+	return isPair(x) and 0 <= x[0] < 2 and 0 <= x[1] < self.n
+
     def showElem(self,x):
 	return multish('s' if x[0] else '1', shexp('r', x[1]))
     ### Should there be an option for showing the 'r' before the 's'?
@@ -406,6 +417,7 @@ class Trivial(group):
     def order(self,x):     return 1
     def __len__(self):     return 1
     def __iter__(self):    yield ()
+    def __contains__(self, x): return x == ()
     def __str__(self):     return '1'
     def LaTeX(self):       return '1'
     def indexElem(self,x): return 0
@@ -429,6 +441,9 @@ class Klein4(group):
 					  'b' if x[1] else '1')
     LaTeXElem = showElem
 
+    def __contains__(self, x):
+	return isPair(x) and 0 <= x[0] < 2 and 0 <= x[1] < 2
+
 
 class AutCyclic(group):  # formerly "MultiplicN"
     paramNames = ('n',)
@@ -443,9 +458,10 @@ class AutCyclic(group):  # formerly "MultiplicN"
     def indexElem(self,x): return self._indices[x]
     def __len__(self):     return len(self._elems)
     def __iter__(self):    return iter(self._elems)
+    def __contains__(self, x): return 0 <= x < self.n and gcd(x, self.n) == 1
 
     def order(self,x):
-    ### Try to find a more efficient way to calculate this.
+    ### TODO: Try to find a more efficient way to calculate this.
 	i=1
 	val=x
 	while val != 1:
@@ -493,6 +509,9 @@ class Symmetric(group):
     def showElem(self,x):  return str(x)
     def LaTeXElem(self,x): return str(x).replace(' ', r'\>')
     def __iter__(self):    return Permutation.s_n(self.n)
+
+    def __contains__(self, x):
+	return isinstance(x, Permutation) and x.degree <= self.n
 
 
 def isHomomorphism(phi, g, h):
@@ -575,3 +594,5 @@ def modInverse(a,n):
 	(u, uc, l, lc) = (l, lc, u % l, uc - lc * (u//l))
     if l == 1: return lc % abs(n)
     else: raise ValueError('%d has no multiplicative inverse modulo %d' % (a,n))
+
+def isPair(x): return isinstance(x, tuple) and len(x) == 2

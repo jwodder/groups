@@ -420,7 +420,7 @@ class AutCyclic(Group):  # formerly "MultiplicN"
     def __iter__(self):    return (self.elem(i) for i in self._elems)
 
     def order(self,x):
-    ### Try to find a more efficient way to calculate this.
+    ### TODO: Try to find a more efficient way to calculate this.
 	i=1
 	val=x
 	while val:
