@@ -71,3 +71,5 @@ least one language.
 - It should be possible, given a group, to convert any element thereof to a
   human-readable string representation with the ability to configure the
   representations of the group's generators.
+- It should be possible to construct groups at runtime from user-supplied
+  specifications.
