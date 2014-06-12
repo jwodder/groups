@@ -228,8 +228,12 @@ class Element(object):
 
 
 class Cyclic(group):
-### Should steps be taken to ensure that n is always positive?
     paramNames = ('n',)
+
+    def __init__(self, n):
+	if n < 1: raise ValueError('n must be positive')
+	super(Cyclic, self).__init__((n,))
+
     def identity(self):    return 0
     def oper(self,x,y):    return (x + y) % self.n
     def invert(self,x):    return -x.i % self.n
@@ -324,7 +328,10 @@ class DirectProduct(Semidirect):
 
 class Dicyclic(group):
     paramNames = ('n',)
-    ### Should steps be taken to ensure that n is always positive?
+
+    def __init__(self, n):
+	if n < 2: raise ValueError('n must be at least 2')
+	super(Dicyclic, self).__init__((n,))
 
     ### v.2.6+: Use `namedtuple` for elements
 
@@ -371,7 +378,11 @@ def Quaternion(n=2):
 
 
 class Dihedral(group):
-    paramNames = ('n',)   ### n must be positive.
+    paramNames = ('n',)
+
+    def __init__(self, n):
+	if n < 1: raise ValueError('n must be positive')
+	super(Dihedral, self).__init__((n,))
 
     ### v.2.6+: Use `namedtuple` for elements
 
@@ -490,7 +501,13 @@ def CycSemiCyc(n,m,i):
 
 
 class Symmetric(group):
-    paramNames = ('n',)  ### Must be a nonnegative integer
+    paramNames = ('n',)
+
+    def __init__(self, n):
+	if n < 0: raise ValueError('n must be nonnegative')
+	if n == 0: n = 1
+	super(Symmetric, self).__init__((n,))
+
     def identity(self):    return Permutation()
     def oper(self,x,y):    return x * y
     def invert(self,x):    return x.inverse

@@ -54,7 +54,7 @@ module Groups.Families where
  dicyclic = mkgroup . dicyclic'
 
  dicyclic' :: Int -> Group' (Int, Bool)
- dicyclic' n | n < 1 = undefined
+ dicyclic' n | n < 2 = undefined
  dicyclic' n = Group' {
   g'size = 4*n,
   g'elems = cartesian [0..2*n-1] [False, True],
