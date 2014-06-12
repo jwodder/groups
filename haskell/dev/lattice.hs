@@ -17,24 +17,23 @@ main = do putStrLn "graph {"
 	     else ", fillcolor = \"white\"]")) subs
 	   putStrLn " }") byOrdr
 	  mapM_ putStrLn [' ' : 's' : show i ++ " -- s" ++ show j
-			  | ((i,j), True) <- assocs graph]
+			  | ((j,i), True) <- assocs graph]
 	  putStrLn "}"
  where subsSet = subgroups group
        subsDex = listArray (0, Set.size subsSet - 1) $ Set.toAscList subsSet
-       (_, graph) = lattice subsDex
+       graph = lattice subsDex
        byOrdr = classify (ISet.size . (subsDex !)) $ indices subsDex
 
-lattice :: Array Int IntSet -> (Array (Int, Int) Bool, Array (Int, Int) Bool)
-lattice subgrs = (graphTbl, ixmap (bounds graphTbl) (\(g,h) -> (h,g)) graphTbl)
- where byOrdr = classify (ISet.size . (subgrs !)) $ indices subgrs
-       -- For all ((h,g), tf) in graphTbl, tf is True iff g covers h under the
-       -- subgroup relation.
-       graphTbl = fst $ until (null . snd) (\(graph, (i,ss):xs) ->
+lattice :: Ix a => Array a IntSet -> Array (a,a) Bool
+-- For all ((h,g), tf) in the return value, tf is True iff g covers h under the
+-- subgroup relation (i.e., h<g and there is no k such that h<k<g).
+lattice subgrs = fst $ until (null . snd) (\(graph, (i,ss):xs) ->
 	(graph // concat [((s,g), True) : [((h,g), False) | h <- below graph s]
 			  | s <- ss, (gn, gxs) <- xs, mod gn i == 0, g <- gxs,
 			    ISet.isSubsetOf (subgrs ! s) (subgrs ! g)], xs))
-	(listArray ((0,0), (n,n)) $ repeat False, byOrdr)
-       n = snd $ bounds subgrs
+	(listArray ((a,a), (b,b)) $ repeat False, byOrdr)
+ where byOrdr = classify (ISet.size . (subgrs !)) $ indices subgrs
+       (a,b) = bounds subgrs
        below tbl g = [h | ((h, g'), True) <- assocs tbl, g' == g]
 
 isNormal' :: Group -> IntSet -> Bool
