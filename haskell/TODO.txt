@@ -5,7 +5,7 @@
  - Features that the Haskell version is behind on:
   - Converting elements to strings
   - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
-- Make Subgroups.hs use `Subset`s instead of `IntSet`s
+- Make Subgroups.hs and dev/lattice.hs use `Subset`s instead of `IntSet`s
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
   then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &
   `Ops.hs` so that they all use the same (conflicting) names for the same

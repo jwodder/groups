@@ -11,37 +11,19 @@ __all__ = ["group",
 	   "Group", "Element",
 	   "isHomomorphism"]
 
-class Metagroup(type):
-    def __new__(mcs, name, bases, dict):
-	paramNames = dict.get('paramNames', None)
-	if paramNames is None:
-	    def badInit(self, *args):
-		raise NotImplementedError('paramNames is not defined')
-	    dict['__init__'] = badInit
-	else:
-	    def getParam(i): return property(lambda self: self.params[i])
-	    # getParam is needed to get around the fact that the lambdas
-	    # created by `for i in foo: x = lambda y: i` will end up returning
-	    # the value of `i` as of the end of the execution of the enclosing
-	    # function (__new__) rather than as of the lambdas' creations.
-	    # Creating a new namespace via a function definition avoids this.
-	    gpqty = len(paramNames)
-	    init0 = dict.get('__init__', None)
-	    def init(self, *args):
-		if len(args) != gpqty:
-		    raise TypeError('Constructor takes exactly %d argument%s'
-				     % (gpqty, 's' if gpqty != 1 else ''))
-		self.params = args
-		if init0 is not None: init0(self, *args)
-	    dict['__init__'] = init
-	    for i,p in enumerate(paramNames): dict[p] = getParam(i)
-	return type.__new__(mcs, name, bases, dict)
-
-
 class group(object):
-    __metaclass__ = Metagroup
-
     paramNames = None
+
+    def __init__(self, *args):
+	if self.paramNames is None:
+	    raise NotImplementedError('paramNames is not defined')
+	qty = len(paramNames)
+	if len(args) != qty:
+	    raise TypeError('Constructor takes exactly %d argument%s'
+			     % (qty, 's' if qty != 1 else ''))
+	self.params = args
+	for n,p in zip(params, args):
+	    setattr(self, n, p)
 
     def identity(self):    raise NotImplementedError
     def oper(self,x,y):    raise NotImplementedError
@@ -157,19 +139,23 @@ class Group(group):
 
     def __init__(self, rawGroup):
 	if isinstance(rawGroup, Group):
-	    self.params = (rawGroup.group,)
+	    rawGroup = rawGroup.group
+	super(Group, self).__init__((rawGroup,))
 
-    def identity(self): return Element(self.group.identity(), self)
-    def oper(self,x,y): return Element(self.group.oper(x.value, y.value), self)
-    def invert(self,x): return Element(self.group.invert(x.value), self)
+    def identity(self):    return Element(self.group.identity(), self)
+    def oper(self,x,y):    return Element(self.group.oper(x.value,y.value),self)
+    def invert(self,x):    return Element(self.group.invert(x.value), self)
     def order(self,x):     return self.group.order(x.value)
     def indexElem(self,x): return self.group.indexElem(x.value)
     def LaTeX(self):       return self.group.LaTeX()
     def showElem(self,x):  return self.group.showElem(x.value)
     def showUElem(self,x): return self.group.showUElem(x.value)
     def LaTeXElem(self,x): return self.group.LaTeXElem(x.value)
-    def __len__(self): return len(self.group)
-    def __iter__(self): return itertools.imap(lambda x: Element(x, self), self.group)
+    def __len__(self):     return len(self.group)
+
+    def __iter__(self):
+        return itertools.imap(lambda x: Element(x, self), self.group)
+
     def __str__(self): return str(self.group)
     def __unicode__(self): return unicode(self.group)
 
@@ -198,14 +184,12 @@ class Element(object):
     def __div__(self, y): return self * ~y
     __truediv__ = __div__
 
-    def __repr__(self): return 'Element(%r, %r)' % (self.value, self.group)
-
+    def __repr__(self):    return 'Element(%r, %r)' % (self.value, self.group)
     def __str__(self):     return self.group.showElem(self)
     def __unicode__(self): return self.group.showUElem(self)
     def LaTeX(self):       return self.group.LaTeXElem(self)
 
     def __cmp__(self, other):
-    ### Should sorting be based on element indices instead of `value`?
 	return cmp(type(self), type(other)) or \
 	       cmp((self.group, self.value), (other.group, other.value))
 
@@ -213,7 +197,7 @@ class Element(object):
 
     def __nonzero__(self): return self.value != self.group.identity().value
 
-    def __pow__(self, n):
+    def __pow__(self, n):  ### TODO: Make this available to non-Group elements
 	order = self.order
 	n %= order
 	if n == 0: return self.group.identity()
@@ -235,7 +219,7 @@ class Element(object):
 	    x *= x
 	return agg
 
-    def cycle(self):
+    def cycle(self):  ### TODO: Make this available to non-Group elements
 	yield self.group.identity()
 	x = self
 	while x:
@@ -267,6 +251,8 @@ class Semidirect(group):
     # It is the user's responsibility to ensure that phi is an actual valid
     # homomorphism from the Elements of h to the automorphism group on the
     # Elements of g.
+
+    ### v.2.6+: Use `namedtuple` for elements
 
     def identity(self): return (self.g.identity(), self.h.identity())
 
@@ -337,8 +323,10 @@ class DirectProduct(Semidirect):
 
 
 class Dicyclic(group):
-### Should steps be taken to ensure that n is always positive?
     paramNames = ('n',)
+    ### Should steps be taken to ensure that n is always positive?
+
+    ### v.2.6+: Use `namedtuple` for elements
 
     def identity(self): return (0, False)
 
@@ -385,6 +373,8 @@ def Quaternion(n=2):
 class Dihedral(group):
     paramNames = ('n',)   ### n must be positive.
 
+    ### v.2.6+: Use `namedtuple` for elements
+
     def identity(self): return (False, 0)
     def invert(self,x): return x if x[0] else (False, -x[1] % self.n)
     def order(self,x): return 2 if x[0] else cycOrd(self.n, x[1])
@@ -427,6 +417,7 @@ class Trivial(group):
 
 class Klein4(group):
     paramNames = ()
+    ### v.2.6+: Use `namedtuple` for elements?
     def identity(self):    return (False, False)
     def oper(self,x,y):    return (x[0] != y[0], x[1] != y[1])
     def invert(self,x):    return x
@@ -449,6 +440,8 @@ class AutCyclic(group):  # formerly "MultiplicN"
     paramNames = ('n',)
 
     def __init__(self, n):
+	if n < 1: raise ValueError('n must be positive')
+	super(AutCyclic, self).__init__((n,))
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
 	self._indices = dict(zip(self._elems, range(n)))
 
@@ -479,7 +472,7 @@ class AutCyclic(group):  # formerly "MultiplicN"
 
 
 def HolCyclic(n):
-    if n<1: raise ValueError('n must be at least 1')
+    if n<1: raise ValueError('n must be positive')
     g = Cyclic(n)
     h = AutCyclic(n)
     return Semidirect(g, h, lambda y: lambda x: g.elem((x * y) % n))

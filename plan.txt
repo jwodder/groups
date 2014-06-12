@@ -16,6 +16,7 @@ least one language.
  * whether an element is in a group
  * whether a group is abelian
  * closures of subsets
+  - closures of unions of subgroups
  * centralizers, centers, and normalizers
  * subgroups of a group
  * whether a subgroup is normal

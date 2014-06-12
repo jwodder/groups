@@ -18,8 +18,7 @@ module Groups.Subgroups (subgroups, subgroupGens) where
   where cycles = Map.fromListWith const [(ISet.fromList $ g_cycle g x, x)
 					 | x <- g_elems g]
 	addCycle (cyc, cg) subgr = do guard  $ ISet.notMember cg subgr
-				      return $ newClosure2 (g_oper g) subgr
-							   (ISet.toList cyc)
+				      return $ newClosure2 (g_oper g) subgr cyc
 
  subgroupGens :: Group -> Map IntSet (Set IntSet)  -- subgrs04b.hs
  -- returns a map from subgroups to sets of (minimal?) generating sets
@@ -35,13 +34,15 @@ module Groups.Subgroups (subgroups, subgroupGens) where
 	 case Set.minView $ Set.filter ((== 1) . ISet.size) gens of
 	  Just (g', _) -> guard $ not $ ISet.isSubsetOf g' cyc
 	  Nothing      -> return ()
-	 return (newClosure2 (g_oper g) subgr (ISet.toList cyc),
+	 return (newClosure2 (g_oper g) subgr cyc,
 		 Set.fromList [ISet.filter(`ISet.notMember` cyc)a `ISet.union` b
 			       | a <- Set.toList gens, b <- Set.toList gs])
 
- newClosure2 :: (Int -> Int -> Int) -> IntSet -> [Int] -> IntSet
+ newClosure2 :: (Int -> Int -> Int) -> IntSet -> IntSet -> IntSet
+ -- Given two sets that are already closed under `f`, `newClosure2` computes
+ -- the closure of their union
  newClosure2 f seen new = closureS (close2 f)
-  (new, foldl (flip ISet.insert) seen new)
+				   (ISet.toList new, ISet.union seen new)
 
  closureS :: ([Int] -> IntSet -> [Int]) -> ([Int], IntSet) -> IntSet
  closureS _ ([],  seen) = seen
