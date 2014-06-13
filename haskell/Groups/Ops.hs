@@ -91,3 +91,15 @@ module Groups.Ops where
 		   where least = ISet.findMin left
 			 (gop, ginv) = (g_oper g, g_invert g)
 			 cc = ISet.map (\x -> x `gop` least `gop` ginv x) left
+
+ -- |Given two subsets of the same group that are already closed under the group
+ -- operation (i.e., that are subgroups; this precondition is not checked),
+ -- 'subgroupUnion' computes the closure of their union.
+ subgroupUnion :: Subset -> Subset -> Subset
+ subgroupUnion (Subset (g, is)) (Subset (g', js))
+  | g == g' = Subset (g, closureS (ISet.toList js, ISet.union is js))
+  | otherwise = error "subgroupUnion: group mismatch"
+  where closureS ([],  seen) = seen
+	closureS (new, seen) = closureS $ view (f new seen) seen
+	f new seen = concat [[g_oper g a b, g_oper g b a]
+			     | a <- ISet.toList seen, b <- new]

@@ -50,11 +50,14 @@ module Groups.Types.Subset where
  inSubset x (Subset (_, is)) = ISet.member x is
 
  infixl 6 ∪, ∩, ∖
- infix  4 ∈, ⊆, ⊇, ⊂, ⊃
+ infix  4 ∈, ∉, ⊆, ⊇, ⊂, ⊃
 
  (∈) :: Element -> Subset -> Bool
  -- Consider renaming this.
  x ∈ Subset (g, is) = E.getGroup x == g && ISet.member (E.elemID x) is
+
+ (∉) :: Element -> Subset -> Bool
+ x ∉ h = not (x ∈ h)
 
  (∪) :: Subset -> Subset -> Subset
  Subset (gr1, is1) ∪ Subset (gr2, is2)

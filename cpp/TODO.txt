@@ -1,7 +1,7 @@
 - Rename `Group::order()` to `size`?
 - The constructors for Dihedral and Dicyclic should throw exceptions when
   passed 0 or 1
- - Wikipedia says that Dic_1 = Z_4, which is not considered dicyclic.
+- The constructor for Cyclic should throw an exception when passed 0
 - quaternion() should throw an exception when given an invalid argument
 - Rethink the memory management of Group objects passed to Direct's constructor
   (including those used in Direct::copy())
