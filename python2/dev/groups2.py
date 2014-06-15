@@ -140,7 +140,7 @@ class Group(group):
     def __init__(self, rawGroup):
 	if isinstance(rawGroup, Group):
 	    rawGroup = rawGroup.group
-	super(Group, self).__init__((rawGroup,))
+	super(Group, self).__init__(rawGroup)
 
     def identity(self):    return Element(self.group.identity(), self)
     def oper(self,x,y):    return Element(self.group.oper(x.value,y.value),self)
@@ -232,7 +232,7 @@ class Cyclic(group):
 
     def __init__(self, n):
 	if n < 1: raise ValueError('n must be positive')
-	super(Cyclic, self).__init__((n,))
+	super(Cyclic, self).__init__(n)
 
     def identity(self):    return 0
     def oper(self,x,y):    return (x + y) % self.n
@@ -331,7 +331,7 @@ class Dicyclic(group):
 
     def __init__(self, n):
 	if n < 2: raise ValueError('n must be at least 2')
-	super(Dicyclic, self).__init__((n,))
+	super(Dicyclic, self).__init__(n)
 
     ### v.2.6+: Use `namedtuple` for elements
 
@@ -382,7 +382,7 @@ class Dihedral(group):
 
     def __init__(self, n):
 	if n < 1: raise ValueError('n must be positive')
-	super(Dihedral, self).__init__((n,))
+	super(Dihedral, self).__init__(n)
 
     ### v.2.6+: Use `namedtuple` for elements
 
@@ -452,7 +452,7 @@ class AutCyclic(group):  # formerly "MultiplicN"
 
     def __init__(self, n):
 	if n < 1: raise ValueError('n must be positive')
-	super(AutCyclic, self).__init__((n,))
+	super(AutCyclic, self).__init__(n)
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
 	self._indices = dict(zip(self._elems, range(n)))
 
@@ -506,7 +506,7 @@ class Symmetric(group):
     def __init__(self, n):
 	if n < 0: raise ValueError('n must be nonnegative')
 	if n == 0: n = 1
-	super(Symmetric, self).__init__((n,))
+	super(Symmetric, self).__init__(n)
 
     def identity(self):    return Permutation()
     def oper(self,x,y):    return x * y

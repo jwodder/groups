@@ -8,6 +8,7 @@ least one language.
 - Calculating the following must be possible for all groups & elements thereof:
  * group identity
  * element multiplication
+ * element exponentiation
  * inversion
  * order of a group
  * order of an element

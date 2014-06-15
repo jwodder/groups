@@ -7,7 +7,7 @@ module Groups.Ops where
  import qualified Groups.Types.Subset as Sub
  import Groups.Internals
 
- gexp :: Element -> Int -> Element
+ gexp :: Element -> Int -> Element  -- Move this to Element.hs?
  gexp (Element (i, g)) n = n' == 0 ?: identity g
 				   :? Element (expfa (g_oper g) n'' i', g)
   where (inv, ordr) = gr_dat g ! i
