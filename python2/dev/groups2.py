@@ -367,14 +367,18 @@ class Dicyclic(group):
 
     LaTeXElem = showElem
 
-def Quaternion(n=2):
-    if n<2: raise ValueError('n must be at least 2')
-    qn = Dicyclic(1 << (n-1))
-    #qn.__str__ = qn.LaTeX = lambda self: 'Q' + sub(1 << (n+1))
-     ### TODO: Figure out how to make this work.
-    return qn
-    ### When n=2, the group should be somehow modified so that 'ij' is shown as
-    ### 'k'.
+
+class Quaternion(Dicyclic):
+    def __init__(self, n=2):
+	if n < 2: raise ValueError('n must be at least 2')
+	super(Quaternion, self).__init__(1 << (n-1))
+
+    def __str__(self): return 'Q' + sub(len(self))
+
+    LaTeX = __str__
+
+    ### TODO: When n=2, `showElem` et alii should be modified so that 'ij' is
+    ### shown as 'k'.
 
 
 class Dihedral(group):

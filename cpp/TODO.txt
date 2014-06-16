@@ -58,3 +58,4 @@ FEATURES
   of the desired group?
 - Add closure functions that send their output to supplied output iterators?
 - Specialize C++11's `hash<T>` for Permutation.cpp?
+- Add methods for showing names of groups
