@@ -9,7 +9,7 @@ __all__ = ["group",
 	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
 	   "CycSemiCyc", "Symmetric",
 	   "Group", "Element",
-	   "isHomomorphism"]
+	   "isHomomorphism", "direct"]
 
 class group(object):
     paramNames = None
@@ -308,14 +308,15 @@ class Semidirect(group):
 
 class DirectProduct(Semidirect):
     paramNames = ('g', 'h')
-    def oper(self, x, y):  return (self.g.oper(x[0] * y[0]), self.h.oper(x[1] * y[1]))
+
+    def oper(self, x, y):  return (self.g.oper(x[0] * y[0]),
+				   self.h.oper(x[1] * y[1]))
+
     def invert(self, x):   return (self.g.invert(x[0]), self.h.invert(x[1]))
     def order(self,x):     return lcm(self.g.order(x[0]), self.h.order(x[1]))
     def __str__(self):     return showbinop(self.g,   '*', self.h)
     def __unicode__(self): return showbinopU(self.g, u'×', self.h)
-
-    def LaTeX(self):
-	return showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
+    def LaTeX(self): return showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
 
     # identity, indexElem, __len__, __iter__, __contains__, showElem,
     # showUElem, and LaTeXElem are inherited from semidirect (though the last
@@ -535,6 +536,12 @@ def isHomomorphism(phi, g, h):
     hop = h.oper
     return all(phi(x) in h for x in g) \
        and all(hop(phi(x), phi(y)) == phi(gop(x,y)) for x in g for y in g)
+
+def direct(g,h):
+    if isinstance(g, Group) and isinstance(h, Group):
+	return Group(DirectProduct(g.group, h.group))
+    else:
+	return DirectProduct(g,h)
 
 
 # Internal functions: ---------------------------------------------------------
