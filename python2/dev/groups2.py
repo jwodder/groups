@@ -151,6 +151,13 @@ class group(object):
 	    x = self.oper(x,x)
 	return agg
 
+    def cycle(self, x):
+	yield self.identity()
+	y = x
+	while y != self.identity():
+	    yield y
+	    y = self.oper(y,x)
+
 
 class Group(group):
     paramNames = ('group',)
@@ -218,12 +225,9 @@ class Element(object):
     def __pow__(self, n):
 	return Element(self.rawGroup.pow(self.value, n), self.group)
 
-    def cycle(self):  ### TODO: Make this available to non-Group elements
-	yield self.group.identity()
-	x = self
-	while x:
-	    yield x
-	    x *= self
+    def cycle(self):
+	return itertools.imap(lambda x: Element(x, self.group),
+			      self.rawGroup.cycle(self.value))
 
 
 class Cyclic(group):
