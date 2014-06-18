@@ -29,7 +29,6 @@ class group(object):
     def oper(self,x,y):    raise NotImplementedError
     def invert(self,x):    raise NotImplementedError
     def order(self,x):     raise NotImplementedError
-    def indexElem(self,x): raise NotImplementedError  ### TODO: Remove?
     def LaTeX(self):       raise NotImplementedError
     def showElem(self,x):  raise NotImplementedError
     def LaTeXElem(self,x): raise NotImplementedError
@@ -171,7 +170,6 @@ class Group(group):
     def oper(self,x,y):    return Element(self.group.oper(x.value,y.value),self)
     def invert(self,x):    return Element(self.group.invert(x.value), self)
     def order(self,x):     return self.group.order(x.value)
-    def indexElem(self,x): return self.group.indexElem(x.value)
     def LaTeX(self):       return self.group.LaTeX()
     def showElem(self,x):  return self.group.showElem(x.value)
     def showUElem(self,x): return self.group.showUElem(x.value)
@@ -199,9 +197,6 @@ class Element(object):
     def order(self): return self.group.order(self)
 
     @property
-    def index(self): return self.group.indexElem(self)
-
-    @property
     def rawGroup(self): return self.group.group
 
     def __mul__(self, y): return self.group.oper(self,y)
@@ -218,7 +213,7 @@ class Element(object):
 	return cmp(type(self), type(other)) or \
 	       cmp((self.group, self.value), (other.group, other.value))
 
-    def __hash__(self): return hash((self.rawGroup, self.index))
+    def __hash__(self): return hash((self.rawGroup, self.value))
 
     def __nonzero__(self): return self.value != self.group.identity().value
 
@@ -244,7 +239,6 @@ class Cyclic(group):
     def __iter__(self):    return xrange(self.n)
     def __contains__(self,x): return 0 <= x < self.n
     def order(self,x):     return cycOrd(self.n, x)
-    def indexElem(self,x): return x
     def __str__(self):     return  'Z' + sub(self.n)
     def __unicode__(self): return u'ℤ' + subU(self.n)
     def LaTeX(self):       return r'\mathbb{Z}' + sub(self.n)
@@ -276,8 +270,6 @@ class Semidirect(group):
 
     def __contains__(self, x):
 	return isPair(x) and x[0] in self.g and x[1] in self.h
-
-    def indexElem(self,x): return g.indexElem(x[0]) * len(g) + h.indexElem(x[1])
 
     def order(self, x):
 	# Should the results be cached somehow?
@@ -321,10 +313,9 @@ class DirectProduct(Semidirect):
     def __unicode__(self): return showbinopU(self.g, u'×', self.h)
     def LaTeX(self): return showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
 
-    # identity, indexElem, __len__, __iter__, __contains__, showElem,
-    # showUElem, and LaTeXElem are inherited from semidirect (though the last
-    # three might have to be overridden if "ba"-style showing is ever
-    # implemented).
+    # identity, __len__, __iter__, __contains__, showElem, showUElem, and
+    # LaTeXElem are inherited from semidirect (though the last three might have
+    # to be overridden if "ba"-style showing is ever implemented).
 
     @property
     def phi(self): return lambda y: lambda x: x
@@ -358,8 +349,6 @@ class Dicyclic(group):
 	return isPair(x) and 0 <= x[0] < 2*self.n and 0 <= x[1] < 2
 
     def order(self,x): return 4 if x[1] else cycOrd(2*self.n, x[0])
-
-    def indexElem(self,x): return (2*self.n if x[1] else 0) + x[0]
 
     def __str__(self): return 'Dic' + sub(self.n)
 
@@ -397,7 +386,6 @@ class Dihedral(group):
     def identity(self): return (False, 0)
     def invert(self,x): return x if x[0] else (False, -x[1] % self.n)
     def order(self,x): return 2 if x[0] else cycOrd(self.n, x[1])
-    def indexElem(self,x): return (self.n if x[0] else 0) + x[1]
     def __len__(self): return 2*self.n
     def __str__(self): return 'Dih' + sub(self.n)
     def LaTeX(self): return r'\operatorname{Dih}' + sub(self.n)
@@ -429,7 +417,6 @@ class Trivial(group):
     def __contains__(self, x): return x == ()
     def __str__(self):     return '1'
     def LaTeX(self):       return '1'
-    def indexElem(self,x): return 0
     def showElem(self,x):  return '1'
     LaTeXElem = showElem
 
@@ -446,7 +433,6 @@ class Klein4(group):
 					 for b in [False, True])
     def __str__(self):     return 'V_4'
     def LaTeX(self):       return 'V_4'
-    def indexElem(self,x): return int(x[0]) * 2 + int(x[1])
     def showElem(self,x):  return multish('a' if x[0] else '1',
 					  'b' if x[1] else '1')
     LaTeXElem = showElem
@@ -462,12 +448,10 @@ class AutCyclic(group):  # formerly "MultiplicN"
 	if n < 1: raise ValueError('n must be positive')
 	super(AutCyclic, self).__init__(n)
 	self._elems = [i for i in range(1,n+1) if gcd(n,i) == 1]
-	self._indices = dict(zip(self._elems, range(n)))
 
     def identity(self):    return 1
     def oper(self,x,y):    return (x * y) % self.n
     def invert(self,x):    return modInverse(x, self.n)
-    def indexElem(self,x): return self._indices[x]
     def __len__(self):     return len(self._elems)
     def __iter__(self):    return iter(self._elems)
     def __contains__(self, x): return 0 <= x < self.n and gcd(x, self.n) == 1
@@ -521,7 +505,6 @@ class Symmetric(group):
     def invert(self,x):    return x.inverse
     def __len__(self):     return factorial(self.n)
     def order(self,x):     return x.order
-    def indexElem(self,x): return x.lehmer
     def __str__(self):     return 'S' + sub(self.n)
     LaTeX = __str__
     def showElem(self,x):  return str(x)
