@@ -21,3 +21,4 @@
   outside the Group?
 - Should Element.order and/or Element.index cache their results?
 - permutation.py: Make fewer things properties?
+- Add a way to set an individual group's __str__, __unicode__, & LaTeX values?

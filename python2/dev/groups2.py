@@ -158,6 +158,38 @@ class group(object):
 	    y = self.oper(y,x)
 
 
+class subgroup(group):
+    paramNames = ('supergroup', 'elementSet')
+
+    def __init__(self, supergroup, elementSet):
+	elementSet = frozenset(elementSet)
+	if not self.isSubgroup(elementSet):
+	    raise ValueError('arguments do not define a valid subgroup')
+	super(subgroup, self).__init__(supergroup, elementSet)
+
+    def identity(self):       return self.supergroup.identity()
+    def oper(self,x,y):       return self.supergroup.oper(x,y)
+    def invert(self,x):       return self.supergroup.invert(x)
+    def __len__(self):        return len(self.elementSet)
+    def __iter__(self):       return iter(self.elementSet)
+    def __contains__(self,x): return x in self.elementSet
+    def order(self,x):        return self.supergroup.order(x)
+
+    ### TODO: Rethink these three methods:
+    def __str__(self):
+	return '{' + ', '.join(map(self.showElem, self.elementSet)) + '}'
+
+    def __unicode__(self):
+	return '{' + ', '.join(map(self.showUElem, self.elementSet)) + '}'
+
+    def LaTeX(self):
+	return r'\{' + ', '.join(map(self.LaTeXElem, self.elementSet)) + r'\}'
+
+    def showElem(self,x):     return self.supergroup.showElem(x)
+    def showUElem(self,x):    return self.supergroup.showUElem(x)
+    def LaTeXElem(self,x):    return self.supergroup.LaTeXElem(x)
+
+
 class Group(group):
     paramNames = ('group',)
 
@@ -177,7 +209,7 @@ class Group(group):
     def __len__(self):     return len(self.group)
 
     def __iter__(self):
-        return itertools.imap(lambda x: Element(x, self), self.group)
+	return itertools.imap(lambda x: Element(x, self), self.group)
 
     def __str__(self): return str(self.group)
     def __unicode__(self): return unicode(self.group)
@@ -296,7 +328,7 @@ class Semidirect(group):
     ### TODO: Add an option for turning on "ab"-style showing
 
     def __str__(self): return showbinop(self.g, 'x|', self.h)
-     ### Rethink the operator
+     ### TODO: Rethink the operator
     def __unicode__(self): return showbinopU(self.g, u'⋊', self.h)
     def LaTeX(self): return showbinop(self.g.LaTeX(), r'\rtimes', self.h.LaTeX())
 
