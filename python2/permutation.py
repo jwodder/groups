@@ -30,8 +30,6 @@ class Permutation(object):
 				      and other._even is not None
 				  else None)
 
-    #__rmul__ = __mul__
-
     def __repr__(self): return '%s(%r)' % (self.__class__.__name__, self._map)
 
     def __str__(self):
@@ -40,6 +38,19 @@ class Permutation(object):
 	    return ''.join('(' + ' '.join(map(str,cyc)) + ')' for cyc in cycles)
 	else:
 	    return '1'
+
+    @classmethod
+    def parse(cls, s):  # inverse of `__str__`
+	s = s.strip()
+	if not s: raise ValueError('empty argument')
+	if s == '1': return cls.identity()
+	if s[0] != '(': raise ValueError('invalid argument')
+	cycles = []
+	for c in s[1:].split('('):
+	    c = c.strip()
+	    if not c or c[-1] != ')': raise ValueError('invalid argument')
+	    cycles.append(int(x) for x in c[:-1].split())
+	return cls.fromCycles(cycles)
 
     def __nonzero__(self): return self._map != ()
 
@@ -109,7 +120,7 @@ class Permutation(object):
 	cycles = []
 	for i in range(len(cmap)):
 	    if cmap[i] != 0 and cmap[i] != i+1:
-	        x = i+1
+		x = i+1
 		cyke = [x]
 		y = cmap[x-1]
 		cmap[x-1] = 0
@@ -136,7 +147,7 @@ class Permutation(object):
 	    lehmer = 0
 	    fac = reduce(operator.mul, range(1, small+1))
 	    for i in range(small, big-1):
-	        lehmer += fac
+		lehmer += fac
 		fac *= i+1
 	    lehmer += fac * (big-small)
 	    return cls((b if x == a else a if x == b else x
@@ -211,7 +222,7 @@ class Permutation(object):
 
     @classmethod
     def s_n(cls, n):
-        p = cls()
+	p = cls()
 	while p.degree <= n:
 	    yield p
 	    p = p.next()

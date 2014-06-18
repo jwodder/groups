@@ -438,7 +438,7 @@ class Klein4(group):
     LaTeXElem = showElem
 
     def __contains__(self, x):
-	return isPair(x) and 0 <= x[0] < 2 and 0 <= x[1] < 2
+	return isPair(x) and x[0] in (0,1) and x[1] in (0,1)
 
 
 class AutCyclic(group):  # formerly "MultiplicN"
