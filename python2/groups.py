@@ -189,6 +189,12 @@ class subgroup(group):
     def showUElem(self,x):    return self.supergroup.showUElem(x)
     def LaTeXElem(self,x):    return self.supergroup.LaTeXElem(x)
 
+    def baseGroup(self):
+	supgr = self.supergroup
+	while isinstance(supgr, subgroup):
+	    supgr = supgr.supergroup
+	return supgr
+
 
 class Group(group):
     paramNames = ('group',)
