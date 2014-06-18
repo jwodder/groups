@@ -15,6 +15,9 @@
 - Create a "smart pointer" container around Group* for general external use, à
   la `Element` with `elem`?
 - Rename "abelian" to "isAbelian"?
+- Give Tabular a `Tabular(const Group*)` constructor that uses/emulates either
+  the `Tabular(const Group&)` or `Tabular(const Tabular&)` constructor
+  depending on what type the pointer points to
 
 FEATURES
 - Implement all of the features in plan.txt

@@ -45,8 +45,6 @@ class group(object):
 
     def __hash__(self): return hash((self.family, self.params))
 
-    ###def __mul__(self, other): return DirectProduct(self, other)
-
     def __nonzero__(self): return len(self) > 1
 
     def __cmp__(self, other):
@@ -133,6 +131,26 @@ class group(object):
 	bset = set(iterable2)
 	return closure(self.commutator(x,y) for x in aset for y in bset)
 
+    def pow(self, x, n):
+	order = self.order(x)
+	n %= order
+	if n == 0: return self.identity()
+	if order - n < order // 2:
+	    n = order - n
+	    x = self.invert(x)
+	i=1
+	while not (n & i):
+	    x = self.oper(x,x)
+	    i <<= 1
+	agg = x
+	i <<= 1
+	x = self.oper(x,x)
+	while i <= n:
+	    if n & i: agg = self.oper(agg, x)
+	    i <<= 1
+	    x = self.oper(x,x)
+	return agg
+
 
 class Group(group):
     paramNames = ('group',)
@@ -197,27 +215,8 @@ class Element(object):
 
     def __nonzero__(self): return self.value != self.group.identity().value
 
-    def __pow__(self, n):  ### TODO: Make this available to non-Group elements
-	order = self.order
-	n %= order
-	if n == 0: return self.group.identity()
-	if order - n < order // 2:
-	    n = order - n
-	    x = ~self
-	else:
-	    x = self
-	i=1
-	while not (n & i):
-	    x *= x
-	    i <<= 1
-	agg = x
-	i <<= 1
-	x *= x
-	while i <= n:
-	    if n & i: agg *= x
-	    i <<= 1
-	    x *= x
-	return agg
+    def __pow__(self, n):
+	return Element(self.rawGroup.pow(self.value, n), self.group)
 
     def cycle(self):  ### TODO: Make this available to non-Group elements
 	yield self.group.identity()
