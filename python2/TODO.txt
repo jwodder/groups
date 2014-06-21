@@ -12,13 +12,11 @@
   (where Element is the base class rather than a group's derived class) ?
 - Add __copy__ and __deepcopy__ methods (see the `copy` module)
  - Add Element.copy()
-- Implement an inverse method to `indexElem`?
 - Make `identity` a property?
 - Rewrite Group.__contains__ and/or Group.elem to ensure that the Element
   objects in question actually appear in their respective Groups?  cf. the
   overloading of .elem by Cyclic
 - Should .oper (and other Group methods?) raise a TypeError when given Elements
   outside the Group?
-- Should Element.order and/or Element.index cache their results?
 - permutation.py: Make fewer things properties?
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values?

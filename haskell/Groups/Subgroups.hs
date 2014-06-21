@@ -6,7 +6,7 @@ module Groups.Subgroups (subgroups, subgroupGens) where
  import Data.Set (Set)
  import qualified Data.Set as Set
  import Groups.Types
- import Groups.Types.Subset(Subset(..), (∉), (⊆), (∪))
+ import Groups.Types.Subset(Subset(..), (∉), (⊆), (∪), (∖))
  import qualified Groups.Types.Subset as Sub
  import Groups.Ops (subgroupUnion)
 
@@ -35,5 +35,5 @@ module Groups.Subgroups (subgroups, subgroupGens) where
 	  Just (g', _) -> guard $ not $ g' ⊆ cyc
 	  Nothing      -> return ()
 	 return (subgroupUnion subgr cyc,
-		 Set.fromList [Sub.filter' (∉ cyc) a ∪ b
+		 Set.fromList [(a ∖ cyc) ∪ b
 			       | a <- Set.toList gens, b <- Set.toList gs])

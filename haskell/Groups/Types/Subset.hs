@@ -91,3 +91,9 @@ module Groups.Types.Subset where
 
  (⊃) :: Subset -> Subset -> Bool
  (⊃) = flip (⊂)
+
+ member :: Int -> Subset -> Bool
+ member x (Subset (_, is)) = ISet.member x is
+
+ notMember :: Int -> Subset -> Bool
+ notMember x (Subset (_, is)) = ISet.notMember x is

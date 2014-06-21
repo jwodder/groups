@@ -3,12 +3,14 @@ module Groups.Types.Group where
 
  newtype Group = Group (Array (Int, Int) Int, Array Int (Int, Int))
   -- Tuple items: group table; mapping from element numbers to inverses & orders
-  deriving (Read, Show)
+  deriving (Eq, Ord, Read, Show)
   -- The constructor must be kept private to prevent data mismatches.  To this
   -- end, gr_tbl and gr_dat shall be pure accessors rather than field labels.
 
+{-
  instance Eq  Group where Group (t1, _) == Group (t2, _) = t1 == t2
  instance Ord Group where compare (Group (t, _)) (Group (u, _)) = compare t u
+-}
 
  gr_tbl :: Group -> Array (Int, Int) Int
  gr_tbl (Group (t, _)) = t
