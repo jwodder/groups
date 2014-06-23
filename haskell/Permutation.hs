@@ -9,6 +9,7 @@ module Permutation (
   fromLehmer,
   fromCycle, fromCycles,
   fromArray,
+  readCycles,
   -- * Deconstruction
   toCycles, showCycles, toArray,
   -- * Properties
@@ -16,6 +17,7 @@ module Permutation (
  ) where
  import Data.Array hiding ((!))
  import qualified Data.Array as A
+ import Data.Char (isSpace)
  import Data.List (intercalate, (\\))
  import Data.Monoid
 
@@ -136,6 +138,17 @@ module Permutation (
  showCycles σ = case toCycles σ of
   []  -> "1"
   cyc -> concatMap (('(' :) . (++ ")") . intercalate " " . map show) cyc
+
+ readCycles :: String -> Permutation
+ readCycles s = case dropWhile isSpace s of
+  '1':xs | all isSpace xs -> identity
+  xs@('(':_)              -> fromCycles $ readCycles' xs
+  _                       -> error "Permutation.readCycles: invalid argument"
+  where readCycles' ('(':xs) = case break (== ')') xs of
+				(ys, ')':zs) -> map read (words ys) : readCycles' (dropWhile isSpace zs)
+				_ -> error "Permutation.readCycles: invalid argument"
+	readCycles' xs | all isSpace xs = []
+	readCycles' _ = error "Permutation.readCycles: invalid argument"
 
  order :: Permutation -> Int
  order = foldl lcm 1 . map length . toCycles
