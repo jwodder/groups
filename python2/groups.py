@@ -56,6 +56,8 @@ class group(object):
 
     def copy(self): return self.__class__(*self.params)
 
+    def baseGroup(self): return self
+
     def product(self, xs): return reduce(self.oper, xs, self.identity())
 
     def conjugate(self, x, y): return self.oper(self.oper(y,x), self.invert(y))
@@ -118,7 +120,7 @@ class group(object):
     def closure(self, iterable): return closure2A(self.oper, iterable)
 	# assumes the iterable is over elements of `self`
 	# returns an iterator
-	### TODO: Should this return a set?
+	### TODO: Should this return a set or subgroup?
 
     def commutator(self, x, y):
 	return self.oper(self.invert(self.oper(y,x)), self.oper(x,y))
@@ -184,10 +186,9 @@ class group(object):
 	    subs.update(new)
 	return subs
 
-    # subgroupGens :: Group -> Map Subset (Set Subset)
     def subgroupGens(self):
-	"""Returns a `dict` mapping subgroups to sets of (minimal?) generating
-	   sets"""
+	"""Returns a `dict` mapping subgroups (as `frozenset`s) to `set`s of
+	   (minimal?) generating `frozenset`s"""
 	cycles = {}
 	for x in self:
 	    cyc = frozenset(self.cycle(x))
