@@ -17,7 +17,7 @@ namespace Groups {
   virtual bool abelian() const = 0;
   virtual group<T>* copy() const = 0;
   virtual int cmp(const group<T>*) const = 0;
-  virtual bool contains(const T& x) const = 0;
+  virtual bool contains(const T&) const = 0;
  };
 }
 #endif

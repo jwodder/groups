@@ -19,7 +19,7 @@ namespace Groups {
   virtual bool abelian() const;
   virtual Cyclic* copy() const;
   virtual int cmp(const group<int>*) const;
-  virtual bool contains(const int& x) const;
+  virtual bool contains(const int&) const;
   int residue(int) const;
  private:
   int n;

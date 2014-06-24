@@ -6,24 +6,24 @@
 #include "Groups/Group.hpp"
 
 namespace Groups {
- class Dicyclic : public Group {
+ class Dicyclic : public group< std::pair<int,bool> > {
+ // The pair is (i,j).
  public:
   Dicyclic(int m) : n(std::abs(m)) { }
   virtual ~Dicyclic() { }
-  virtual Element op(const Element&, const Element&) const;
-  virtual Element identity() const;
-  virtual std::vector<Element> elements() const;
-  virtual Element invert(const Element&) const;
+  virtual elem_t operator()(const elem_t&, const elem_t&) const;
+  virtual elem_t identity() const;
+  virtual std::vector<elem_t> elements() const;
+  virtual elem_t invert(const elem_t&) const;
   virtual int order() const;
-  virtual int order(const Element&) const;
-  virtual std::string showElem(const Element&) const;
+  virtual int order(const elem_t&) const;
+  virtual std::string showElem(const elem_t&) const;
   virtual bool abelian() const;
   virtual Dicyclic* copy() const;
-  virtual int cmp(const Group*) const;
+  virtual int cmp(const group<elem_t>*) const;
+  virtual bool contains(const elem_t&) const;
  private:
   int n;
-  typedef std::pair<int,bool> elem_t;  /* (i,j) */
-  typedef gelem<elem_t> element;
  };
 }
 

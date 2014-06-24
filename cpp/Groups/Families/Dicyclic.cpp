@@ -5,46 +5,46 @@
 using namespace std;
 
 namespace Groups {
- Element Dicyclic::op(const Element& x, const Element& y) const {
-  elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
-  int i = xp.first + (xp.second ? -1 : 1) * yp.first;
-  if (xp.second && yp.second) i += n;
+ typedef Dicyclic::elem_t elem_t;
+
+ elem_t Dicyclic::operator()(const elem_t& x, const elem_t& y) const {
+  int i = x.first + (x.second ? -1 : 1) * y.first;
+  if (x.second && y.second) i += n;
   i %= 2*n;
-  return mkElem<elem_t>(elem_t(i, xp.second ^ yp.second));
+  return elem_t(i, x.second ^ y.second);
  }
 
- Element Dicyclic::identity() const {return mkElem<elem_t>(elem_t(0, false)); }
+ elem_t Dicyclic::identity() const {return elem_t(0, false); }
 
- vector<Element> Dicyclic::elements() const {
-  vector<Element> elems(4*n, identity());
-  vector<Element>::iterator iter = elems.begin();
+ vector<elem_t> Dicyclic::elements() const {
+  vector<elem_t> elems(4*n, identity());
+  vector<elem_t>::iterator iter = elems.begin();
   int i=1;
-  for (iter++; i<2*n; i++, iter++) *iter = mkElem<elem_t>(elem_t(i, false));
+  for (iter++; i<2*n; i++, iter++) *iter = elem_t(i, false);
   i=0;
-  for (; i<2*n; i++, iter++) *iter = mkElem<elem_t>(elem_t(i, true));
+  for (; i<2*n; i++, iter++) *iter = elem_t(i, true);
   return elems;
  }
 
- Element Dicyclic::invert(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
-  return mkElem<elem_t>(elem_t((xp.second ? xp.first + n : -xp.first) % (2*n),
-			       xp.second));
+ elem_t Dicyclic::invert(const elem_t& x) const {
+  return elem_t((x.second ? x.first + n : -x.first) % (2*n), x.second);
  }
 
  int Dicyclic::order() const {return 4 * n; }
 
- int Dicyclic::order(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
-  return xp.second ? 4 : 2*n / gcd(xp.first, 2*n);
+ int Dicyclic::order(const elem_t& x) const {
+  return x.second ? 4 : 2*n / gcd(x.first, 2*n);
  }
 
- string Dicyclic::showElem(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
+ string Dicyclic::showElem(const elem_t& x) const {
   ostringstream out;
-  int i = xp.first;
+  int i = x.first;
   if (i >= n) {out << '-'; i -= n; }
-  if (i == 0 && !xp.second) out << "1";
-  else {expgen(out, "i", i, ""); if (xp.second) out << 'j'; }
+  if (i == 0 && !x.second) out << "1";
+  else {
+   expgen(out, "i", i, "");
+   if (x.second) out << 'j';
+  }
   return out.str();
  }
 
@@ -52,10 +52,14 @@ namespace Groups {
 
  Dicyclic* Dicyclic::copy() const {return new Dicyclic(n); }
 
- int Dicyclic::cmp(const Group* other) const {
+ int Dicyclic::cmp(const group<elem_t>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dicyclic* c = static_cast<const Dicyclic*>(other);
   return n - c->n;
+ }
+
+ bool Dicyclic::contains(const elem_t& x) const {
+  return 0 <= x.first && x.first < 2*n;
  }
 }
