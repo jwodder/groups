@@ -5,25 +5,24 @@
 #include "Groups/Group.hpp"
 
 namespace Groups {
- class Cyclic : public Group {
+ class Cyclic : public group<int> {
  public:
   Cyclic(int m) : n(std::abs(m)) { }
   virtual ~Cyclic() { }
-  virtual Element op(const Element&, const Element&) const;
-  virtual Element identity() const;
-  virtual std::vector<Element> elements() const;
-  virtual Element invert(const Element&) const;
+  virtual int operator()(const int&, const int&) const;
+  virtual int identity() const;
+  virtual std::vector<int> elements() const;
+  virtual int invert(const int&) const;
   virtual int order() const;
-  virtual int order(const Element&) const;
-  virtual std::string showElem(const Element&) const;
+  virtual int order(const int&) const;
+  virtual std::string showElem(const int&) const;
   virtual bool abelian() const;
   virtual Cyclic* copy() const;
-  virtual int cmp(const Group*) const;
-  Element residue(int) const;
+  virtual int cmp(const group<int>*) const;
+  virtual bool contains(const int& x) const;
+  int residue(int) const;
  private:
   int n;
-  typedef int elem_t;
-  typedef gelem<elem_t> element;
  };
 }
 
