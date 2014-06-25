@@ -2,7 +2,7 @@ CXX = c++
 CPPFLAGS = -std=c++98 -Wall -I.
 CC = $(CXX)  # for linking
 
-GRNAMES = Cyclic Dicyclic Dihedral Direct Symmetric Tabular
+GRNAMES = Cyclic Dicyclic Dihedral Symmetric Tabular
 GROUPS = $(foreach grp,$(GRNAMES),Groups/Families/$(grp).o)
 
 OBJS = $(GROUPS) Groups/Element.o Groups/Ops.o Permutation.o Groups/util.o
