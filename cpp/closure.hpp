@@ -10,7 +10,7 @@
  *     `T` value.
  */
 template<class T, class Func, class Iter>
-std::set<T> closure2(Func f, Iter first, Iter last) {
+std::set<T> closure2(const Func& f, Iter first, Iter last) {
  std::set<T> seen(first, last);
  std::queue<T> nova(std::deque<T>(first, last));
  while (!nova.empty()) {
@@ -34,7 +34,7 @@ std::set<T> closure2(Func f, Iter first, Iter last) {
  *     `T` value.  Its operation is assumed to be associative.
  */
 template<class T, class Func, class Iter>
-std::set<T> closure2A(Func f, Iter first, Iter last) {
+std::set<T> closure2A(const Func& f, Iter first, Iter last) {
  const std::set<T> start(first, last);
  std::set<T> seen(start);
  std::queue<T> nova(std::deque<T>(first, last));
@@ -59,7 +59,7 @@ std::set<T> closure2A(Func f, Iter first, Iter last) {
  *     `U` value.
  */
 template<class T, class Func, class Iter, class U>
-std::set<T> closure1m(Func f, Iter first, Iter last) {
+std::set<T> closure1m(const Func& f, Iter first, Iter last) {
  std::set<T> seen(first, last);
  std::queue<T> nova(std::deque<T>(first, last));
  while (!nova.empty()) {

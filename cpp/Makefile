@@ -31,6 +31,9 @@ tests/closure02 : Groups/Families/Cyclic.o Groups/Ops.o Groups/Element.o \
 tests/closure02.o : Groups/Families/Cyclic.hpp Groups/Ops.hpp \
  Groups/Group.hpp Groups/Element.hpp Groups/Families/Dicyclic.hpp closure.hpp
 
+tests/closure03 : Groups/Families/Cyclic.o Groups/util.o
+tests/closure03.o : Groups/Families/Cyclic.hpp Groups/Group.hpp closure.hpp
+
 tests/fromCycles01 : Permutation.o Groups/util.o
 tests/fromCycles01.o : Permutation.hpp
 

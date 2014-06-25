@@ -9,8 +9,10 @@
 
 namespace Groups {
  template<class T, class U>
- class Direct<T,U> : public group< std::pair<T,U> > {
+ class Direct : public group< std::pair<T,U> > {
  public:
+  typedef std::pair<T,U> elem_t;  // Why is this necessary?
+
   Direct(const group<T>* g, const group<U>* h)
    : left(g->copy()), right(h->copy()) { }
 
@@ -41,10 +43,10 @@ namespace Groups {
    std::vector<elem_t> elems(order(), identity());
    std::vector<T> lems = left->elements();
    std::vector<U> rems = right->elements();
-   std::vector<elem_t>::iterator iter = elems.begin();
-   std::vector<T>::iterator liter;
+   typename std::vector<elem_t>::iterator iter = elems.begin();
+   typename std::vector<T>::iterator liter;
    for (liter = lems.begin(); liter != lems.end(); liter++) {
-    std::vector<U>::iterator riter;
+    typename std::vector<U>::iterator riter;
     for (riter = rems.begin(); riter != rems.end(); riter++) {
      *iter = elem_t(*liter, *riter);
      iter++;
@@ -54,16 +56,16 @@ namespace Groups {
   }
 
   virtual elem_t invert(const elem_t& x) const {
-   return elem_t(x.first.inverse(), x.second.inverse());
+   return elem_t(left->invert(x.first), right->invert(x.second));
   }
 
   virtual int order() const {return left->order() * right->order(); }
 
   virtual int order(const elem_t& x) const {
-   return lcm(x.first.order(), x.second.order());
+   return lcm(left->order(x.first), right->order(x.second));
   }
 
-  virtual std::string Direct::showElem(const elem_t& x) const {
+  virtual std::string showElem(const elem_t& x) const {
    if (x.first == left->identity() && x.second == right->identity()) {
     return "1";
    } else {
@@ -97,7 +99,7 @@ namespace Groups {
 
   elem_t pair(const T& x, const U& y) const {
    if (left->contains(x) && right->contains(y)) return elem_t(x,y);
-   else throw invalid_argument("Direct::pair: group mismatch");
+   else throw std::invalid_argument("Direct::pair: group mismatch");
   }
 
  private:

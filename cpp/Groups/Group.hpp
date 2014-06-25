@@ -2,6 +2,7 @@
 #define GROUP_H
 #include <string>
 #include <vector>
+#include "closure.hpp"
 namespace Groups {
  template<class T> class group {
  public:
@@ -18,6 +19,15 @@ namespace Groups {
   virtual group<T>* copy() const = 0;
   virtual int cmp(const group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
+
+  std::set<T> closure(const std::set<T>& start) {
+   return closure2A<T>(*this, start.begin(), start.end());
+  }
+
+  template<class Iter>
+  std::set<T> closure(Iter first, Iter last) {
+   return closure2A<T>(*this, first, last);
+  }
  };
 }
 #endif
