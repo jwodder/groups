@@ -10,7 +10,7 @@ namespace Groups {
  public:
   Symmetric(int d) : degree(std::max(d,1)) { }
   virtual ~Symmetric() { }
-  virtual Permutation operator()(const Permutation&, const Permutation&) const;
+  virtual Permutation op(const Permutation&, const Permutation&) const;
   virtual Permutation identity() const;
   virtual std::vector<Permutation> elements() const;
   virtual Permutation invert(const Permutation&) const;

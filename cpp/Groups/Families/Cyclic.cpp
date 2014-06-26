@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace Groups {
- int Cyclic::operator()(const int& x, const int& y) const {
+ int Cyclic::op(const int& x, const int& y) const {
   return (x + y) % n;
  }
 

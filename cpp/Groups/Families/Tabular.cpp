@@ -11,9 +11,7 @@ namespace Groups {
   : table(t.table), inverses(t.inverses), orders(t.orders), strs(t.strs),
     abel(t.abel) { }
 
- int Tabular::operator()(const int& x, const int& y) const {
-  return table[x][y];
- }
+ int Tabular::op(const int& x, const int& y) const {return table[x][y]; }
 
  int Tabular::identity() const {return 0; }
 

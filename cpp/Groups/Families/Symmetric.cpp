@@ -4,8 +4,9 @@
 using namespace std;
 
 namespace Groups {
- Permutation Symmetric::operator()(const Permutation& x, const Permutation& y)
-  const {return x * y; }
+ Permutation Symmetric::op(const Permutation& x, const Permutation& y) const {
+  return x * y;
+ }
 
  Permutation Symmetric::identity() const {
   return Permutation::identity();

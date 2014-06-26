@@ -12,7 +12,7 @@ TESTS = tests/closure01 tests/closure02 tests/fromCycles01 tests/lehmer02 \
 
 all : $(OBJS) $(TESTS)
 
-$(GROUPS) : Groups/util.hpp Groups/Group.hpp Groups/Element.hpp
+$(GROUPS) : Groups/util.hpp Groups/Group.hpp
 
 $(foreach grp,$(GROUPS),$(grp)) : Groups/Families/%.o : Groups/Families/%.hpp
 Groups/Families/Symmetric.o : Permutation.hpp

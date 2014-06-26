@@ -8,7 +8,7 @@ namespace Groups {
  public:
   typedef T elem_t;
   virtual ~group() { }
-  virtual T operator()(const T&, const T&) const = 0;
+  virtual T op(const T&, const T&) const = 0;
   virtual T identity() const = 0;
   virtual T invert(const T&) const = 0;
   virtual int order() const = 0;
@@ -20,13 +20,21 @@ namespace Groups {
   virtual int cmp(const group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
 
-  std::set<T> closure(const std::set<T>& start) {
-   return closure2A<T>(*this, start.begin(), start.end());
+ private:
+  struct opcall {  // TODO: Look for a better way to accomplish this.
+   const group<T>* g;
+   opcall(const group<T>* h) : g(h) { }
+   T operator()(const T& x, const T& y) const {return g->op(x,y); }
+  };
+
+ public:
+  std::set<T> closure(const std::set<T>& start) const {
+   return closure2A<T>(opcall(this), start.begin(), start.end());
   }
 
   template<class Iter>
-  std::set<T> closure(Iter first, Iter last) {
-   return closure2A<T>(*this, first, last);
+  std::set<T> closure(Iter first, Iter last) const {
+   return closure2A<T>(opcall(this), first, last);
   }
  };
 }
