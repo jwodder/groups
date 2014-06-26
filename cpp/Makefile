@@ -7,8 +7,8 @@ GROUPS = $(foreach grp,$(GRNAMES),Groups/Families/$(grp).o)
 
 OBJS = $(GROUPS) Groups/Element.o Groups/Ops.o Permutation.o Groups/util.o
 
-TESTS = tests/closure01 tests/closure02 tests/fromCycles01 tests/lehmer02 \
- tests/lehmer03 tests/perminc01
+TESTS = tests/closure01 tests/closure02 tests/closure03 tests/fromCycles01 \
+ tests/lehmer02 tests/lehmer03 tests/perminc01
 
 all : $(OBJS) $(TESTS)
 

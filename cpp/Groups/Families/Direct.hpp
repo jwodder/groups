@@ -13,6 +13,9 @@ namespace Groups {
  public:
   typedef std::pair<T,U> elem_t;  // Why is this necessary?
 
+  Direct(const group<T>& g, const group<U>& h)
+   : left(g.copy()), right(h.copy()) { }
+
   Direct(const group<T>* g, const group<U>* h)
    : left(g->copy()), right(h->copy()) { }
 
