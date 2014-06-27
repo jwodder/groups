@@ -8,7 +8,7 @@ import sys
 class Relation(object):
     # Used for calculating the transitive closures of the "#includes" and
     # "links with" relations
-    # TODO: Replace this with the Floyd-Warshall_algorithm?
+    # TODO: Replace this with the Floyd-Warshall algorithm?
 
     def __init__(self):
 	self.relate = {}
