@@ -35,17 +35,15 @@ namespace Groups {
 
  Element& Element::operator*=(const Element y) {return *this = *this * y; }
 
- Element& Element::operator=(const Element& y) {
-  gr = y.gr;
-  const elem* tmp = y.x->retain();
-  x->release();
-  x = tmp;
-  return *this;
- }
-
  Element::operator string() const {return gr->showElem(*this); }
 
  Element::operator bool() const {return *this != gr->identity(); }
+
+ int Element::cmp(const Element& y) const {
+  int c = gr->cmp(y.gr);
+  if (c == 0) return val - y.val;
+  else return c;
+ }
 
  ostream& operator<<(ostream& out, const Element& x) {return out << string(x); }
 }
