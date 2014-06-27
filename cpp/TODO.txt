@@ -10,7 +10,6 @@
 - Rethink the way Element manages its Group*
 - Could the creation of Group subclasses be simplified using templates and/or
   std::function somehow?
-- Add a "group_mismatch" exception
 - Create a "smart pointer" container around Group* for general external use, à
   la `Element` with `elem`?
 - Rename "abelian" to "isAbelian"?

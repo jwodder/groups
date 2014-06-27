@@ -1,8 +1,10 @@
 #ifndef BASICGROUP_H
 #define BASICGROUP_H
+
 #include <string>
 #include <vector>
 #include "closure.hpp"
+
 namespace Groups {
  template<class T> class basic_group {
  public:
@@ -20,14 +22,6 @@ namespace Groups {
   virtual int cmp(const basic_group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
 
- private:
-  struct opcall {  // TODO: Look for a better way to accomplish this.
-   const basic_group<T>* g;
-   opcall(const basic_group<T>* h) : g(h) { }
-   T operator()(const T& x, const T& y) const {return g->op(x,y); }
-  };
-
- public:
   std::set<T> closure(const std::set<T>& start) const {
    return closure2A<T>(opcall(this), start.begin(), start.end());
   }
@@ -36,6 +30,14 @@ namespace Groups {
   std::set<T> closure(Iter first, Iter last) const {
    return closure2A<T>(opcall(this), first, last);
   }
+
+ private:
+  struct opcall {  // TODO: Look for a better way to accomplish this.
+   const basic_group<T>* g;
+   opcall(const basic_group<T>* h) : g(h) { }
+   T operator()(const T& x, const T& y) const {return g->op(x,y); }
+  };
  };
 }
+
 #endif

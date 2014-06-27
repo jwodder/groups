@@ -102,7 +102,7 @@ namespace Groups {
 
   elem_t pair(const T& x, const U& y) const {
    if (left->contains(x) && right->contains(y)) return elem_t(x,y);
-   else throw std::invalid_argument("Direct::pair: group mismatch");
+   else throw group_mismatch("Direct::pair");
   }
 
  private:
