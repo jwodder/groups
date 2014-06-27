@@ -2,12 +2,12 @@
 #define TABULAR_H
 
 #include <map>
-#include "Groups/Group.hpp"
+#include "Groups/BasicGroup.hpp"
 
 namespace Groups {
- class Tabular : public group<int> {
+ class Tabular : public basic_group<int> {
  public:
-  template<class T> Tabular(const group<T>& g) {
+  template<class T> Tabular(const basic_group<T>& g) {
    std::vector<T> gelems = g.elements();
    int qty = g.order();
    std::map<T,int> elemdex;
@@ -40,7 +40,7 @@ namespace Groups {
   virtual std::string showElem(const int&) const;
   virtual bool abelian() const;
   virtual Tabular* copy() const;
-  virtual int cmp(const group<int>*) const;
+  virtual int cmp(const basic_group<int>*) const;
   virtual bool contains(const int&) const;
  private:
   std::vector< std::vector<int> > table;

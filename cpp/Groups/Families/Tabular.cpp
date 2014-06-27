@@ -1,5 +1,5 @@
 /* IMPORTANT TODO: This assumes the identity is always the first element of
- * Group.elements().  Make sure this always holds. */
+ * basic_group<T>::elements().  Make sure this always holds. */
 
 #include <vector>
 #include "Groups/Families/Tabular.hpp"
@@ -37,7 +37,7 @@ namespace Groups {
 
  Tabular* Tabular::copy() const {return new Tabular(*this); }
 
- int Tabular::cmp(const group<int>* other) const {
+ int Tabular::cmp(const basic_group<int>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Tabular* c = static_cast<const Tabular*>(other);

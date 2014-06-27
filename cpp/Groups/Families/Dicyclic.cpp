@@ -52,7 +52,7 @@ namespace Groups {
 
  Dicyclic* Dicyclic::copy() const {return new Dicyclic(n); }
 
- int Dicyclic::cmp(const group<elem_t>* other) const {
+ int Dicyclic::cmp(const basic_group<elem_t>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dicyclic* c = static_cast<const Dicyclic*>(other);

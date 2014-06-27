@@ -41,7 +41,7 @@ namespace Groups {
 
  Cyclic* Cyclic::copy() const {return new Cyclic(n); }
 
- int Cyclic::cmp(const group<int>* other) const {
+ int Cyclic::cmp(const basic_group<int>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Cyclic* c = static_cast<const Cyclic*>(other);

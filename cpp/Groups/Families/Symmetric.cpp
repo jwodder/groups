@@ -34,7 +34,7 @@ namespace Groups {
 
  Symmetric* Symmetric::copy() const {return new Symmetric(degree); }
 
- int Symmetric::cmp(const group<Permutation>* other) const {
+ int Symmetric::cmp(const basic_group<Permutation>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Symmetric* c = static_cast<const Symmetric*>(other);

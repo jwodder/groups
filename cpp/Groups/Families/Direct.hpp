@@ -4,19 +4,19 @@
 #include <sstream>
 #include <stdexcept>  /* invalid_argument */
 #include <utility>  /* pair */
-#include "Groups/Group.hpp"
+#include "Groups/BasicGroup.hpp"
 #include "Groups/util.hpp"
 
 namespace Groups {
  template<class T, class U>
- class Direct : public group< std::pair<T,U> > {
+ class Direct : public basic_group< std::pair<T,U> > {
  public:
   typedef std::pair<T,U> elem_t;  // Why is this necessary?
 
-  Direct(const group<T>& g, const group<U>& h)
+  Direct(const basic_group<T>& g, const basic_group<U>& h)
    : left(g.copy()), right(h.copy()) { }
 
-  Direct(const group<T>* g, const group<U>* h)
+  Direct(const basic_group<T>* g, const basic_group<U>* h)
    : left(g->copy()), right(h->copy()) { }
 
   Direct(const Direct<T,U>& d)
@@ -82,7 +82,7 @@ namespace Groups {
 
   virtual Direct<T,U>* copy() const {return new Direct(left, right); }
 
-  virtual int cmp(const group<elem_t>* other) const {
+  virtual int cmp(const basic_group<elem_t>* other) const {
    int ct = cmpTypes(*this, *other);
    if (ct != 0) return ct;
    const Direct<T,U>* c = static_cast<const Direct<T,U>*>(other);
@@ -95,10 +95,10 @@ namespace Groups {
    return left->contains(x.first) && right->contains(x.second);
   }
 
-	group<T>* leftGroup()        {return left; }
-  const group<T>* leftGroup()  const {return left; }
-	group<U>* rightGroup()       {return right; }
-  const group<U>* rightGroup() const {return right; }
+	basic_group<T>* leftGroup()        {return left; }
+  const basic_group<T>* leftGroup()  const {return left; }
+	basic_group<U>* rightGroup()       {return right; }
+  const basic_group<U>* rightGroup() const {return right; }
 
   elem_t pair(const T& x, const U& y) const {
    if (left->contains(x) && right->contains(y)) return elem_t(x,y);
@@ -106,8 +106,8 @@ namespace Groups {
   }
 
  private:
-  group<T>* left;
-  group<U>* right;
+  basic_group<T>* left;
+  basic_group<U>* right;
  };
 }
 

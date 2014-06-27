@@ -3,10 +3,10 @@
 
 #include <cstdlib>  /* abs */
 #include <utility>  /* pair */
-#include "Groups/Group.hpp"
+#include "Groups/BasicGroup.hpp"
 
 namespace Groups {
- class Dicyclic : public group< std::pair<int,bool> > {
+ class Dicyclic : public basic_group< std::pair<int,bool> > {
  // The pair is (i,j).
  public:
   Dicyclic(int m) : n(std::abs(m)) { }
@@ -20,7 +20,7 @@ namespace Groups {
   virtual std::string showElem(const elem_t&) const;
   virtual bool abelian() const;
   virtual Dicyclic* copy() const;
-  virtual int cmp(const group<elem_t>*) const;
+  virtual int cmp(const basic_group<elem_t>*) const;
   virtual bool contains(const elem_t&) const;
  private:
   int n;

@@ -47,7 +47,7 @@ namespace Groups {
 
  Dihedral* Dihedral::copy() const {return new Dihedral(n); }
 
- int Dihedral::cmp(const group<elem_t>* other) const {
+ int Dihedral::cmp(const basic_group<elem_t>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dihedral* c = static_cast<const Dihedral*>(other);
