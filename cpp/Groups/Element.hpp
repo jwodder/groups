@@ -2,28 +2,28 @@
 #define ELEMENT_H
 
 #include <ostream>
-#include <stdexcept>  /* invalid_argument */
 #include <string>
 #include <vector>
 #include "Groups/BasicGroup.hpp"
 
 namespace Groups {
- using namespace std;
-
  class Element;
  template<> class basic_group<Element>;
 
  class Element {
  public:
   const basic_group<Element>* group() const {return gr; }
-  Element         inverse() const;
-  int             order()   const;
-  Element         pow(int)  const;
-  vector<Element> cycle()   const;
+  int index() const {return val; }
+
+  Element inverse() const;
+  int     order()   const;
+  Element pow(int)  const;
+
+  std::vector<Element> cycle()   const;
 
   Element  operator*(const Element&) const;
   Element& operator*=(const Element);
-  operator string() const;
+  operator std::string() const;
   operator bool()   const;
 
   int cmp(const Element& y) const;
@@ -42,7 +42,7 @@ namespace Groups {
   friend class basic_group<Element>;
  };
 
- ostream& operator<<(ostream&, const Element&);
+ std::ostream& operator<<(std::ostream&, const Element&);
 }
 
 #endif

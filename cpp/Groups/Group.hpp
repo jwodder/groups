@@ -4,6 +4,8 @@
 #ifndef GROUP_H
 #define GROUP_H
 
+#define GROUP_CHECKS_MEMBERSHIP
+
 #include <map>
 #include <vector>
 #include "Groups/BasicGroup.hpp"
@@ -45,6 +47,9 @@ namespace Groups {
   virtual int op(const int& x, const int& y) const {return table[x][y]; }
 
   virtual Element op(const Element& x, const Element& y) const {
+#ifdef GROUP_CHECKS_MEMBERSHIP
+   if (!contains(x) || !contains(y)) throw group_mismatch("Group::op");
+#endif
    return Element(this, table[x.val][y.val]);
   }
 
@@ -63,6 +68,9 @@ namespace Groups {
   virtual int invert(const int& x) const {return inverses[x]; }
 
   virtual Element invert(const Element& x) const {
+#ifdef GROUP_CHECKS_MEMBERSHIP
+   if (!contains(x)) throw group_mismatch("Group::invert");
+#endif
    return Element(this, inverses[x.val]);
   }
 
@@ -70,11 +78,21 @@ namespace Groups {
 
   virtual int order(const int& x) const {return orders[x]; }
 
-  virtual int order(const Element& x) const {return orders[x.val]; }
+  virtual int order(const Element& x) const {
+#ifdef GROUP_CHECKS_MEMBERSHIP
+   if (!contains(x)) throw group_mismatch("Group::order");
+#endif
+   return orders[x.val];
+  }
 
   virtual std::string showElem(const int& x) const {return strs[x]; }
 
-  virtual std::string showElem(const Element& x) const {return strs[x.val]; }
+  virtual std::string showElem(const Element& x) const {
+#ifdef GROUP_CHECKS_MEMBERSHIP
+   if (!contains(x)) throw group_mismatch("Group::showElem");
+#endif
+   return strs[x.val];
+  }
 
   virtual bool abelian() const {return abel; }
 
