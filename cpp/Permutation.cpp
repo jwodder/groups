@@ -1,7 +1,7 @@
 #include <algorithm>  /* max, min, next_permutation, prev_permutation */
 #include <functional>  /* greater */
 #include <list>
-#include <sstream>  /* ostringstream */
+#include <sstream>  /* istringstream, ostringstream */
 #include <stdexcept>  /* logic_error, invalid_argument */
 #include <string>
 #include <vector>
@@ -250,4 +250,33 @@ Permutation Permutation::fromImage(const vector<int>& img) {
   used[*iter-1] = true;
  }
  return Permutation(img);
+}
+
+Permutation Permutation::parse(const string& s) {
+ istringstream in(s);
+ char c;
+ in >> ws;
+ if (in >> c) {
+  if (c == '(') {
+   vector< vector<int> > cycles;
+   for (;;) {
+    vector<int> cyc;
+    int i;
+    while (in >> i) cyc.push_back(i);
+    if (cyc.empty()) throw invalid_argument("Permutation::parse");
+    in >> ws;
+    if ((in >> c) && c == ')') {
+     cycles.push_back(cyc);
+     in >> ws;
+     if (ws.eof()) return fromCycles<vector< vector<int> >::const_iterator>(cycles.begin(), cycles.end());
+     else if ((in >> c) && c == '(') continue;
+     else throw invalid_argument("Permutation::parse");
+    } else throw invalid_argument("Permutation::parse");
+   }
+  } else if (c == '1') {
+   in >> ws;
+   if (in.eof()) return identity();
+   else throw invalid_argument("Permutation::parse");
+  } else throw invalid_argument("Permutation::parse");
+ } else throw invalid_argument("Permutation::parse");
 }

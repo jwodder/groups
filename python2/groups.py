@@ -285,7 +285,9 @@ class Group(group):
     @property
     def family(self): return self.group.__class__.__name__
 
-    def __contains__(self, x): return isinstance(x, Element) and x.group == self
+    def __contains__(self, x):
+	return isinstance(x, Element) and x.group == self \
+				      and x.value in self.group
 
 
 class Element(object):

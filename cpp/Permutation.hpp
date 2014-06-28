@@ -43,6 +43,7 @@ public:
  static Permutation firstOfDegree(int);
  static Permutation fromImage(const std::vector<int>&);
  static std::vector<Permutation> s_n(int);
+ static Permutation parse(const std::string&);
 
  int cmp(const Permutation&) const;
  bool operator==(const Permutation& y) const {return cmp(y) == 0; }
