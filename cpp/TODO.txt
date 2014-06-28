@@ -3,7 +3,8 @@
   passed 0 or 1
 - The constructor for Cyclic should throw an exception when passed 0
 - quaternion() should throw an exception when given an invalid argument
-- Rethink the memory management of basic_group objects passed to Direct's constructor
+- Rethink the memory management of basic_group objects passed to Direct's
+  constructor
 - Protect elem and gelem<T> objects from being used directly by unwanted code
 - Make the names of the methods for constructing arbitrary elements (currently
   Cyclic::residue and Direct::pair) consistent
