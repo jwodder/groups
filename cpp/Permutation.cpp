@@ -268,7 +268,7 @@ Permutation Permutation::parse(const string& s) {
     if ((in >> c) && c == ')') {
      cycles.push_back(cyc);
      in >> ws;
-     if (ws.eof()) return fromCycles<vector< vector<int> >::const_iterator>(cycles.begin(), cycles.end());
+     if (in.eof()) return fromCycles(cycles.begin(), cycles.end());
      else if ((in >> c) && c == '(') continue;
      else throw invalid_argument("Permutation::parse");
     } else throw invalid_argument("Permutation::parse");
