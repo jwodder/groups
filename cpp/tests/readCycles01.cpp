@@ -4,7 +4,7 @@
 #include "Permutation.hpp"
 using namespace std;
 
-string goodStrings[] = {"  1 ", "  1", "1", "(1 2)", "(2)", "( 1 2)  ( 3 5)",
+string goodStrings[] = {"  1 ", "  1", "1", "( 1 2)", "(2)", "(1 2)  ( 3 5)",
 			"(1 3 4)(2 7)", "(1 3 4)(5)(2 7)"};
 
 string badStrings[] = {"  1 1", "(1 -5)", "(1 2) 3", "(2 -3 5)", "(1 2 1)",

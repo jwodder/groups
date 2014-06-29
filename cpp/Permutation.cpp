@@ -263,20 +263,22 @@ Permutation Permutation::parse(const string& s) {
     vector<int> cyc;
     int i;
     while (in >> i) cyc.push_back(i);
-    if (cyc.empty()) throw invalid_argument("Permutation::parse");
+    if (in.eof()) throw invalid_argument("Permutation::parse: string ended in mid-cycle");
+    if (cyc.empty()) throw invalid_argument("Permutation::parse: no integer after opening parenthesis");
+    in.clear();
     in >> ws;
     if ((in >> c) && c == ')') {
      cycles.push_back(cyc);
      in >> ws;
      if (in.eof()) return fromCycles(cycles.begin(), cycles.end());
      else if ((in >> c) && c == '(') continue;
-     else throw invalid_argument("Permutation::parse");
-    } else throw invalid_argument("Permutation::parse");
+     else throw invalid_argument("Permutation::parse: ')' not followed by '(' or end of string");
+    } else throw invalid_argument("Permutation::parse: non-integer encountered in cycle");
    }
   } else if (c == '1') {
    in >> ws;
    if (in.eof()) return identity();
-   else throw invalid_argument("Permutation::parse");
-  } else throw invalid_argument("Permutation::parse");
- } else throw invalid_argument("Permutation::parse");
+   else throw invalid_argument("Permutation::parse: initial '1' not followed by end of string");
+  } else throw invalid_argument("Permutation::parse: string must begin with '1' or '('");
+ } else throw invalid_argument("Permutation::parse: empty string");
 }
