@@ -11,7 +11,7 @@ module Permutation (
   fromArray,
   readCycles,
   -- * Deconstruction
-  toCycles, showCycles, toArray,
+  toCycles, toArray, showCycles,
   -- * Properties
   order, isEven, isOdd, sign, degree, lehmer, disjoint
  ) where
@@ -176,6 +176,7 @@ module Permutation (
 	z &: (zs, w) = (z:zs, w)
 
  fromLehmer :: Int -> Permutation
+ fromLehmer x | x < 0 = error "Permutation.fromLehmer: argument must be nonnegative"
  fromLehmer x = Perm $ array (1, deg) $ zip mapping [deg, deg-1 .. 1]
   where code = code' x 1
 	code' y _ | y < 1 = []

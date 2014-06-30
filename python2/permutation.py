@@ -103,6 +103,7 @@ class Permutation(object):
 
     @classmethod
     def fromLehmer(cls, x):
+	if x < 0: raise ValueError('argument must be nonnegative')
 	x0 = x
 	mapping = []
 	f = 1
@@ -113,7 +114,7 @@ class Permutation(object):
 	    mapping.append(c)
 	    x //= f
 	    f += 1
-	return cls((len(mapping)-c for c in mapping), lehmer=max(x0,0))
+	return cls((len(mapping)-c for c in mapping), lehmer=x0)
 
     def toCycles(self):
 	cmap = list(self._map)

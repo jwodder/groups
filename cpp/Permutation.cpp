@@ -107,6 +107,7 @@ int Permutation::lehmer() const {
 }
 
 Permutation Permutation::fromLehmer(int x) {
+ if (x < 0) throw invalid_argument("Permutation::fromLehmer: argument must be nonnegative");
  int x0 = x;
  vector<int> mapping;
  vector<int>::iterator iter;
@@ -120,7 +121,7 @@ Permutation Permutation::fromLehmer(int x) {
  for (iter = mapping.begin(); iter != mapping.end(); iter++) {
   *iter = mapping.size() - *iter;
  }
- return Permutation(mapping, -1, -1, max(x0,0));
+ return Permutation(mapping, -1, -1, x0);
 }
 
 vector< vector<int> > Permutation::toCycles() const {
@@ -166,8 +167,7 @@ Permutation Permutation::transposition(int a, int b) {
 }
 
 Permutation Permutation::firstOfDegree(int n) {
- if (n <= 1) return identity();
- else return transposition(n, n-1);
+ return n <= 1 ? identity() : transposition(n, n-1);
 }
 
 /* This comparison method produces the same ordering as the modified Lehmer
@@ -226,6 +226,7 @@ bool Permutation::disjoint(const Permutation& other) const {
 }
 
 vector<Permutation> Permutation::s_n(int degree) {
+ if (degree < 0) throw invalid_argument("Permutation::s_n: argument must be nonnegative");
  vector<Permutation> elems(Groups::factorial(degree), identity());
  vector<Permutation>::iterator iter = elems.begin();
  Permutation p = *iter;
