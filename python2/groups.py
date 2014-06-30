@@ -4,7 +4,7 @@ import re
 from   closure     import closure2A, close2, view
 from   permutation import Permutation
 
-__all__ = ["group",
+__all__ = ["group", "subgroup",
 	   "Cyclic", "Semidirect", "DirectProduct", "Dicyclic", "Quaternion",
 	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
 	   "CycSemiCyc", "Symmetric",
