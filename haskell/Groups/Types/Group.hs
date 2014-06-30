@@ -38,3 +38,6 @@ module Groups.Types.Group where
 
  g_in :: Int -> Group -> Bool
  g_in x g = inRange (bounds $ gr_dat g) x
+
+ g_conjugate :: Group -> Int -> Int -> Int
+ g_conjugate g y x = g_oper g (g_oper g y x) (g_invert g y)

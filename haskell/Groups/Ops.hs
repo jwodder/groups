@@ -43,10 +43,9 @@ module Groups.Ops where
  -- whether @x@ normalizes @h@).  If @x@ is not in @h@'s group, 'False' is
  -- returned.
  norms :: Subset -> Int -> Bool
- norms h x = g_in x g && all (`Sub.inSubset` h) [g_oper g (g_oper g x i) x'
+ norms h x = g_in x g && all (`Sub.inSubset` h) [g_conjugate g x i
 						 | i <- Sub.toInts h]
   where g = Sub.getGroup h
-	x' = g_invert g x
 
  normalizer :: Subset -> Subset
  normalizer h = Sub.filter (norms h) $ Sub.total $ Sub.getGroup h
@@ -89,8 +88,7 @@ module Groups.Ops where
   where conj left | ISet.null left = []
 		  | otherwise = Subset (g, cc) : conj (ISet.difference left cc)
 		   where least = ISet.findMin left
-			 (gop, ginv) = (g_oper g, g_invert g)
-			 cc = ISet.map (\x -> x `gop` least `gop` ginv x) left
+			 cc = ISet.map (\x -> g_conjugate g x least) left
 
  -- |Given two subsets of the same group that are already closed under the group
  -- operation (i.e., that are subgroups; this precondition is not checked),
@@ -103,3 +101,6 @@ module Groups.Ops where
 	closureS (new, seen) = closureS $ view (f new seen) seen
 	f new seen = concat [[g_oper g a b, g_oper g b a]
 			     | a <- ISet.toList seen, b <- new]
+
+ conjugate :: Element -> Element -> Element
+ conjugate y x = y · x · inverse y

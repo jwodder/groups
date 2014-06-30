@@ -61,7 +61,7 @@ class group(object):
 
     def product(self, xs): return reduce(self.oper, xs, self.identity())
 
-    def conjugate(self, x, y): return self.oper(self.oper(y,x), self.invert(y))
+    def conjugate(self, y, x): return self.oper(self.oper(y,x), self.invert(y))
 
     def centralizer(self, elems):
 	elems = list(elems)
@@ -72,12 +72,12 @@ class group(object):
 
     def normalizer(self, elems):
 	elems = set(elems)
-	return filter(lambda x: all(self.conjugate(y,x) in elems for y in elems), self)
+	return filter(lambda x: all(self.conjugate(x,y) in elems for y in elems), self)
 
     def isNormal(self, elems):
 	# whether `elems` is actually a subgroup is not checked
 	elems = set(elems)
-	return all(self.conjugate(y,x) in elems for x in self for y in elems)
+	return all(self.conjugate(x,y) in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
 	elems = set(elems)
@@ -95,8 +95,8 @@ class group(object):
 	left = set(self)
 	left.remove(self.identity())
 	while left:
-	    least = minimum(left)
-	    cc = set(self.conjugate(least,x) for x in left)
+	    least = min(left)
+	    cc = set(self.conjugate(x,least) for x in left)
 	    yield cc
 	    left -= cc
 
@@ -195,20 +195,15 @@ class group(object):
 	    cyc = frozenset(self.cycle(x))
 	    cycles.setdefault(cyc, set()).add(frozenset([x]))
 	def addCycle(cyc, gs, subgr, gens):
-
-	    ### TODO: Which version is more efficient?
-	    #for cgSet in gs:
-	    #    if len(cgSet) == 1:
-	    #        [cg] = cgSet
-	    #        break
-	    #else:
-	    #    return None
-
-	    try:
-		[cg] = min(gs)
-	    except ValueError:
+	    ### TODO: Is there any reason for this to only check singletons?
+	    ### What effect would checking whether the first element of `gs`
+	    ### was a subset of `subgr` have on performance?
+	    for cgSet in gs:
+		if len(cgSet) == 1:
+		    [cg] = cgSet
+		    break
+	    else:
 		return None
-
 	    if cg in subgr: return None
 	    for h in gens:
 		if len(h) == 1:

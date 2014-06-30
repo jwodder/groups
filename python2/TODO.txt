@@ -9,8 +9,10 @@
 - Implement configurable element showing
 - Add __copy__ and __deepcopy__ methods (see the `copy` module)
  - Add Element.copy()
-- Make `identity` a property?
-- Should .oper (and other Group methods?) raise a TypeError when given Elements
-  outside the Group?
+- Should .oper (and other group methods?) raise a TypeError/ValueError when
+  given values outside the group?
 - permutation.py: Make fewer things properties?
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values?
+- Give `group` a `generate` method that's like `closure` but returns a
+  `subgroup`?
+- Make `isSubgroup` behave intelligently when passed a `subgroup` object
