@@ -56,7 +56,8 @@ class group(object):
 
     def copy(self): return self.__class__(*self.params)
 
-    def baseGroup(self): return self
+    @property
+    def supergroup(self): return self
 
     def product(self, xs): return reduce(self.oper, xs, self.identity())
 
@@ -194,16 +195,20 @@ class group(object):
 	    cyc = frozenset(self.cycle(x))
 	    cycles.setdefault(cyc, set()).add(frozenset([x]))
 	def addCycle(cyc, gs, subgr, gens):
+
+	    ### TODO: Which version is more efficient?
 	    #for cgSet in gs:
 	    #    if len(cgSet) == 1:
 	    #        [cg] = cgSet
 	    #        break
 	    #else:
 	    #    return None
+
 	    try:
 		[cg] = min(gs)
 	    except ValueError:
 		return None
+
 	    if cg in subgr: return None
 	    for h in gens:
 		if len(h) == 1:
@@ -221,13 +226,17 @@ class group(object):
 
 
 class subgroup(group):
-    paramNames = ('supergroup', 'elementSet')
+    paramNames = ('supergr', 'elementSet')
 
-    def __init__(self, supergroup, elementSet):
+    def __init__(self, supergr, elementSet):
 	elementSet = frozenset(elementSet)
-	if not self.isSubgroup(elementSet):
+	if not supergr.isSubgroup(elementSet):
 	    raise ValueError('arguments do not define a valid subgroup')
-	super(subgroup, self).__init__(supergroup, elementSet)
+	supergr = supergr.supergroup
+	super(subgroup, self).__init__(supergr, elementSet)
+
+    @property
+    def supergroup(self): return self.supergr
 
     def identity(self):       return self.supergroup.identity()
     def oper(self,x,y):       return self.supergroup.oper(x,y)
@@ -250,12 +259,6 @@ class subgroup(group):
     def showElem(self,x):     return self.supergroup.showElem(x)
     def showUElem(self,x):    return self.supergroup.showUElem(x)
     def LaTeXElem(self,x):    return self.supergroup.LaTeXElem(x)
-
-    def baseGroup(self):
-	supgr = self.supergroup
-	while isinstance(supgr, subgroup):
-	    supgr = supgr.supergroup
-	return supgr
 
 
 class Group(group):
