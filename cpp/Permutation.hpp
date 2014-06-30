@@ -2,6 +2,7 @@
 #define PERMUTATION_H
 
 #include <map>
+#include <ostream>
 #include <stdexcept>  /* invalid_argument */
 #include <string>
 #include <vector>
@@ -433,5 +434,17 @@ private:
  std::vector<int> pmap;
  mutable int _even, _order, _lehmer;
 };
+
+/**
+  * Equivalent to `o << string(p)`
+  *
+  * @param o  an output stream
+  * @param p  a Permutation
+  *
+  * @return  `o`
+  **/
+inline std::ostream& operator<<(std::ostream& o, const Permutation& p) {
+ return o << std::string(p);
+}
 
 #endif

@@ -13,7 +13,7 @@ string badStrings[] = {"  1 1", "(1 -5)", "(1 2) 3", "(2 -3 5)", "(1 2 1)",
 int main(void) {
  for (size_t i=0; i < sizeof(goodStrings)/sizeof(goodStrings[0]); i++) {
   Permutation p = Permutation::parse(goodStrings[i]);
-  cout << string(p) << endl;
+  cout << p << endl;
  }
  for (size_t i=0; i < sizeof(badStrings)/sizeof(badStrings[0]); i++) {
   try {
