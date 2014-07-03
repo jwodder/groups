@@ -11,7 +11,7 @@ namespace Groups {
   Direct(const Direct& d) : left(d.left->copy()), right(d.right->copy()) { }
   Direct& operator=(const Direct&);
   virtual ~Direct() {delete left; delete right; }
-  virtual Element op(const Element&, const Element&) const;
+  virtual Element oper(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
   virtual Element invert(const Element&) const;

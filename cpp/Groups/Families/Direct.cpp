@@ -16,11 +16,11 @@ namespace Groups {
   return *this;
  }
 
- Element Direct::op(const Element& x, const Element& y) const {
+ Element Direct::oper(const Element& x, const Element& y) const {
   elem_t xp = getElem<elem_t>(x);
   elem_t yp = getElem<elem_t>(y);
-  return mkElem<elem_t>(elem_t(left->op(xp.first, yp.first),
-			       right->op(xp.second, yp.second)));
+  return mkElem<elem_t>(elem_t(left->oper(xp.first, yp.first),
+			       right->oper(xp.second, yp.second)));
  }
 
  Element Direct::identity() const {

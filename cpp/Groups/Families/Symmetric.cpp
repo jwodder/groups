@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace Groups {
- Element Symmetric::op(const Element& x, const Element& y) const {
+ Element Symmetric::oper(const Element& x, const Element& y) const {
   elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
   return mkElem<elem_t>(xp * yp);
  }

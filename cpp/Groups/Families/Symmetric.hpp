@@ -10,7 +10,7 @@ namespace Groups {
  public:
   Symmetric(int d) : degree(std::max(d,1)) { }
   virtual ~Symmetric() { }
-  virtual Element op(const Element&, const Element&) const;
+  virtual Element oper(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
   virtual Element invert(const Element&) const;

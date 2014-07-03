@@ -34,7 +34,7 @@ namespace Groups {
   : table(t.table), inverses(t.inverses), orders(t.orders), strs(t.strs),
     abel(t.abel) { }
 
- Element Tabular::op(const Element& x, const Element& y) const {
+ Element Tabular::oper(const Element& x, const Element& y) const {
   return mkElem<elem_t>(table[getElem<elem_t>(x)][getElem<elem_t>(y)]);
  }
 

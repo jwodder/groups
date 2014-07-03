@@ -9,7 +9,7 @@ namespace Groups {
  public:
   Cyclic(int m) : n(std::abs(m)) { }
   virtual ~Cyclic() { }
-  virtual Element op(const Element&, const Element&) const;
+  virtual Element oper(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
   virtual Element invert(const Element&) const;

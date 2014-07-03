@@ -10,7 +10,7 @@ namespace Groups {
  public:
   Dicyclic(int m) : n(std::abs(m)) { }
   virtual ~Dicyclic() { }
-  virtual Element op(const Element&, const Element&) const;
+  virtual Element oper(const Element&, const Element&) const;
   virtual Element identity() const;
   virtual std::vector<Element> elements() const;
   virtual Element invert(const Element&) const;

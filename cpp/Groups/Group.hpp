@@ -10,7 +10,7 @@ namespace Groups {
  class Group {
  public:
   virtual ~Group() { }
-  virtual Element op(const Element&, const Element&) const = 0;
+  virtual Element oper(const Element&, const Element&) const = 0;
   virtual Element identity() const = 0;
   virtual std::vector<Element> elements() const = 0;
   virtual Element invert(const Element&) const = 0;

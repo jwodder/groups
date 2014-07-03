@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace Groups {
- Element Dicyclic::op(const Element& x, const Element& y) const {
+ Element Dicyclic::oper(const Element& x, const Element& y) const {
   elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
   int i = xp.first + (xp.second ? -1 : 1) * yp.first;
   if (xp.second && yp.second) i += n;

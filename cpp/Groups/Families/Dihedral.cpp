@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace Groups {
- Element Dihedral::op(const Element& x, const Element& y) const {
+ Element Dihedral::oper(const Element& x, const Element& y) const {
   elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
   return mkElem<elem_t>(yp.first
    ? elem_t(!xp.first, (yp.second - xp.second) % n)
