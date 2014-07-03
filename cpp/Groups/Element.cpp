@@ -32,7 +32,7 @@ namespace Groups {
   return pows;
  }
 
- Element Element::operator*(const Element& y) const {return gr->op(*this, y); }
+ Element Element::operator*(const Element& y) const {return gr->oper(*this,y); }
 
  Element& Element::operator*=(const Element y) {return *this = *this * y; }
 

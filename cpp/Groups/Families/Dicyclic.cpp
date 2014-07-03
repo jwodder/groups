@@ -7,7 +7,7 @@ using namespace std;
 namespace Groups {
  typedef Dicyclic::elem_t elem_t;
 
- elem_t Dicyclic::op(const elem_t& x, const elem_t& y) const {
+ elem_t Dicyclic::oper(const elem_t& x, const elem_t& y) const {
   int i = x.first + (x.second ? -y.first : y.first);
   if (x.second && y.second) i += n;
   i %= 2*n;

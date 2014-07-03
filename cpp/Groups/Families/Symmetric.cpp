@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace Groups {
- Permutation Symmetric::op(const Permutation& x, const Permutation& y) const {
+ Permutation Symmetric::oper(const Permutation& x, const Permutation& y) const {
   return x * y;
  }
 

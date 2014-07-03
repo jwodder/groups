@@ -7,7 +7,7 @@ using namespace std;
 namespace Groups {
  typedef Dihedral::elem_t elem_t;
 
- elem_t Dihedral::op(const elem_t& x, const elem_t& y) const {
+ elem_t Dihedral::oper(const elem_t& x, const elem_t& y) const {
   return y.first ? elem_t(!x.first, (y.second - x.second) % n)
 		 : elem_t(x.first,  (x.second + y.second) % n);
  }

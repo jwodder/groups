@@ -10,7 +10,7 @@ namespace Groups {
  public:
   typedef T elem_t;
   virtual ~basic_group() { }
-  virtual T op(const T&, const T&) const = 0;
+  virtual T oper(const T&, const T&) const = 0;
   virtual T identity() const = 0;
   virtual T invert(const T&) const = 0;
   virtual int order() const = 0;
@@ -35,7 +35,7 @@ namespace Groups {
   struct opcall {  // TODO: Look for a better way to accomplish this.
    const basic_group<T>* g;
    opcall(const basic_group<T>* h) : g(h) { }
-   T operator()(const T& x, const T& y) const {return g->op(x,y); }
+   T operator()(const T& x, const T& y) const {return g->oper(x,y); }
   };
  };
 }

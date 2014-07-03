@@ -34,8 +34,8 @@ namespace Groups {
 
   virtual ~Direct() {delete left; delete right; }
 
-  virtual elem_t op(const elem_t& x, const elem_t& y) const {
-   return elem_t(left->op(x.first, y.first), right->op(x.second, y.second));
+  virtual elem_t oper(const elem_t& x, const elem_t& y) const {
+   return elem_t(left->oper(x.first, y.first), right->oper(x.second, y.second));
   }
 
   virtual elem_t identity() const {

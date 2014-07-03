@@ -44,11 +44,11 @@ namespace Groups {
 
   virtual ~basic_group() { }
 
-  virtual int op(const int& x, const int& y) const {return table[x][y]; }
+  virtual int oper(const int& x, const int& y) const {return table[x][y]; }
 
-  virtual Element op(const Element& x, const Element& y) const {
+  virtual Element oper(const Element& x, const Element& y) const {
 #ifdef GROUP_CHECKS_MEMBERSHIP
-   if (!contains(x) || !contains(y)) throw group_mismatch("Group::op");
+   if (!contains(x) || !contains(y)) throw group_mismatch("Group::oper");
 #endif
    return Element(this, table[x.val][y.val]);
   }

@@ -5,9 +5,7 @@
 using namespace std;
 
 namespace Groups {
- int Cyclic::op(const int& x, const int& y) const {
-  return (x + y) % n;
- }
+ int Cyclic::oper(const int& x, const int& y) const {return (x + y) % n; }
 
  int Cyclic::identity() const {return 0; }
 
@@ -21,15 +19,11 @@ namespace Groups {
   return elems;
  }
 
- int Cyclic::invert(const int& x) const {
-  return -x % n;
- }
+ int Cyclic::invert(const int& x) const {return -x % n; }
 
  int Cyclic::order() const {return n; }
 
- int Cyclic::order(const int& x) const {
-  return n/gcd(x,n);
- }
+ int Cyclic::order(const int& x) const {return n/gcd(x,n); }
 
  string Cyclic::showElem(const int& x) const {
   ostringstream out;
@@ -50,7 +44,5 @@ namespace Groups {
 
  int Cyclic::residue(int x) const {return x % n; }
 
- bool Cyclic::contains(const int& x) const {
-  return 0 <= x && x < n;
- }
+ bool Cyclic::contains(const int& x) const {return 0 <= x && x < n; }
 }

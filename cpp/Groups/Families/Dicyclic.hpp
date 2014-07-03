@@ -11,7 +11,7 @@ namespace Groups {
  public:
   Dicyclic(int m) : n(std::abs(m)) { }
   virtual ~Dicyclic() { }
-  virtual elem_t op(const elem_t&, const elem_t&) const;
+  virtual elem_t oper(const elem_t&, const elem_t&) const;
   virtual elem_t identity() const;
   virtual std::vector<elem_t> elements() const;
   virtual elem_t invert(const elem_t&) const;
