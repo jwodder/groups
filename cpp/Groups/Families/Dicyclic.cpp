@@ -10,6 +10,7 @@ namespace Groups {
   int i = xp.first + (xp.second ? -1 : 1) * yp.first;
   if (xp.second && yp.second) i += n;
   i %= 2*n;
+  if (i < 0) i += 2*n;
   return mkElem<elem_t>(elem_t(i, xp.second ^ yp.second));
  }
 
