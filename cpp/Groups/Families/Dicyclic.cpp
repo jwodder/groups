@@ -11,6 +11,7 @@ namespace Groups {
   int i = x.first + (x.second ? -y.first : y.first);
   if (x.second && y.second) i += n;
   i %= 2*n;
+  if (i < 0) i += 2*n;
   return elem_t(i, x.second ^ y.second);
  }
 

@@ -54,8 +54,6 @@ FEATURES
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- Add a way for the user to create abitrary elements of a Dicyclic, Dihedral,
-  Symmetric, or Tabular group
 - Add an alternative to/replacement for quaternion() that takes the cardinality
   of the desired group?
 - Add closure functions that send their output to supplied output iterators?

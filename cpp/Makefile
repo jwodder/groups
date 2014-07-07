@@ -2,7 +2,7 @@ CXX = c++
 CPPFLAGS = -std=c++98 -Wall -I.
 CC = $(CXX)  # for linking
 
-TESTS = tests/closure01 tests/closure02 tests/closure03 tests/fromCycles01 tests/lehmer02 tests/lehmer03 tests/perminc01
+TESTS = tests/closure01 tests/closure02 tests/closure03 tests/direct01 tests/fromCycles01 tests/lehmer02 tests/lehmer03 tests/perminc01
 
 all : Groups/Families/Dihedral.o Groups/Families/Symmetric.o Groups/Ops.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/util.o Groups/Element.o $(TESTS)
 
@@ -23,6 +23,9 @@ tests/closure02.o : Groups/Families/Cyclic.hpp Groups/Families/Dicyclic.hpp Grou
 
 tests/closure03 : Groups/Families/Cyclic.o Groups/util.o
 tests/closure03.o : Groups/Families/Direct.hpp closure.hpp Groups/Families/Cyclic.hpp Groups/BasicGroup.hpp Groups/util.hpp
+
+tests/direct01 : Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/util.o
+tests/direct01.o : Groups/util.hpp Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 
 tests/fromCycles01 : Permutation.o Groups/util.o
 tests/fromCycles01.o : Permutation.hpp

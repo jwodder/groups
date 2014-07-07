@@ -12,22 +12,22 @@ namespace Groups {
 
  class Element {
  public:
-  const basic_group<Element>* group() const {return gr; }
-  int index() const {return val; }
-
   Element inverse() const;
   int     order()   const;
   Element pow(int)  const;
 
-  std::vector<Element> cycle()   const;
+  std::vector<Element> cycle() const;
+
+  const basic_group<Element>* group() const {return gr; }
+  int index() const {return val; }
 
   Element  operator*(const Element&) const;
   Element& operator*=(const Element);
+
   operator std::string() const;
-  operator bool()   const;
+  operator bool() const;
 
   int cmp(const Element& y) const;
-
   bool operator==(const Element& y) const {return cmp(y) == 0; }
   bool operator<(const Element& y)  const {return cmp(y) <  0; }
   bool operator>(const Element& y)  const {return cmp(y) >  0; }

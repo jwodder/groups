@@ -7,6 +7,7 @@
 #define GROUP_CHECKS_MEMBERSHIP
 
 #include <map>
+#include <sstream>
 #include <vector>
 #include "Groups/BasicGroup.hpp"
 #include "Groups/Element.hpp"
@@ -24,7 +25,7 @@ namespace Groups {
    table = std::vector< std::vector<int> >(qty, std::vector<int>(qty));
    for (int i=0; i<qty; i++) {
     for (int j=0; j<qty; j++) {
-     table[i][j] = elemdex[g(gelems[i], gelems[j])];
+     table[i][j] = elemdex[g.oper(gelems[i], gelems[j])];
     }
    }
    inverses = std::vector<int>(qty);
@@ -114,7 +115,40 @@ namespace Groups {
    return x.gr->cmp(this) == 0 && 0 <= x.val && x.val < order();
   }
 
+  basic_group<Element> direct(const basic_group<Element>& right) {
+   int leftQty = order(), rightQty = right.order();
+   int newQty = leftQty * rightQty;
+   std::vector< std::vector<int> > tbl(newQty, std::vector<int>(newQty));
+   for (int i=0; i<newQty; i++) {
+    int xa = i / rightQty, xb = i % rightQty;
+    for (int j=0; j<newQty; j++) {
+     int ya = j / rightQty, yb = j % rightQty;
+     tbl[i][j] = table[xa][ya] * rightQty + right.table[xb][yb];
+    }
+   }
+   std::vector<int> invs = std::vector<int>(newQty);
+   std::vector<int> ords = std::vector<int>(newQty);
+   std::vector<std::string> ss = std::vector<std::string>(newQty);
+   for (int i=0; i<newQty; i++) {
+    int a = i / rightQty, b = i % rightQty;
+    invs[i] = inverses[a] * rightQty + right.inverses[b];
+    ords[i] = lcm(orders[a], right.orders[b]);
+    if (i == 0) {
+     ss[i] = "1";
+    } else {
+     std::ostringstream out;
+     out << '(' << strs[a] << ", " << right.strs[b] << ')';
+     ss[i] = out.str();
+    }
+   }
+   return basic_group<Element>(tbl, invs, ords, ss, abel && right.abel);
+  }
+
  private:
+  basic_group(std::vector< std::vector<int> > tbl, std::vector<int> invs,
+	      std::vector<int> ords, std::vector<std::string> ss, bool abelian)
+   : table(tbl), inverses(invs), orders(ords), strs(ss), abel(abelian) { }
+
   std::vector< std::vector<int> > table;
   std::vector<int> inverses, orders;
   std::vector<std::string> strs;
