@@ -159,5 +159,5 @@ module GrList (groupList, o32nonA) where
   where y' = isSublist "times" y ?: '(' : y ++ ")" :? y
 
  isSublist :: Eq a => [a] -> [a] -> Bool
- isSublist sub list = any (isPrefixOf sub . (`drop` list))
-			  (elemIndices (head sub) list)
+ isSublist subl list = any (isPrefixOf subl . (`drop` list))
+			   (elemIndices (head subl) list)
