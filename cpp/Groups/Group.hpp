@@ -115,6 +115,8 @@ namespace Groups {
    return x.gr->cmp(this) == 0 && 0 <= x.val && x.val < order();
   }
 
+  virtual int indexElem(const Element& x) const {return x.index(); }
+
   basic_group<Element> direct(const basic_group<Element>& right) {
    int leftQty = order(), rightQty = right.order();
    int newQty = leftQty * rightQty;
