@@ -23,7 +23,7 @@ module GrList (groupList, o32nonA) where
    ([cyc 9, elemAbel 3 2], []),
    ([cyc 10], [dih 5]),
    ([cyc 11], []),
-   ([cyc 12, cyc 6 ⨯ cyc 2], [alt 4, dih 6, csc 3 4 (-1)]),
+   ([cyc 12, cyc 6 ⨯ cyc 2], [alt 4, dih 6, dic 3]),
    ([cyc 13], []),
    ([cyc 14], [dih 7]),
    ([cyc 15], []),
@@ -40,7 +40,7 @@ module GrList (groupList, o32nonA) where
    ([cyc 23], []),
 
    ([cyc 24, cyc 12 ⨯ cyc 2, cyc 6 ⨯ v4],
-    [dic 6, quat 2 ⨯ cyc 3, csc 3 4 (-1) ⨯ cyc 2, dih 4 ⨯ cyc 3, sym 3 ⨯ cyc 4,
+    [dic 6, quat 2 ⨯ cyc 3, dic 3 ⨯ cyc 2, dih 4 ⨯ cyc 3, sym 3 ⨯ cyc 4,
      alt 4 ⨯ cyc 2, sym 4, dih 12, dih 6 ⨯ cyc 2
      -- Q_8\rtimes\Z_3
      -- ???

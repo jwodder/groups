@@ -15,6 +15,7 @@ data GrData = GrData {
  gd_simple     :: Bool,
  gd_rank       :: Int,
  gd_exponent   :: Int,
+ -- TODO: Split up `gd_quantities` into multiple arrays?
  gd_quantities :: Array Int (Maybe (Int, Int, Int, Int))
   -- ^Mapping from n to:
   --  * number of elements of order n

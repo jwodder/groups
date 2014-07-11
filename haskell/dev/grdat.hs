@@ -1,9 +1,10 @@
+import System.IO (stdout, hFlush)
 import Groups (Group)
 import GrData
 import GrList
 
 main :: IO ()
-main = mapM_ (putStrLn . grdata') groups
+main = mapM_ (\g -> putStrLn (grdata' g) >> hFlush stdout) groups
 
 groups :: [(String, Group, [String])]
 groups = groupList
