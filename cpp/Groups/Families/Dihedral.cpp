@@ -57,4 +57,9 @@ namespace Groups {
  bool Dihedral::contains(const elem_t& x) const {
   return 0 <= x.second && x.second < n;
  }
+
+ int Dihedral::indexElem(const elem_t& x) const {
+  if (contains(x)) return x.second + x.first * n;
+  else throw group_mismatch("Dihedral::indexElem");
+ }
 }

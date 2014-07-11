@@ -21,6 +21,7 @@ namespace Groups {
   virtual basic_group<T>* copy() const = 0;
   virtual int cmp(const basic_group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
+  virtual int indexElem(const T&) const = 0;
 
   std::set<T> closure(const std::set<T>& start) const {
    return closure2A<T>(opcall(this), start.begin(), start.end());

@@ -95,6 +95,12 @@ namespace Groups {
    return left->contains(x.first) && right->contains(x.second);
   }
 
+  virtual int indexElem(const elem_t& x) const {
+   if (contains(x))
+    return left->indexElem(x.first)*right->order() + right->indexElem(x.second);
+   else throw group_mismatch("Direct::indexElem");
+  }
+
 	basic_group<T>* leftGroup()        {return left; }
   const basic_group<T>* leftGroup()  const {return left; }
 	basic_group<U>* rightGroup()       {return right; }

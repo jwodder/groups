@@ -22,6 +22,7 @@ namespace Groups {
   virtual Dicyclic* copy() const;
   virtual int cmp(const basic_group<elem_t>*) const;
   virtual bool contains(const elem_t&) const;
+  virtual int indexElem(const elem_t&) const;
  private:
   int n;
  };

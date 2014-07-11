@@ -8,9 +8,7 @@ namespace Groups {
   return x * y;
  }
 
- Permutation Symmetric::identity() const {
-  return Permutation::identity();
- }
+ Permutation Symmetric::identity() const {return Permutation::identity(); }
 
  vector<Permutation> Symmetric::elements() const {
   return Permutation::s_n(degree);
@@ -22,13 +20,9 @@ namespace Groups {
 
  int Symmetric::order() const {return factorial(degree); }
 
- int Symmetric::order(const Permutation& x) const {
-  return x.order();
- }
+ int Symmetric::order(const Permutation& x) const {return x.order(); }
 
- string Symmetric::showElem(const Permutation& x) const {
-  return string(x);
- }
+ string Symmetric::showElem(const Permutation& x) const {return string(x); }
 
  bool Symmetric::abelian() const {return degree < 3; }
 
@@ -44,4 +38,6 @@ namespace Groups {
  bool Symmetric::contains(const Permutation& x) const {
   return x.degree() <= degree;
  }
+
+ int Symmetric::indexElem(const Permutation& x) const {return x.lehmer(); }
 }

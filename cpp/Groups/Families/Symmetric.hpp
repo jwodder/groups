@@ -21,6 +21,7 @@ namespace Groups {
   virtual Symmetric* copy() const;
   virtual int cmp(const basic_group<Permutation>*) const;
   virtual bool contains(const Permutation&) const;
+  virtual int indexElem(const Permutation&) const;
  private:
   int degree;
  };

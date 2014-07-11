@@ -63,4 +63,9 @@ namespace Groups {
  bool Dicyclic::contains(const elem_t& x) const {
   return 0 <= x.first && x.first < 2*n;
  }
+
+ int Dicyclic::indexElem(const elem_t& x) const {
+  if (contains(x)) return x.first + x.second * 2 * n;
+  else throw group_mismatch("Dicyclic::indexElem");
+ }
 }

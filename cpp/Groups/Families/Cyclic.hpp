@@ -20,6 +20,7 @@ namespace Groups {
   virtual Cyclic* copy() const;
   virtual int cmp(const basic_group<int>*) const;
   virtual bool contains(const int&) const;
+  virtual int indexElem(const int&) const;
   int residue(int) const;
  private:
   int n;

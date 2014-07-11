@@ -45,4 +45,9 @@ namespace Groups {
  int Cyclic::residue(int x) const {return x % n; }
 
  bool Cyclic::contains(const int& x) const {return 0 <= x && x < n; }
+
+ int Cyclic::indexElem(const int& x) const {
+  if (contains(x)) return x;
+  else throw group_mismatch("Cyclic::indexElem");
+ }
 }

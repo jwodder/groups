@@ -5,18 +5,18 @@
 - quaternion() should throw an exception when given an invalid argument
 - Rethink the memory management of basic_group objects passed to Direct's
   constructor
-- Protect elem and gelem<T> objects from being used directly by unwanted code
 - Make the names of the methods for constructing arbitrary elements (currently
   Cyclic::residue and Direct::pair) consistent
 - Rethink the way Element manages its Group*
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
-- Create a "smart pointer" container around basic_group* for general external
-  use?
+- Create a "smart pointer" container around basic_group<T>* for general
+  external use?
 - Rename "abelian" to "isAbelian"?
-- Give Group a `Group(const basic_group<T>*)` constructor that uses/emulates
+- Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
+- Move `group_mismatch` to a header that's not for internal utilities
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -26,7 +26,7 @@ FEATURES
  - semidirect products
  - alternating groups
  - permutation groups
- - multiplication modulo n?
+ - multiplication modulo n
 - Operations to add:
  - calculating group tables
  - calculating centralizers & centers
@@ -60,3 +60,4 @@ FEATURES
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
 - Give the various `basic_group` subclasses getters for their constructor values
+- Give `Element` an `Element(const basic_group<T>&, const T&)` constructor
