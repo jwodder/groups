@@ -73,7 +73,8 @@ namespace Groups {
     return "1";
    } else {
     std::ostringstream out;
-    out << '(' << x.first << ", " << x.second << ')';
+    out << '(' << left->showElem(x.first) << ", " << right->showElem(x.second)
+	<< ')';
     return out.str();
    }
   }

@@ -39,6 +39,7 @@ namespace Groups {
  Element::operator string() const {return gr->showElem(*this); }
 
  Element::operator bool() const {return *this != gr->identity(); }
+ // TODO: Why not just `return val != 0;`?
 
  int Element::cmp(const Element& y) const {
   int c = gr->cmp(y.gr);
