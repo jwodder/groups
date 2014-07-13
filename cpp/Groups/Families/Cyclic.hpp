@@ -2,28 +2,28 @@
 #define CYCLIC_H
 
 #include <cstdlib>  /* abs */
-#include "Groups/Group.hpp"
+#include "Groups/BasicGroup.hpp"
 
 namespace Groups {
- class Cyclic : public Group {
+ class Cyclic : public basic_group<int> {
  public:
   Cyclic(int m) : n(std::abs(m)) { }
   virtual ~Cyclic() { }
-  virtual Element oper(const Element&, const Element&) const;
-  virtual Element identity() const;
-  virtual std::vector<Element> elements() const;
-  virtual Element invert(const Element&) const;
+  virtual int oper(const int&, const int&) const;
+  virtual int identity() const;
+  virtual std::vector<int> elements() const;
+  virtual int invert(const int&) const;
   virtual int order() const;
-  virtual int order(const Element&) const;
-  virtual std::string showElem(const Element&) const;
+  virtual int order(const int&) const;
+  virtual std::string showElem(const int&) const;
   virtual bool abelian() const;
   virtual Cyclic* copy() const;
-  virtual int cmp(const Group*) const;
-  Element residue(int) const;
+  virtual int cmp(const basic_group<int>*) const;
+  virtual bool contains(const int&) const;
+  virtual int indexElem(const int&) const;
+  int residue(int) const;
  private:
   int n;
-  typedef int elem_t;
-  typedef gelem<elem_t> element;
  };
 }
 

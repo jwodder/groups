@@ -5,44 +5,40 @@
 using namespace std;
 
 namespace Groups {
- Element Dihedral::oper(const Element& x, const Element& y) const {
-  elem_t xp = getElem<elem_t>(x), yp = getElem<elem_t>(y);
-  return mkElem<elem_t>(yp.first
-   ? elem_t(!xp.first, (yp.second - xp.second) % n)
-   : elem_t(xp.first,  (xp.second + yp.second) % n));
+ typedef Dihedral::elem_t elem_t;
+
+ elem_t Dihedral::oper(const elem_t& x, const elem_t& y) const {
+  return y.first ? elem_t(!x.first, (y.second - x.second) % n)
+		 : elem_t(x.first,  (x.second + y.second) % n);
  }
 
- Element Dihedral::identity() const {return mkElem<elem_t>(elem_t(false, 0)); }
+ elem_t Dihedral::identity() const {return elem_t(false, 0); }
 
- vector<Element> Dihedral::elements() const {
-  vector<Element> elems(2*n, identity());
-  vector<Element>::iterator iter = elems.begin();
-  int r=1;
-  for (iter++; r<n; r++, iter++) *iter = mkElem<elem_t>(elem_t(false, r));
-  r=0;
-  for (; r<n; r++, iter++) *iter = mkElem<elem_t>(elem_t(true, r));
+ vector<elem_t> Dihedral::elements() const {
+  vector<elem_t> elems(2*n, identity());
+  vector<elem_t>::iterator iter = elems.begin();
+  iter++;
+  for (int r=1; r<n; r++, iter++) *iter = elem_t(false, r);
+  for (int r=0; r<n; r++, iter++) *iter = elem_t(true, r);
   return elems;
  }
 
- Element Dihedral::invert(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
-  return xp.first ? x : mkElem<elem_t>(elem_t(false, -xp.second % n));
+ elem_t Dihedral::invert(const elem_t& x) const {
+  return x.first ? x : elem_t(false, -x.second % n);
  }
 
  int Dihedral::order() const {return 2 * n; }
 
- int Dihedral::order(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
-  return xp.first ? 2 : n/gcd(xp.second, n);
+ int Dihedral::order(const elem_t& x) const {
+  return x.first ? 2 : n/gcd(x.second, n);
  }
 
- string Dihedral::showElem(const Element& x) const {
-  elem_t xp = getElem<elem_t>(x);
-  if (!xp.first && xp.second == 0) return "1";
+ string Dihedral::showElem(const elem_t& x) const {
+  if (!x.first && x.second == 0) return "1";
   else {
    ostringstream out;
-   if (xp.first) out << "s";
-   expgen(out, "r", xp.second, "");
+   if (x.first) out << "s";
+   expgen(out, "r", x.second, "");
    return out.str();
   }
  }
@@ -51,10 +47,19 @@ namespace Groups {
 
  Dihedral* Dihedral::copy() const {return new Dihedral(n); }
 
- int Dihedral::cmp(const Group* other) const {
+ int Dihedral::cmp(const basic_group<elem_t>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dihedral* c = static_cast<const Dihedral*>(other);
   return n - c->n;
+ }
+
+ bool Dihedral::contains(const elem_t& x) const {
+  return 0 <= x.second && x.second < n;
+ }
+
+ int Dihedral::indexElem(const elem_t& x) const {
+  if (contains(x)) return x.second + x.first * n;
+  else throw group_mismatch("Dihedral::indexElem");
  }
 }

@@ -1,24 +1,24 @@
 - Document everything!
-- Rename `Group::order()` to `size`?
+- Rename `basic_group::order()` to `size`?
 - The constructors for Dihedral and Dicyclic should throw exceptions when
   passed 0 or 1
 - The constructor for Cyclic should throw an exception when passed 0
 - quaternion() should throw an exception when given an invalid argument
-- Rethink the memory management of Group objects passed to Direct's constructor
-  (including those used in Direct::copy())
-- Protect elem and gelem<T> objects from being used directly by unwanted code
+- Rethink the memory management of basic_group objects passed to Direct's
+  constructor
 - Make the names of the methods for constructing arbitrary elements (currently
   Cyclic::residue and Direct::pair) consistent
 - Rethink the way Element manages its Group*
-- Could the creation of Group subclasses be simplified using templates and/or
-  std::function somehow?
-- Add a "group_mismatch" exception
-- Create a "smart pointer" container around Group* for general external use, à
-  la `Element` with `elem`?
+- Could the creation of basic_group subclasses be simplified using templates
+  and/or std::function somehow?
+- Create a "smart pointer" container around basic_group<T>* for general
+  external use?
 - Rename "abelian" to "isAbelian"?
-- Give Tabular a `Tabular(const Group*)` constructor that uses/emulates either
-  the `Tabular(const Group&)` or `Tabular(const Tabular&)` constructor
-  depending on what type the pointer points to
+- Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
+  either the `Group(const basic_group<T>&)` or `Group(const Group&)`
+  constructor depending on what type the pointer points to
+- Move `group_mismatch` to a header that's not for internal utilities
+- Add an easy way to convert element values from T to Element and back again
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -28,7 +28,7 @@ FEATURES
  - semidirect products
  - alternating groups
  - permutation groups
- - multiplication modulo n?
+ - multiplication modulo n
 - Operations to add:
  - calculating group tables
  - calculating centralizers & centers
@@ -56,10 +56,10 @@ FEATURES
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- Add a way for the user to create abitrary elements of a Dicyclic, Dihedral,
-  Symmetric, or Tabular group
 - Add an alternative to/replacement for quaternion() that takes the cardinality
   of the desired group?
 - Add closure functions that send their output to supplied output iterators?
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
+- Give the various `basic_group` subclasses getters for their constructor values
+- Give `Element` an `Element(const basic_group<T>&, const T&)` constructor

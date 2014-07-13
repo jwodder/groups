@@ -3,27 +3,28 @@
 
 #include <cstdlib>  /* abs */
 #include <utility>  /* pair */
-#include "Groups/Group.hpp"
+#include "Groups/BasicGroup.hpp"
 
 namespace Groups {
- class Dihedral : public Group {
+ class Dihedral : public basic_group< std::pair<bool,int> > {
+ // The pair is (s,r).
  public:
   Dihedral(int m) : n(std::abs(m)) { }
   virtual ~Dihedral() { }
-  virtual Element oper(const Element&, const Element&) const;
-  virtual Element identity() const;
-  virtual std::vector<Element> elements() const;
-  virtual Element invert(const Element&) const;
+  virtual elem_t oper(const elem_t&, const elem_t&) const;
+  virtual elem_t identity() const;
+  virtual std::vector<elem_t> elements() const;
+  virtual elem_t invert(const elem_t&) const;
   virtual int order() const;
-  virtual int order(const Element&) const;
-  virtual std::string showElem(const Element&) const;
+  virtual int order(const elem_t&) const;
+  virtual std::string showElem(const elem_t&) const;
   virtual bool abelian() const;
   virtual Dihedral* copy() const;
-  virtual int cmp(const Group*) const;
+  virtual int cmp(const basic_group<elem_t>*) const;
+  virtual bool contains(const elem_t&) const;
+  virtual int indexElem(const elem_t&) const;
  private:
   int n;
-  typedef std::pair<bool,int> elem_t;  /* (s,r) */
-  typedef gelem<elem_t> element;
  };
 }
 

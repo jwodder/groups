@@ -2,10 +2,16 @@
 #define GROUPS_UTIL_H
 
 #include <ostream>
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 
 namespace Groups {
+ class group_mismatch : public std::logic_error {
+ public:
+  explicit group_mismatch(const std::string& m) : logic_error(m) { }
+ };
+
  int gcd(int, int);
  int lcm(int, int);
  int factorial(int);

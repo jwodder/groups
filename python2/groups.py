@@ -443,7 +443,8 @@ class Dicyclic(group):
     def __len__(self): return 4*self.n
 
     def __iter__(self):
-	return ((i,j) for i in range(2*self.n) for j in [False, True])
+	#return ((i,j) for i in range(2*self.n) for j in [False, True])
+	return ((i,j) for j in [False, True] for i in range(2*self.n))
 
     def __contains__(self, x):
 	return isPair(x) and 0 <= x[0] < 2*self.n and 0 <= x[1] < 2

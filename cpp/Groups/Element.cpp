@@ -1,15 +1,16 @@
-#include <string>
 #include <ostream>
+#include <string>
 #include "Groups/Element.hpp"
 #include "Groups/Group.hpp"
+using namespace std;
 
 namespace Groups {
- Element Element::inverse() const {return gr->invert(*this); }
+ Element Element::operator~() const {return gr->invert(*this); }
 
  int Element::order() const {return gr->order(*this); }
 
  Element Element::pow(int n) const {
-  Element x(n > 0 ? *this : inverse());
+  Element x(n > 0 ? *this : ~*this);
   if (n < 0) n *= -1;
   n %= order();
   if (n == 0) return gr->identity();
@@ -35,17 +36,16 @@ namespace Groups {
 
  Element& Element::operator*=(const Element y) {return *this = *this * y; }
 
- Element& Element::operator=(const Element& y) {
-  gr = y.gr;
-  const elem* tmp = y.x->retain();
-  x->release();
-  x = tmp;
-  return *this;
- }
-
  Element::operator string() const {return gr->showElem(*this); }
 
  Element::operator bool() const {return *this != gr->identity(); }
+ // TODO: Why not just `return val != 0;`?
+
+ int Element::cmp(const Element& y) const {
+  int c = gr->cmp(y.gr);
+  if (c == 0) return val - y.val;
+  else return c;
+ }
 
  ostream& operator<<(ostream& out, const Element& x) {return out << string(x); }
 }
