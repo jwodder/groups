@@ -161,7 +161,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item Given nonnegative integers $n\leq m$, $S_n \leq S_m$.
  \item Every finite group is isomorphic to a subgroup of some $S_n$.
  \end{itemize}
-\item Given a nonnegative integer $n$, the \emph{alternating group of degree $n$}, denoted $A_n$, is the set of all even permutations on a set of $n$ elements with function composition as the operation.  It has the following properties:
+\item Given a nonnegative integer $n$, the \emph{alternating group of degree $n$}, denoted $A_n$, is the set of all even permutations (i.e., those that can be expressed as the product of an even number of transpositions) on a set of $n$ elements with function composition as the operation.  It has the following properties:
  \begin{itemize}
  \item The identity is the identity function.
  \item The inverse of a $\sigma\in A_n$ is the inverse function of $\sigma$.
@@ -191,7 +191,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \begin{itemize}
  \item The identity is $1N$.
  \item The inverse of a $gN\in G/N$ is $(g^{-1})N$.
- \item The order of $G/N$ is $|G|/|N|$.
+ \item When $G$ is finite, the order of $G/N$ is $|G|/|N|$.
  \end{itemize}
 
 \item Given an integer $n$ greater than 1, the \emph{dicyclic group of order $4n$}, denoted $\Dic_n$, is the set $\N_{2n}\times\N_2$ with the operation defined by: $$(i_1, j_1)\cdot(i_2, j_2)\coloneqq \begin{cases}((i_1 + i_2) \pmod{2n}, j_2) & j_1 = 0 \\ ((i_1 - i_2 + nj_2) \pmod{2n}, 1-j_2) & j_1 = 1\end{cases}$$  It has the following propertes:
@@ -229,6 +229,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item $ji = -k$
  \item $kj = -i$
  \item $ik = -j$
+ \item $Q_8$ is the same as the identically-named basis elements of $\mathbb{H}$ (the Hamiltonian quaternions) and their negations under multiplication.
  \end{itemize}
  Note the similarities to cross products of vectors in $\mathbb{R}^3$.
 
