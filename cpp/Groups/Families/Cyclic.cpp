@@ -9,15 +9,7 @@ namespace Groups {
 
  int Cyclic::identity() const {return 0; }
 
- vector<int> Cyclic::elements() const {
-  vector<int> elems(n, 0);
-  vector<int>::iterator iter = elems.begin();
-  int i=0;
-  for (iter++, i++; iter != elems.end(); iter++, i++) {
-   *iter = i;
-  }
-  return elems;
- }
+ vector<int> Cyclic::elements() const {return vecN(n); }
 
  int Cyclic::invert(const int& x) const {return -x % n; }
 

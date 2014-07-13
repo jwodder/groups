@@ -18,13 +18,7 @@ namespace Groups {
  elem_t Dicyclic::identity() const {return elem_t(0, false); }
 
  vector<elem_t> Dicyclic::elements() const {
-  vector<elem_t> elems(4*n, identity());
-  vector<elem_t>::iterator iter = elems.begin();
-  int i=1;
-  for (iter++; i<2*n; i++, iter++) *iter = elem_t(i, false);
-  i=0;
-  for (; i<2*n; i++, iter++) *iter = elem_t(i, true);
-  return elems;
+  return cartesian(vecN(2*n), vecFT);
  }
 
  elem_t Dicyclic::invert(const elem_t& x) const {
@@ -65,7 +59,7 @@ namespace Groups {
  }
 
  int Dicyclic::indexElem(const elem_t& x) const {
-  if (contains(x)) return x.first + x.second * 2 * n;
+  if (contains(x)) return x.first * 2 + x.second;
   else throw group_mismatch("Dicyclic::indexElem");
  }
 }

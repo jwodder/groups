@@ -43,19 +43,7 @@ namespace Groups {
   }
 
   virtual std::vector<elem_t> elements() const {
-   std::vector<elem_t> elems(order(), identity());
-   std::vector<T> lems = left->elements();
-   std::vector<U> rems = right->elements();
-   typename std::vector<elem_t>::iterator iter = elems.begin();
-   typename std::vector<T>::iterator liter;
-   for (liter = lems.begin(); liter != lems.end(); liter++) {
-    typename std::vector<U>::iterator riter;
-    for (riter = rems.begin(); riter != rems.end(); riter++) {
-     *iter = elem_t(*liter, *riter);
-     iter++;
-    }
-   }
-   return elems;
+   return cartesian(left->elements(), right->elements());
   }
 
   virtual elem_t invert(const elem_t& x) const {

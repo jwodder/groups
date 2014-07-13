@@ -58,7 +58,7 @@ module Groups.Families where
  dicyclic' n = Group' {
   g'size = 4*n,
   g'elems = cartesian [0..2*n-1] [False, True],
-  g'index = (\(i,j) -> (j ?: 2*n :? 0) + i),
+  g'index = (\(i,j) -> i*2 + fromEnum j),
   g'oper = (\(i1, j1) (i2, j2) -> (mod (i1 + (j1 ?: negate :? id) i2 + (j1 && j2 ?: n :? 0)) (2*n), j1 /= j2)),
   g'invert = (\(i,j) -> (mod (j ?: i+n :? (-i)) (2*n), j)),
   g'order = (\(i,j) -> j ?: 4 :? cycOrd (2*n) i),

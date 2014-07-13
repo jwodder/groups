@@ -19,6 +19,7 @@
   constructor depending on what type the pointer points to
 - Move `group_mismatch` to a header that's not for internal utilities
 - Add an easy way to convert element values from T to Element and back again
+ - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -62,4 +63,3 @@ FEATURES
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
 - Give the various `basic_group` subclasses getters for their constructor values
-- Give `Element` an `Element(const basic_group<T>&, const T&)` constructor

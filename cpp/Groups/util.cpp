@@ -1,8 +1,7 @@
-/* Internal utility functions */
-
 #include <cstdlib>
-#include <string>
 #include <ostream>
+#include <string>
+#include <vector>
 #include "Groups/util.hpp"
 using namespace std;
 
@@ -13,7 +12,7 @@ namespace Groups {
   return a;
  }
 
- int lcm(int x, int y) {return x == 0 || y == 0 ? 0 : abs(x*y)/gcd(x, y); }
+ int lcm(int x, int y) {return x == 0 || y == 0 ? 0 : abs(x*y)/gcd(x,y); }
 
  ostream& expgen(ostream& out, const string& gen, int n, const string& def) {
   if (n == 0) return out << def;
@@ -26,5 +25,13 @@ namespace Groups {
   int fac = 1;
   for (int i=2; i<=x; i++) fac *= i;
   return fac;
+ }
+
+ vector<int> vecN(int n) {
+  if (n < 1) return vector<int>(0);
+  vector<int> elems(n);
+  vector<int>::iterator iter = elems.begin();
+  for (int i=0; iter != elems.end(); iter++, i++) *iter = i;
+  return elems;
  }
 }

@@ -18,10 +18,12 @@ def abelians(n):
 	    yield (reduce(DirectProduct, map(Cyclic, xs2)), xs2)
 
 def partitions(n):
-    ### TODO: Try to make this more efficient.
     def gen(qty, mx):
-	if qty == 0: return [[]]
-	else: return([i] + xs for i  in range(min(qty,mx), 0, -1)
-			      for xs in gen(qty-i, i))
-    if n < 1: raise ValueError('value must be positive')
-    return gen(n,n)
+	if qty == 0:
+	    yield []
+	else:
+	    for i in range(min(qty,mx), 0, -1):
+		for xs in gen(qty-i, i):
+		    yield [i] + xs
+    if n < 1: raise ValueError
+    else: return gen(n,n)

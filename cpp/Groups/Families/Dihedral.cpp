@@ -14,14 +14,7 @@ namespace Groups {
 
  elem_t Dihedral::identity() const {return elem_t(false, 0); }
 
- vector<elem_t> Dihedral::elements() const {
-  vector<elem_t> elems(2*n, identity());
-  vector<elem_t>::iterator iter = elems.begin();
-  iter++;
-  for (int r=1; r<n; r++, iter++) *iter = elem_t(false, r);
-  for (int r=0; r<n; r++, iter++) *iter = elem_t(true, r);
-  return elems;
- }
+ vector<elem_t> Dihedral::elements() const {return cartesian(vecFT, vecN(n)); }
 
  elem_t Dihedral::invert(const elem_t& x) const {
   return x.first ? x : elem_t(false, -x.second % n);
