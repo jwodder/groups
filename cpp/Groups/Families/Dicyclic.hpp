@@ -26,6 +26,8 @@ namespace Groups {
  private:
   int n;
  };
+
+ inline Dicyclic* quaternion(int n=2) {return new Dicyclic(1 << (n-1)); }
 }
 
 #endif

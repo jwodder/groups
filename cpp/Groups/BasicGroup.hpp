@@ -1,6 +1,7 @@
 #ifndef BASICGROUP_H
 #define BASICGROUP_H
 
+#include <set>
 #include <string>
 #include <vector>
 #include "closure.hpp"
