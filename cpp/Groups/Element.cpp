@@ -5,12 +5,12 @@
 using namespace std;
 
 namespace Groups {
- Element Element::inverse() const {return gr->invert(*this); }
+ Element Element::operator~() const {return gr->invert(*this); }
 
  int Element::order() const {return gr->order(*this); }
 
  Element Element::pow(int n) const {
-  Element x(n > 0 ? *this : inverse());
+  Element x(n > 0 ? *this : ~*this);
   if (n < 0) n *= -1;
   n %= order();
   if (n == 0) return gr->identity();

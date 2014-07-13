@@ -17,6 +17,7 @@
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
 - Move `group_mismatch` to a header that's not for internal utilities
+- Add an easy way to convert element values from T to Element and back again
 
 FEATURES
 - Implement all of the features in plan.txt

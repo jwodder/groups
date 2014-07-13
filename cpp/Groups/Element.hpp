@@ -12,10 +12,8 @@ namespace Groups {
 
  class Element {
  public:
-  Element inverse() const;
-  int     order()   const;
-  Element pow(int)  const;
-
+  int order() const;
+  Element pow(int) const;
   std::vector<Element> cycle() const;
 
   const basic_group<Element>* group() const {return gr; }
@@ -23,6 +21,7 @@ namespace Groups {
 
   Element  operator*(const Element&) const;
   Element& operator*=(const Element);
+  Element  operator~() const;
 
   operator std::string() const;
   operator bool() const;
