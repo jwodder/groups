@@ -4,7 +4,8 @@
 #include <sstream>
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
-#include "Groups/util.hpp"
+#include "Groups/Util.hpp"
+#include "Groups/internals.hpp"  /* cartesian */
 
 namespace Groups {
  template<class T, class U>

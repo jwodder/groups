@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "Permutation.hpp"
-#include "Groups/util.hpp"  /* lcm, factorial */
+#include "Groups/internals.hpp"  /* lcm, factorial */
 using namespace std;
 
 Permutation::Permutation() : pmap(0), _even(1), _order(1), _lehmer(0) { }

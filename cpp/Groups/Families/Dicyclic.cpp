@@ -1,7 +1,8 @@
 #include <sstream>
 #include <vector>
 #include "Groups/Families/Dicyclic.hpp"
-#include "Groups/util.hpp"
+#include "Groups/Util.hpp"
+#include "Groups/internals.hpp"
 using namespace std;
 
 namespace Groups {

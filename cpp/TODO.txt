@@ -13,7 +13,6 @@
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
-- Move `group_mismatch` to a header that's not for internal utilities
 - Add an easy way to convert element values from T to Element and back again
  - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
 - Make Group subclass basic_group<Element> instead of specializing it in

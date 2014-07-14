@@ -2,7 +2,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
-#include "Groups/util.hpp"
+#include "Groups/internals.hpp"
 using namespace std;
 
 namespace Groups {

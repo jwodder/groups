@@ -1,19 +1,15 @@
-#ifndef GROUPS_UTIL_H
-#define GROUPS_UTIL_H
+/* Utilities which the user of the library should not touch */
+
+#ifndef GROUPS_INTERNALS_H
+#define GROUPS_INTERNALS_H
 
 #include <ostream>
-#include <stdexcept>  /* logic_error */
 #include <string>
 #include <typeinfo>  /* typeid */
 #include <utility>  /* pair */
 #include <vector>
 
 namespace Groups {
- class group_mismatch : public std::logic_error {
- public:
-  explicit group_mismatch(const std::string& m) : logic_error(m) { }
- };
-
  const bool vecFT_array[2] = {false, true};
 
  const std::vector<bool> vecFT(vecFT_array+0, vecFT_array+2);

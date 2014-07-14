@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "Groups/Group.hpp"
+#include "Groups/Util.hpp"  /* group_mismatch */
+#include "Groups/internals.hpp"  /* lcm */
 using namespace std;
 
 namespace Groups {

@@ -8,7 +8,6 @@
 #include <vector>
 #include "Groups/BasicGroup.hpp"
 #include "Groups/Element.hpp"
-#include "Groups/util.hpp"
 
 namespace Groups {
  template<> class basic_group<Element> {

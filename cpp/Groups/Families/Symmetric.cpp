@@ -1,6 +1,7 @@
 #include <vector>
 #include "Groups/Families/Symmetric.hpp"
-#include "Groups/util.hpp"
+#include "Groups/Util.hpp"
+#include "Groups/internals.hpp"  /* factorial */
 using namespace std;
 
 namespace Groups {
