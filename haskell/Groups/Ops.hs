@@ -88,7 +88,8 @@ module Groups.Ops where
   where conj left | ISet.null left = []
 		  | otherwise = Subset (g, cc) : conj (ISet.difference left cc)
 		   where least = ISet.findMin left
-			 cc = ISet.map (\x -> g_conjugate g x least) left
+			 cc = ISet.map (\x -> g_conjugate g x least) total
+	total = ISet.fromDistinctAscList [0..g_size g-1]
 
  -- |Given two subsets of the same group that are already closed under the group
  -- operation (i.e., that are subgroups; this precondition is not checked),

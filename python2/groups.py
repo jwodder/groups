@@ -91,14 +91,13 @@ class group(object):
 	return all(op(x,y) == op(y,x) for x in self for y in self)
 
     def conjugacies(self):
-	yield set([self.identity()])
-	left = set(self)
-	left.remove(self.identity())
-	while left:
-	    least = min(left)
-	    cc = set(self.conjugate(x,least) for x in left)
-	    yield cc
-	    left -= cc
+	used = set([self.identity()])
+	yield frozenset(used)
+	for x in self:
+	    if x not in used:
+		cc = frozenset(self.conjugate(y,x) for y in self)
+		yield cc
+		used.update(cc)
 
     def lowerCentral(self):
 	whole = frozenset(self)
