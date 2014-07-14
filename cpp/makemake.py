@@ -34,7 +34,11 @@ if sys.path[0]: os.chdir(sys.path[0])
 inclusions = Relation()
 cpp = []
 tests = []
-for dirpath, _, files in os.walk('.'):
+for dirpath, dirnames, files in os.walk('.'):
+    try:
+	dirnames.remove('dev')
+    except ValueError:
+	pass
     for fname in files:
 	if not (fname.endswith('.cpp') or fname.endswith('.hpp')):
 	    continue

@@ -20,9 +20,8 @@
 - Specialize basic_group<Permutation> as an abstract class that defines oper,
   invert, identity, & order(Permutation) and leaves the rest as pure virtual
 - Add a header file that re-exports all of the other header files
-- Give the various classes (especially Group) comparison operators that only
-  work on values of the same type
- - cf. std::rel_ops in <utility>
+- Give the various classes comparison operators that only work on values of the
+  same type
 
 FEATURES
 - Implement all of the features in plan.txt

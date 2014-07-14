@@ -9,10 +9,18 @@
 #include <utility>  /* pair */
 #include <vector>
 
-namespace Groups {
- const bool vecFT_array[2] = {false, true};
+#if defined(__cplusplus) && __cplusplus >= 201103L
+#define CLAIMS_CPP11
+#endif
 
+namespace Groups {
+
+#ifdef CLAIMS_CPP11
+ const std::vector<bool> vecFT{false, true};
+#else
+ const bool vecFT_array[2] = {false, true};
  const std::vector<bool> vecFT(vecFT_array+0, vecFT_array+2);
+#endif
 
  int gcd(int, int);
  int lcm(int, int);
@@ -31,9 +39,11 @@ namespace Groups {
  }
 
  template<class T, class U>
- std::vector< std::pair<T,U> > cartesian(const std::vector<T>& vec1, const std::vector<U>& vec2) {
+ std::vector< std::pair<T,U> > cartesian(const std::vector<T>& vec1,
+					 const std::vector<U>& vec2) {
   if (vec1.empty() || vec2.empty()) return std::vector< std::pair<T,U> >(0);
-  std::vector< std::pair<T,U> > vecout(vec1.size() * vec2.size(), make_pair(vec1[0], vec2[0]));
+  std::vector< std::pair<T,U> > vecout(vec1.size() * vec2.size(),
+				       make_pair(vec1[0], vec2[0]));
   typename std::vector< std::pair<T,U> >::iterator iter = vecout.begin();
   typename std::vector<T>::const_iterator iter1;
   for (iter1 = vec1.begin(); iter1 != vec1.end(); iter1++) {
@@ -45,6 +55,7 @@ namespace Groups {
   }
   return vecout;
  }
+
 }
 
 #endif
