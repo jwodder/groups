@@ -42,9 +42,8 @@ namespace Groups {
  // TODO: Why not just `return val != 0;`?
 
  int Element::cmp(const Element& y) const {
-  int c = gr->cmp(y.gr);
-  if (c == 0) return val - y.val;
-  else return c;
+  int c = gr->cmp(*y.gr);
+  return c ? c : val - y.val;
  }
 
  ostream& operator<<(ostream& out, const Element& x) {return out << string(x); }

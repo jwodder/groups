@@ -59,6 +59,14 @@ namespace Groups {
   virtual int indexElem(const Element&) const;
   basic_group<Element> direct(const basic_group<Element>&);
 
+  int cmp(const basic_group<Element>&) const;
+  bool operator==(const basic_group<Element>& y) const {return cmp(y) == 0; }
+  bool operator<(const basic_group<Element>& y)  const {return cmp(y) <  0; }
+  bool operator>(const basic_group<Element>& y)  const {return cmp(y) >  0; }
+  bool operator>=(const basic_group<Element>& y) const {return cmp(y) >= 0; }
+  bool operator<=(const basic_group<Element>& y) const {return cmp(y) <= 0; }
+  bool operator!=(const basic_group<Element>& y) const {return cmp(y) != 0; }
+
  private:
   basic_group(std::vector< std::vector<int> > tbl, std::vector<int> invs,
 	      std::vector<int> ords, std::vector<std::string> ss, bool abelian)

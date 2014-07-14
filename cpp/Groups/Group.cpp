@@ -65,7 +65,11 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Group* c = static_cast<const Group*>(other);
-  return table < c->table ? -1 : table > c->table ? 1 : 0;
+  return cmp(*c);
+ }
+
+ int Group::cmp(const Group& other) const {
+  return table < other.table ? -1 : table > other.table ? 1 : 0;
   /* TODO: Should `strs` also take part in comparisons? */
  }
 
