@@ -175,7 +175,6 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
 \item A \emph{permutation group} is a subgroup of some $S_n$.
 
 \item Given a positive integer $n$, the \emph{dihedral group of order $2n$}, denoted $\Dih_n$, is the set $\N_2\times\N_n$ with the operation defined by: $$(s_1, r_1)\cdot(s_2, r_2)\coloneqq \begin{cases}(s_1, (r_2 + r_1)\pmod{n}) & s_2 = 0 \\ (1-s_1, (r_2 - r_1)\pmod{n}) & s_2 = 1\end{cases}$$  It has the following properties:
-% Should $n=1$ be disallowed?
  \begin{itemize}
  \item The identity is $(0,0)$.
  \item The inverse of an $(s,r)\in\Dih_n$ is $(s,r)$ itself when $s=1$ and $(0, -r\pmod{n})$ otherwise.

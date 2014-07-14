@@ -2,12 +2,16 @@
 #define CYCLIC_H
 
 #include <cstdlib>  /* abs */
+#include <stdexcept>
 #include "Groups/BasicGroup.hpp"
 
 namespace Groups {
  class Cyclic : public basic_group<int> {
  public:
-  Cyclic(int m) : n(std::abs(m)) { }
+  Cyclic(int m) : n(std::abs(m)) {
+   if (n == 0) throw std::invalid_argument("Cyclic(): argument cannot be 0");
+  }
+
   virtual ~Cyclic() { }
   virtual int oper(const int&, const int&) const;
   virtual int identity() const;

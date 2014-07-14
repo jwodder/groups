@@ -2,7 +2,6 @@
 #define DIRECT_H
 
 #include <sstream>
-#include <stdexcept>  /* invalid_argument */
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
 #include "Groups/util.hpp"

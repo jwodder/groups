@@ -1,7 +1,7 @@
 #ifndef DIHEDRAL_H
 #define DIHEDRAL_H
 
-#include <cstdlib>  /* abs */
+#include <stdexcept>
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
 
@@ -9,7 +9,11 @@ namespace Groups {
  class Dihedral : public basic_group< std::pair<bool,int> > {
  // The pair is (s,r).
  public:
-  Dihedral(int m) : n(std::abs(m)) { }
+  Dihedral(int m) : n(m) {
+   if (n < 1)
+    throw std::invalid_argument("Dihedral(): argument must be positive");
+  }
+
   virtual ~Dihedral() { }
   virtual elem_t oper(const elem_t&, const elem_t&) const;
   virtual elem_t identity() const;

@@ -1,7 +1,7 @@
 #ifndef DICYCLIC_H
 #define DICYCLIC_H
 
-#include <cstdlib>  /* abs */
+#include <stdexcept>
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
 
@@ -9,7 +9,11 @@ namespace Groups {
  class Dicyclic : public basic_group< std::pair<int,bool> > {
  // The pair is (i,j).
  public:
-  Dicyclic(int m) : n(std::abs(m)) { }
+  Dicyclic(int m) : n(m) {
+   if (n < 2)
+    throw std::invalid_argument("Dicyclic(): argument must be at least 2");
+  }
+
   virtual ~Dicyclic() { }
   virtual elem_t oper(const elem_t&, const elem_t&) const;
   virtual elem_t identity() const;
@@ -27,7 +31,11 @@ namespace Groups {
   int n;
  };
 
- inline Dicyclic* quaternion(int n=2) {return new Dicyclic(1 << (n-1)); }
+ inline Dicyclic* quaternion(int n=2) {
+  if (n < 2)
+   throw std::invalid_argument("quaternion: argument must be at least 2");
+  return new Dicyclic(1 << (n-1));
+ }
 }
 
 #endif

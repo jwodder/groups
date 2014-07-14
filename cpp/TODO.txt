@@ -1,9 +1,5 @@
 - Document everything!
 - Rename `basic_group::order()` to `size`?
-- The constructors for Dihedral and Dicyclic should throw exceptions when
-  passed 0 or 1
-- The constructor for Cyclic should throw an exception when passed 0
-- quaternion() should throw an exception when given an invalid argument
 - Rethink the memory management of basic_group objects passed to Direct's
   constructor
 - Make the names of the methods for constructing arbitrary elements (currently
@@ -20,6 +16,14 @@
 - Move `group_mismatch` to a header that's not for internal utilities
 - Add an easy way to convert element values from T to Element and back again
  - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
+- Make Group subclass basic_group<Element> instead of specializing it in
+  preparation for implementing subgroups
+- Specialize basic_group<Permutation> as an abstract class that defines oper,
+  invert, identity, & order(Permutation) and leaves the rest as pure virtual
+- Add a header file that re-exports all of the other header files
+- Give the various classes (especially Group) comparison operators that only
+  work on values of the same type
+ - cf. std::rel_ops in <utility>
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -63,3 +67,8 @@ FEATURES
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
 - Give the various `basic_group` subclasses getters for their constructor values
+- Add a "conjugate" method
+- Add a basic_element<basic_group<T>, T> class with multiplication et alii
+  methods?
+- Add an `isSubset(set<T>, basic_group<T>)` function?
+- Add a utility function for outputting multiplication tables?
