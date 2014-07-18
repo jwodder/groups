@@ -540,7 +540,7 @@ class Klein4(group):
 	return isPair(x) and x[0] in (0,1) and x[1] in (0,1)
 
 
-class AutCyclic(group):  # formerly "MultiplicN"
+class AutCyclic(group):
     paramNames = ('n',)
 
     def __init__(self, n):

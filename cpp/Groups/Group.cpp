@@ -1,5 +1,3 @@
-#define GROUP_CHECKS_MEMBERSHIP
-
 #include <sstream>
 #include <string>
 #include <vector>

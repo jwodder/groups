@@ -1,20 +1,16 @@
 - Document everything!
 - Rename `basic_group::order()` to `size`?
+- Rename "abelian" to "isAbelian"?
 - Rethink the memory management of basic_group objects passed to Direct's
   constructor
-- Make the names of the methods for constructing arbitrary elements (currently
-  Cyclic::residue and Direct::pair) consistent
 - Rethink the way Element manages its Group*
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
 - Create a "smart pointer" container around basic_group<T>* for general
   external use?
-- Rename "abelian" to "isAbelian"?
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
-- Add an easy way to convert element values from T to Element and back again
- - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
 - Make Group subclass basic_group<Element> instead of specializing it in
   preparation for implementing subgroups
 - Specialize basic_group<Permutation> as an abstract class that defines oper,
@@ -22,6 +18,10 @@
 - Add a header file that re-exports all of the other header files
 - Give the various classes comparison operators that only work on values of the
   same type
+- Requirements to try to codify & enforce among all basic_group<T> subclasses:
+ - elements() should always return a sorted vector.
+ - The identity should always be the first element of elements().
+ - indexElem() should return an element's index in the elements() vector.
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -32,7 +32,6 @@ FEATURES
  - alternating groups
  - permutation groups
 - Operations to add:
- - calculating group tables
  - calculating centralizers & centers
  - calculating normalizers
  - determining all subgroups of a group
@@ -40,7 +39,6 @@ FEATURES
  - calculating nilpotence classes
  - calculating conjugacy classes
  - calculating all abelian groups of a given order
- - determining whether a group is abelian
  - calculating lower central series
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
@@ -69,3 +67,5 @@ FEATURES
   methods?
 - Add an `isSubset(set<T>, basic_group<T>)` function?
 - Add a utility function for outputting multiplication tables?
+- Add an easy way to convert element values from T to Element and back again
+ - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?

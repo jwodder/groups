@@ -4,6 +4,8 @@
 #ifndef GROUP_H
 #define GROUP_H
 
+#define GROUP_CHECKS_MEMBERSHIP
+
 #include <map>
 #include <vector>
 #include "Groups/BasicGroup.hpp"
