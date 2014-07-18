@@ -167,12 +167,12 @@ module Groups.Families where
 	 zippy _ [] = error "Impossible runtime error in permutation'"
 	 dex = array (0, maxCode) zipped
 
- multiplicN :: Int -> Group  -- Rename to "autCyclic"?
- multiplicN = mkgroup . multiplicN'
+ autCyclic :: Int -> Group
+ autCyclic = mkgroup . autCyclic'
 
- multiplicN' :: Int -> Group' Int
- multiplicN' n | n < 1 = undefined
- multiplicN' n = Group' {
+ autCyclic' :: Int -> Group' Int
+ autCyclic' n | n < 1 = undefined
+ autCyclic' n = Group' {
   g'size = length coprimes,
   g'elems = coprimes,
   g'index = (!) dex,
@@ -187,7 +187,7 @@ module Groups.Families where
  holCyclic = mkgroup . holCyclic'
 
  holCyclic' :: Int -> Group' (Int, Int)
- holCyclic' n = semidirect' (cyclic' n) (multiplicN' n) (\x y -> mod (x*y) n)
+ holCyclic' n = semidirect' (cyclic' n) (autCyclic' n) (\x y -> mod (x*y) n)
 
  semidirect' :: Group' a -> Group' b -> (b -> a -> a) -> Group' (a, b)
  -- It is the user's responsibility to ensure that the third argument is a
