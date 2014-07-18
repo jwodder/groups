@@ -31,7 +31,6 @@ FEATURES
  - semidirect products
  - alternating groups
  - permutation groups
- - multiplication modulo n
 - Operations to add:
  - calculating group tables
  - calculating centralizers & centers

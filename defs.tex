@@ -79,6 +79,10 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
 \item A group $G$ is \emph{solvable} iff there exists a chain of subgroups $$1 = G_0\normaleq G_1\normaleq G_2\normaleq\cdots\normaleq G_s = G$$ such that $G_{i+1}/G_i$ is abelian for all $i\in\N_s$.
 \item Given a group $G$ and a subgroup $H\leq G$, a \emph{left coset} of $H$ is a set $gH$ for some $g\in G$, and a \emph{right coset} of $H$ is a set $Hg$ for some $g\in G$.
 
+\item Given elements $x,y$ of a group $G$, the \emph{commutator of $x$ and $y$}, denoted $[x,y]$, is $x^{-1}y^{-1}xy$.
+\item Given nonempty subsets $A,B$ of a group $G$, $[A,B] \coloneqq \gen{\{[a,b] : a\in A, b\in B\}}$.
+\item The \emph{commutator subgroup} of a group $G$, denoted $G'$, is $[G,G]$.
+
 \item The \emph{upper central series} of a group $G$ is the infinite chain of subgroups $Z_0(G)\leq Z_1(G)\leq Z_2(G)\leq \cdots$ defined by:
  \begin{itemize}
  \item $Z_0(G) = 1$
@@ -93,9 +97,6 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \end{itemize}
 \item A group $G$ is \emph{nilpotent} iff there exists $c\in\N$ such that $Z_c(G) = G$ --- or, equivalently, such that $G^c = 1$ --- in which case the smallest such $c$ is the \emph{nilpotence class} of $G$.
 
-\item Given elements $x,y$ of a group $G$, the \emph{commutator of $x$ and $y$}, denoted $[x,y]$, is $x^{-1}y^{-1}xy$.
-\item Given nonempty subsets $A,B$ of a group $G$, $[A,B] \coloneqq \gen{\{[a,b] : a\in A, b\in B\}}$.
-\item The \emph{commutator subgroup} of a group $G$, denoted $G'$, is $[G,G]$.
 \item The \emph{conjugacy classes} of a group $G$ are all of the subsets of $G$ of the form $\{gxg^{-1} : g\in G\}$ for some $x\in G$.
 \item The \emph{exponent} of a group $G$ is the smallest positive integer $n$ such that $x^n = 1$ for all $x\in G$, or $\infty$ if there is no such positive integer.
 
@@ -123,7 +124,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item The inverse of an $x\in\Z_n^\times$ is $x^{\varphi(n)-1}\pmod{n}$, where $\varphi$ is Euler's totient function.
  \item The order of $\Z_n^\times$ is $\varphi(n)$.
  \item $\Z_n^\times$ is abelian.
- \item $\Z_n^\times$ represents multiplication \emph{modulo} $n$.
+ \item $\Z_n^\times$ represents multiplication \emph{modulo} $n$ on those elements that have modular multiplicative inverses.
  \item $\Z_n^\times \cong \Aut(\Z_n)$
  \end{itemize}
 

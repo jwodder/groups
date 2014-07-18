@@ -2,14 +2,15 @@ CXX = c++
 CPPFLAGS = -std=c++98 -Wall -I.
 CC = $(CXX)  # for linking
 
-TESTS = tests/closure01 tests/closure03 tests/direct01 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01
+TESTS = tests/closure01 tests/closure03 tests/direct01 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/indices07 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01
 
-all : Groups/internals.o Groups/Families/Dihedral.o Groups/Families/Symmetric.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/Group.o Groups/Element.o $(TESTS)
+all : Groups/internals.o Groups/Families/Dihedral.o Groups/Families/Symmetric.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/Families/AutCyclic.o Groups/Group.o Groups/Element.o $(TESTS)
 
 Permutation.o : Permutation.hpp Groups/internals.hpp
 Groups/Element.o : Groups/Element.hpp closure.hpp Groups/BasicGroup.hpp Groups/Group.hpp
 Groups/Group.o : Groups/Util.hpp Groups/Group.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 Groups/internals.o : Groups/internals.hpp
+Groups/Families/AutCyclic.o : Groups/internals.hpp Groups/Util.hpp Groups/BasicGroup.hpp closure.hpp Groups/Families/AutCyclic.hpp
 Groups/Families/Cyclic.o : Groups/internals.hpp Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/BasicGroup.hpp closure.hpp
 Groups/Families/Dicyclic.o : Groups/Families/Dicyclic.hpp Groups/internals.hpp Groups/Util.hpp Groups/BasicGroup.hpp closure.hpp
 Groups/Families/Dihedral.o : Groups/Families/Dihedral.hpp Groups/Util.hpp Groups/BasicGroup.hpp closure.hpp Groups/internals.hpp
@@ -44,6 +45,9 @@ tests/indices05.o : Groups/Families/Symmetric.hpp Permutation.hpp closure.hpp Gr
 
 tests/indices06 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/Group.o
 tests/indices06.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/Families/Direct.hpp Groups/BasicGroup.hpp
+
+tests/indices07 : Groups/internals.o Groups/Families/AutCyclic.o
+tests/indices07.o : closure.hpp Groups/BasicGroup.hpp Groups/Families/AutCyclic.hpp
 
 tests/lehmer02 : Groups/internals.o Permutation.o
 tests/lehmer02.o : Permutation.hpp

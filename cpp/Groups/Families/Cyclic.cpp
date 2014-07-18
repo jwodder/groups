@@ -35,7 +35,10 @@ namespace Groups {
   return n - c->n;
  }
 
- int Cyclic::residue(int x) const {return x % n; }
+ int Cyclic::residue(int x) const {
+  x %= n;
+  return x < 0 ? x+n : x;
+ }
 
  bool Cyclic::contains(const int& x) const {return 0 <= x && x < n; }
 
