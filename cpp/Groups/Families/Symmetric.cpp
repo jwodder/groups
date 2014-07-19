@@ -33,7 +33,11 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Symmetric* c = static_cast<const Symmetric*>(other);
-  return degree - c->degree;
+  return cmp(*c);
+ }
+
+ int Symmetric::cmp(const Symmetric& other) const {
+  return degree - other.degree;
  }
 
  bool Symmetric::contains(const Permutation& x) const {

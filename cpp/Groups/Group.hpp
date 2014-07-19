@@ -13,7 +13,8 @@
 #include "Groups/internals.hpp"
 
 namespace Groups {
- template<> class basic_group<Element> : public cmp_with< basic_group<Element> > {
+ template<> class basic_group<Element> : public cmp_with< basic_group<Element> >
+ {
  public:
 
   template<class T> basic_group(const basic_group<T>& g) {

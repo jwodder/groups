@@ -32,8 +32,10 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Cyclic* c = static_cast<const Cyclic*>(other);
-  return n - c->n;
+  return cmp(*c);
  }
+
+ int Cyclic::cmp(const Cyclic& other) const {return n - other.n; }
 
  int Cyclic::residue(int x) const {
   x %= n;

@@ -16,12 +16,15 @@
 - Specialize basic_group<Permutation> as an abstract class that defines oper,
   invert, identity, & order(Permutation) and leaves the rest as pure virtual
 - Add a header file that re-exports all of the other header files
-- Give the various classes comparison operators that only work on values of the
-  same type
 - Requirements to try to codify & enforce among all basic_group<T> subclasses:
  - elements() should always return a sorted vector.
  - The identity should always be the first element of elements().
  - indexElem() should return an element's index in the elements() vector.
+- Figure out a way to generalize the implementations of the
+  `cmp(basic_group<T>*)` methods into a superclass
+- Should Direct take the types of its component groups rather than their
+  elements as its template parameters? (e.g., `Direct<Cyclic, Symmetric>`
+  rather than `Direct<int, Permutation>`)
 
 FEATURES
 - Implement all of the features in plan.txt

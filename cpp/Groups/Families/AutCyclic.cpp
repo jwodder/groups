@@ -65,8 +65,10 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const AutCyclic* c = static_cast<const AutCyclic*>(other);
-  return n - c->n;
+  return cmp(*c);
  }
+
+ int AutCyclic::cmp(const AutCyclic& other) const {return n - other.n; }
 
  int AutCyclic::residue(int x) const {
   x %= n;

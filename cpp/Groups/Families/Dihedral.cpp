@@ -45,8 +45,10 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dihedral* c = static_cast<const Dihedral*>(other);
-  return n - c->n;
+  return cmp(*c);
  }
+
+ int Dihedral::cmp(const Dihedral& other) const {return n - other.n; }
 
  bool Dihedral::contains(const elem_t& x) const {
   return 0 <= x.second && x.second < n;

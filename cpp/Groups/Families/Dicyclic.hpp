@@ -4,9 +4,11 @@
 #include <stdexcept>
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
- class Dicyclic : public basic_group< std::pair<int,bool> > {
+ class Dicyclic : public basic_group< std::pair<int,bool> >,
+		  public cmp_with<Dicyclic> {
  // The pair is (i,j).
  public:
   Dicyclic(int m) : n(m) {
@@ -27,6 +29,7 @@ namespace Groups {
   virtual int cmp(const basic_group<elem_t>*) const;
   virtual bool contains(const elem_t&) const;
   virtual int indexElem(const elem_t&) const;
+  virtual int cmp(const Dicyclic&) const;
  private:
   int n;
  };

@@ -29,25 +29,25 @@ tests/fromCycles01 : Groups/internals.o Permutation.o
 tests/fromCycles01.o : Permutation.hpp
 
 tests/indices01 : Groups/internals.o Groups/Families/Cyclic.o
-tests/indices01.o : closure.hpp Groups/Families/Cyclic.hpp Groups/BasicGroup.hpp
+tests/indices01.o : Groups/internals.hpp closure.hpp Groups/Families/Cyclic.hpp Groups/BasicGroup.hpp
 
 tests/indices02 : Groups/internals.o Groups/Families/Dicyclic.o
-tests/indices02.o : Groups/Families/Dicyclic.hpp closure.hpp Groups/BasicGroup.hpp
+tests/indices02.o : Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/BasicGroup.hpp
 
 tests/indices03 : Groups/Families/Dihedral.o Groups/internals.o
-tests/indices03.o : Groups/Families/Dihedral.hpp closure.hpp Groups/BasicGroup.hpp
+tests/indices03.o : Groups/Families/Dihedral.hpp closure.hpp Groups/BasicGroup.hpp Groups/internals.hpp
 
 tests/indices04 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Families/Cyclic.o
 tests/indices04.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Families/Direct.hpp Groups/BasicGroup.hpp
 
 tests/indices05 : Groups/internals.o Groups/Families/Symmetric.o Permutation.o
-tests/indices05.o : Groups/Families/Symmetric.hpp Permutation.hpp closure.hpp Groups/BasicGroup.hpp
+tests/indices05.o : Groups/Families/Symmetric.hpp Groups/internals.hpp closure.hpp Groups/BasicGroup.hpp Permutation.hpp
 
 tests/indices06 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/Group.o
 tests/indices06.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/Families/Direct.hpp Groups/BasicGroup.hpp
 
 tests/indices07 : Groups/internals.o Groups/Families/AutCyclic.o
-tests/indices07.o : closure.hpp Groups/BasicGroup.hpp Groups/Families/AutCyclic.hpp
+tests/indices07.o : Groups/internals.hpp closure.hpp Groups/BasicGroup.hpp Groups/Families/AutCyclic.hpp
 
 tests/lehmer02 : Groups/internals.o Permutation.o
 tests/lehmer02.o : Permutation.hpp

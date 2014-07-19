@@ -9,7 +9,8 @@
 
 namespace Groups {
  template<class T, class U>
- class Direct : public basic_group< std::pair<T,U> > {
+ class Direct : public basic_group< std::pair<T,U> >,
+		public cmp_with< Direct<T,U> > {
  public:
   typedef std::pair<T,U> elem_t;  // Why is this necessary?
 
@@ -75,9 +76,13 @@ namespace Groups {
    int ct = cmpTypes(*this, *other);
    if (ct != 0) return ct;
    const Direct<T,U>* c = static_cast<const Direct<T,U>*>(other);
-   int cmpLeft = left->cmp(c->left);
+   return cmp(*c);
+  }
+
+  virtual int cmp(const Direct<T,U>& other) const {
+   int cmpLeft = left->cmp(other.left);
    if (cmpLeft != 0) return cmpLeft;
-   return right->cmp(c->right);
+   return right->cmp(other.right);
   }
 
   virtual bool contains(const elem_t& x) const {

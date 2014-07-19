@@ -3,10 +3,11 @@
 
 #include <algorithm>  /* max */
 #include "Groups/BasicGroup.hpp"
+#include "Groups/internals.hpp"
 #include "Permutation.hpp"
 
 namespace Groups {
- class Symmetric : public basic_group<Permutation> {
+ class Symmetric : public basic_group<Permutation>, public cmp_with<Symmetric> {
  public:
   Symmetric(int d) : degree(std::max(d,1)) { }
   virtual ~Symmetric() { }
@@ -22,6 +23,7 @@ namespace Groups {
   virtual int cmp(const basic_group<Permutation>*) const;
   virtual bool contains(const Permutation&) const;
   virtual int indexElem(const Permutation&) const;
+  virtual int cmp(const Symmetric&) const;
  private:
   int degree;
  };

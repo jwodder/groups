@@ -52,8 +52,10 @@ namespace Groups {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Dicyclic* c = static_cast<const Dicyclic*>(other);
-  return n - c->n;
+  return cmp(*c);
  }
+
+ int Dicyclic::cmp(const Dicyclic& other) const {return n - other.n; }
 
  bool Dicyclic::contains(const elem_t& x) const {
   return 0 <= x.first && x.first < 2*n;

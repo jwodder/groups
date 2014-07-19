@@ -3,9 +3,10 @@
 
 #include <vector>
 #include "Groups/BasicGroup.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
- class AutCyclic : public basic_group<int> {
+ class AutCyclic : public basic_group<int>, public cmp_with<AutCyclic> {
  public:
   AutCyclic(int);
   virtual ~AutCyclic() { }
@@ -21,6 +22,7 @@ namespace Groups {
   virtual int cmp(const basic_group<int>*) const;
   virtual bool contains(const int&) const;
   virtual int indexElem(const int&) const;
+  virtual int cmp(const AutCyclic&) const;
   int residue(int) const;
  private:
   int n;
