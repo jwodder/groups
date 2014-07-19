@@ -7,7 +7,7 @@ TESTS = tests/closure01 tests/closure03 tests/direct01 tests/fromCycles01 tests/
 all : Groups/internals.o Groups/Families/Dihedral.o Groups/Families/Symmetric.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/Families/AutCyclic.o Groups/Group.o Groups/Element.o $(TESTS)
 
 Permutation.o : Permutation.hpp Groups/internals.hpp
-Groups/Element.o : Groups/Element.hpp closure.hpp Groups/BasicGroup.hpp Groups/Group.hpp
+Groups/Element.o : Groups/Element.hpp closure.hpp Groups/BasicGroup.hpp Groups/Group.hpp Groups/internals.hpp
 Groups/Group.o : Groups/Util.hpp Groups/Group.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 Groups/internals.o : Groups/internals.hpp
 Groups/Families/AutCyclic.o : Groups/internals.hpp Groups/Util.hpp Groups/BasicGroup.hpp closure.hpp Groups/Families/AutCyclic.hpp
@@ -23,7 +23,7 @@ tests/closure03 : Groups/internals.o Groups/Families/Cyclic.o
 tests/closure03.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/internals.hpp closure.hpp Groups/Families/Direct.hpp Groups/BasicGroup.hpp
 
 tests/direct01 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/Group.o
-tests/direct01.o : Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
+tests/direct01.o : Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 
 tests/fromCycles01 : Groups/internals.o Permutation.o
 tests/fromCycles01.o : Permutation.hpp

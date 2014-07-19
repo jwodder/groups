@@ -10,10 +10,12 @@
 #include <vector>
 #include "Groups/BasicGroup.hpp"
 #include "Groups/Element.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
- template<> class basic_group<Element> {
+ template<> class basic_group<Element> : public cmp_with< basic_group<Element> > {
  public:
+
   template<class T> basic_group(const basic_group<T>& g) {
    std::vector<T> gelems = g.elements();
    int qty = g.order();
@@ -58,15 +60,8 @@ namespace Groups {
 	  bool contains(const int&) const;
   virtual bool contains(const Element&) const;
   virtual int indexElem(const Element&) const;
+  virtual int cmp(const basic_group<Element>&) const;
   basic_group<Element> direct(const basic_group<Element>&);
-
-  int cmp(const basic_group<Element>&) const;
-  bool operator==(const basic_group<Element>& y) const {return cmp(y) == 0; }
-  bool operator<(const basic_group<Element>& y)  const {return cmp(y) <  0; }
-  bool operator>(const basic_group<Element>& y)  const {return cmp(y) >  0; }
-  bool operator>=(const basic_group<Element>& y) const {return cmp(y) >= 0; }
-  bool operator<=(const basic_group<Element>& y) const {return cmp(y) <= 0; }
-  bool operator!=(const basic_group<Element>& y) const {return cmp(y) != 0; }
 
  private:
   basic_group(std::vector< std::vector<int> > tbl, std::vector<int> invs,

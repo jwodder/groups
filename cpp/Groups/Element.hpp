@@ -5,12 +5,13 @@
 #include <string>
 #include <vector>
 #include "Groups/BasicGroup.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
  class Element;
  template<> class basic_group<Element>;
 
- class Element {
+ class Element : public cmp_with<Element> {
  public:
   int order() const;
   Element pow(int) const;
@@ -26,13 +27,7 @@ namespace Groups {
   operator std::string() const;
   operator bool() const;
 
-  int cmp(const Element& y) const;
-  bool operator==(const Element& y) const {return cmp(y) == 0; }
-  bool operator<(const Element& y)  const {return cmp(y) <  0; }
-  bool operator>(const Element& y)  const {return cmp(y) >  0; }
-  bool operator>=(const Element& y) const {return cmp(y) >= 0; }
-  bool operator<=(const Element& y) const {return cmp(y) <= 0; }
-  bool operator!=(const Element& y) const {return cmp(y) != 0; }
+  virtual int cmp(const Element& y) const;
 
  private:
   Element(const basic_group<Element>* g, int x) : gr(g), val(x) { }

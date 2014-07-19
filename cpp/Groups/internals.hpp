@@ -22,12 +22,22 @@ namespace Groups {
  const std::vector<bool> vecFT(vecFT_array+0, vecFT_array+2);
 #endif
 
+ template<class T>
+ struct cmp_with {
+  virtual ~cmp_with() { }
+  virtual int cmp(const T&) const = 0;
+  bool operator==(const T& y) const {return cmp(y) == 0; }
+  bool operator< (const T& y) const {return cmp(y) <  0; }
+  bool operator> (const T& y) const {return cmp(y) >  0; }
+  bool operator>=(const T& y) const {return cmp(y) >= 0; }
+  bool operator<=(const T& y) const {return cmp(y) <= 0; }
+  bool operator!=(const T& y) const {return cmp(y) != 0; }
+ };
+
  int gcd(int, int);
  int lcm(int, int);
  int factorial(int);
-
  std::ostream& expgen(std::ostream&, const std::string&, int, const std::string&);
-
  std::vector<int> vecN(int);
 
  template<class T, class U>
