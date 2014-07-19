@@ -24,6 +24,8 @@ namespace Groups {
   virtual bool contains(const T&) const = 0;
   virtual int indexElem(const T&) const = 0;
 
+  T conjugate(const T& y, const T& x) {return oper(oper(y,x), invert(y)); }
+
   std::set<T> closure(const std::set<T>& start) const {
    return closure2A<T>(opcall(this), start.begin(), start.end());
   }

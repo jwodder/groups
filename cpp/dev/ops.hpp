@@ -1,7 +1,3 @@
-T basic_group<T>::conjugate(const T& y, const T& x) {
- return oper(oper(y,x), invert(y));
-}
-
 template<class T, Iter>
 set<T> centralizer(const basic_group<T>& g, Iter first, Iter last) {
  const vector<T> elemVec = g.elements();

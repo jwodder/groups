@@ -65,7 +65,6 @@ FEATURES
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
 - Give the various `basic_group` subclasses getters for their constructor values
-- Add a "conjugate" method
 - Add a basic_element<basic_group<T>, T> class with multiplication et alii
   methods?
 - Add an `isSubset(set<T>, basic_group<T>)` function?
