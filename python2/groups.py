@@ -130,7 +130,7 @@ class group(object):
 	### TODO: Should this return a set?
 	aset = set(iterable1)
 	bset = set(iterable2)
-	return closure(self.commutator(x,y) for x in aset for y in bset)
+	return self.closure(self.commutator(x,y) for x in aset for y in bset)
 
     def pow(self, x, n):
 	order = self.order(x)
