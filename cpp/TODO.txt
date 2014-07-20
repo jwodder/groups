@@ -11,8 +11,6 @@
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
-- Specialize basic_group<Permutation> as an abstract class that defines oper,
-  invert, identity, & order(Permutation) and leaves the rest as pure virtual
 - Add a header file that re-exports all of the other header files
 - Requirements to try to codify & enforce among all basic_group<T> subclasses:
  - elements() should always return a sorted vector.
@@ -23,12 +21,12 @@
 - Should Direct take the types of its component groups rather than their
   elements as its template parameters? (e.g., `Direct<Cyclic, Symmetric>`
   rather than `Direct<int, Permutation>`)
+- Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
 
 FEATURES
 - Implement all of the features in plan.txt
 - Types of groups to implement:
  - the trivial group
- - Klein 4-group
  - semidirect products
  - alternating groups
  - permutation groups
@@ -59,7 +57,6 @@ FEATURES
  - setting how to display i^n = j^2 in dicyclic groups
 - Add an alternative to/replacement for quaternion() that takes the cardinality
   of the desired group?
-- Add closure functions that send their output to supplied output iterators?
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
 - Give the various `basic_group` subclasses getters for their constructor values

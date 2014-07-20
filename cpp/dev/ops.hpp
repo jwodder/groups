@@ -91,6 +91,7 @@ public:
 
  LowerCentralSeries& operator++() {
   contents = commutators(g, whole, contents);
+  _index++;
   return *this;
  }
 
@@ -120,7 +121,7 @@ int nilpotence(const basic_group<T>& g) {
  LowerCentralSeries lc = lowerCentral(g);
  set<T> prev = *lc;
  for (;;) {
-  set<T> h = *++lc;
+  const set<T>& h = *++lc;
   if (h == prev) return -1;
   if (h.size() == 1) return lc.index();
   prev = h;
