@@ -11,8 +11,6 @@
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
-- Make Group subclass basic_group<Element> instead of specializing it in
-  preparation for implementing subgroups
 - Specialize basic_group<Permutation> as an abstract class that defines oper,
   invert, identity, & order(Permutation) and leaves the rest as pure virtual
 - Add a header file that re-exports all of the other header files

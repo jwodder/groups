@@ -61,7 +61,7 @@ namespace Groups {
 
  Group* Group::copy() const {return new Group(*this); }
 
- int Group::cmp(const Group* other) const {
+ int Group::cmp(const basic_group<Element>* other) const {
   int ct = cmpTypes(*this, *other);
   if (ct != 0) return ct;
   const Group* c = static_cast<const Group*>(other);

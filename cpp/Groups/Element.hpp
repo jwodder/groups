@@ -4,12 +4,10 @@
 #include <ostream>
 #include <string>
 #include <vector>
-#include "Groups/BasicGroup.hpp"
 #include "Groups/internals.hpp"
 
 namespace Groups {
- class Element;
- template<> class basic_group<Element>;
+ class Group;
 
  class Element : public cmp_with<Element> {
  public:
@@ -17,7 +15,7 @@ namespace Groups {
   Element pow(int) const;
   std::vector<Element> cycle() const;
 
-  const basic_group<Element>* group() const {return gr; }
+  const Group* group() const {return gr; }
   int index() const {return val; }
 
   Element  operator*(const Element&) const;
@@ -30,10 +28,10 @@ namespace Groups {
   virtual int cmp(const Element& y) const;
 
  private:
-  Element(const basic_group<Element>* g, int x) : gr(g), val(x) { }
-  const basic_group<Element>* gr;
+  Element(const Group* g, int x) : gr(g), val(x) { }
+  const Group* gr;
   int val;
-  friend class basic_group<Element>;
+  friend class Group;
  };
 
  std::ostream& operator<<(std::ostream&, const Element&);

@@ -13,11 +13,10 @@
 #include "Groups/internals.hpp"
 
 namespace Groups {
- template<> class basic_group<Element> : public cmp_with< basic_group<Element> >
- {
+ class Group : public basic_group<Element>, public cmp_with<Group> {
  public:
 
-  template<class T> basic_group(const basic_group<T>& g) {
+  template<class T> Group(const basic_group<T>& g) {
    std::vector<T> gelems = g.elements();
    int qty = g.order();
    std::map<T,int> elemdex;
@@ -39,11 +38,11 @@ namespace Groups {
    abel = g.abelian();
   }
 
-  basic_group(const basic_group<Element>& t)
+  Group(const Group& t)
    : table(t.table), inverses(t.inverses), orders(t.orders), strs(t.strs),
      abel(t.abel) { }
 
-  virtual ~basic_group() { }
+  virtual ~Group() { }
 	  int oper(const int&, const int&) const;
   virtual Element oper(const Element&, const Element&) const;
   virtual Element identity() const;
@@ -56,17 +55,17 @@ namespace Groups {
 	  std::string showElem(const int&) const;
   virtual std::string showElem(const Element&) const;
   virtual bool abelian() const;
-  virtual basic_group<Element>* copy() const;
+  virtual Group* copy() const;
   virtual int cmp(const basic_group<Element>*) const;
 	  bool contains(const int&) const;
   virtual bool contains(const Element&) const;
   virtual int indexElem(const Element&) const;
-  virtual int cmp(const basic_group<Element>&) const;
-  basic_group<Element> direct(const basic_group<Element>&);
+  virtual int cmp(const Group&) const;
+	  Group direct(const Group&);
 
  private:
-  basic_group(std::vector< std::vector<int> > tbl, std::vector<int> invs,
-	      std::vector<int> ords, std::vector<std::string> ss, bool abelian)
+  Group(std::vector< std::vector<int> > tbl, std::vector<int> invs,
+	std::vector<int> ords, std::vector<std::string> ss, bool abelian)
    : table(tbl), inverses(invs), orders(ords), strs(ss), abel(abelian) { }
 
   std::vector< std::vector<int> > table;
@@ -74,8 +73,6 @@ namespace Groups {
   std::vector<std::string> strs;
   bool abel;
  };
-
- typedef basic_group<Element> Group;
 }
 
 #endif

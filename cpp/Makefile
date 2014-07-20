@@ -2,7 +2,7 @@ CXX = c++
 CPPFLAGS = -std=c++98 -Wall -I.
 CC = $(CXX)  # for linking
 
-TESTS = tests/closure01 tests/closure03 tests/direct01 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/indices07 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01
+TESTS = tests/closure01 tests/closure03 tests/conj01 tests/direct01 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/indices07 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01
 
 all : Groups/internals.o Groups/Families/Dihedral.o Groups/Families/Symmetric.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/Families/AutCyclic.o Groups/Group.o Groups/Element.o $(TESTS)
 
@@ -21,6 +21,9 @@ tests/closure01.o : Permutation.hpp closure.hpp
 
 tests/closure03 : Groups/internals.o Groups/Families/Cyclic.o
 tests/closure03.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/internals.hpp closure.hpp Groups/Families/Direct.hpp Groups/BasicGroup.hpp
+
+tests/conj01 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Group.o
+tests/conj01.o : Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 
 tests/direct01 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/Group.o
 tests/direct01.o : Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
