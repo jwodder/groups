@@ -30,6 +30,7 @@ namespace Groups {
   virtual bool contains(const elem_t&) const;
   virtual int indexElem(const elem_t&) const;
   virtual int cmp(const Dicyclic&) const;
+  int getN() const {return n; }
  private:
   int n;
  };

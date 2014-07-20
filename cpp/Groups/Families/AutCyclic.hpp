@@ -24,6 +24,7 @@ namespace Groups {
   virtual int indexElem(const int&) const;
   virtual int cmp(const AutCyclic&) const;
   int residue(int) const;
+  int getN() const {return n; }
  private:
   int n;
   std::vector<int> elems;

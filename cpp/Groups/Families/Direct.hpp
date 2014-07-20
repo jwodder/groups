@@ -95,9 +95,9 @@ namespace Groups {
    else throw group_mismatch("Direct::indexElem");
   }
 
-	basic_group<T>* leftGroup()        {return left; }
+//	basic_group<T>* leftGroup()        {return left; }
   const basic_group<T>* leftGroup()  const {return left; }
-	basic_group<U>* rightGroup()       {return right; }
+//	basic_group<U>* rightGroup()       {return right; }
   const basic_group<U>* rightGroup() const {return right; }
 
   elem_t pair(const T& x, const U& y) const {
