@@ -1,27 +1,27 @@
 - Document everything!
-- Rename `basic_group::order()` to `size`?
-- Rename "abelian" to "isAbelian"?
-- Rethink the memory management of basic_group objects passed to Direct's
-  constructor
-- Rethink the way Element manages its Group*
+- Add a header file that re-exports all of the other header files
+- Possible coding changes:
+ - Rename `basic_group::order()` to `size`?
+ - Rename "abelian" to "isAbelian"?
+ - Rethink the memory management of basic_group objects passed to Direct's
+   constructor
+ - Rethink the way Element manages its Group*
+ - Should Direct take the types of its component groups rather than their
+   elements as its template parameters? (e.g., `Direct<Cyclic, Symmetric>`
+   rather than `Direct<int, Permutation>`)
+ - Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
+ - Should `order` (both kinds) and `indexElem` return `size_t`s instead of
+   `int`s?
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
+- Figure out a way to generalize the implementations of the
+  `cmp(basic_group<T>*)` methods into a superclass
 - Create a "smart pointer" container around basic_group<T>* for general
   external use?
-- Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
-  either the `Group(const basic_group<T>&)` or `Group(const Group&)`
-  constructor depending on what type the pointer points to
-- Add a header file that re-exports all of the other header files
 - Requirements to try to codify & enforce among all basic_group<T> subclasses:
  - elements() should always return a sorted vector.
  - The identity should always be the first element of elements().
  - indexElem() should return an element's index in the elements() vector.
-- Figure out a way to generalize the implementations of the
-  `cmp(basic_group<T>*)` methods into a superclass
-- Should Direct take the types of its component groups rather than their
-  elements as its template parameters? (e.g., `Direct<Cyclic, Symmetric>`
-  rather than `Direct<int, Permutation>`)
-- Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
 
 FEATURES
 - Implement all of the features in plan.txt
@@ -65,3 +65,6 @@ FEATURES
 - Add a utility function for outputting multiplication tables?
 - Add an easy way to convert element values from T to Element and back again
  - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
+- Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
+  either the `Group(const basic_group<T>&)` or `Group(const Group&)`
+  constructor depending on what type the pointer points to
