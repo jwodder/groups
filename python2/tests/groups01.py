@@ -9,6 +9,7 @@ import groups
 #group = groups.Dicyclic(2)
 group = groups.direct(groups.Dicyclic(2), groups.Cyclic(2))  # Q_8 × Z_2
 #group = groups.Symmetric(3)
+#group = groups.Alternating(3)
 
 group = groups.Group(group)
 

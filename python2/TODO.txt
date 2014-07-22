@@ -1,11 +1,6 @@
 - Document everything!
 - Handle all of the sections marked "TODO" in the code
-- Implement all of the features in plan.txt
- - Features that the Python version is behind on:
-  - alternating groups
-  - permutation groups
-  - "boolean" group?
-  - a "tabular" group
+- Implement permutation groups
 - Implement configurable element showing
 - Add __copy__ and __deepcopy__ methods (see the `copy` module)
  - Add Element.copy()

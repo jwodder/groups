@@ -7,7 +7,7 @@ from   permutation import Permutation
 __all__ = ["group", "subgroup",
 	   "Cyclic", "Semidirect", "DirectProduct", "Dicyclic", "Quaternion",
 	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
-	   "CycSemiCyc", "Symmetric",
+	   "CycSemiCyc", "Symmetric", "Alternating",
 	   "Group", "Element",
 	   "isHomomorphism", "direct"]
 
@@ -617,6 +617,31 @@ class Symmetric(group):
 
     def __contains__(self, x):
 	return isinstance(x, Permutation) and x.degree <= self.n
+
+
+class Alternating(group):
+    paramNames = ('n',)
+
+    def __init__(self, n):
+	if n < 0: raise ValueError('n must be nonnegative')
+	if n == 0: n = 1
+	super(Alternating, self).__init__(n)
+
+    def identity(self):    return Permutation()
+    def oper(self,x,y):    return x * y
+    def invert(self,x):    return x.inverse
+    def __len__(self):     return 1 if self.n == 1 else factorial(self.n) // 2
+    def order(self,x):     return x.order
+    def __str__(self):     return 'A' + sub(self.n)
+    LaTeX = __str__
+    def showElem(self,x):  return str(x)
+    def LaTeXElem(self,x): return str(x).replace(' ', r'\>')
+
+    def __iter__(self):
+	return itertools.ifilter(lambda p: p.isEven, Permutation.s_n(self.n))
+
+    def __contains__(self, x):
+	return isinstance(x, Permutation) and x.degree <= self.n and x.isEven
 
 
 def isHomomorphism(phi, g, h):
