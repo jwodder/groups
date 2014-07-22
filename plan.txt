@@ -22,8 +22,9 @@ least one language.
  * subgroups of a group
  * whether a subgroup is normal
  - whether a subgroup is characteristic
- - automorphisms and groups thereof
+ * whether a given function is a valid homomorphism
  - whether two groups are isomorphic
+ - automorphisms
  - commutators
  - commutator subgroup
  * lower central series
@@ -58,7 +59,7 @@ least one language.
  - holomorphs
  - wreath products
  - elementary abelian groups
- - subgroups of other groups
+ * subgroups of other groups
 - It should be possible to "deconstruct" any group to obtain its family
   (cyclic, dicyclic, semidirect product of G and H, etc.) and any values used
   to construct it (e.g., order for cyclic groups, homomorphism for semidirect

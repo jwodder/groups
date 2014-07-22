@@ -36,7 +36,7 @@ set<T> normalizer(const basic_group<T>& g, const set<T>& elems) {
 }
 
 template<class T>
-set<T> isNormal(const basic_group<T>& g, const set<T>& elems) {
+bool isNormal(const basic_group<T>& g, const set<T>& elems) {
  // whether `elems` is actually a subgroup is not checked
  const vector<T> gelems = g.elements();
  return all_of(gelems.begin(), gelems.end(), [&](const T& x) -> bool {
@@ -257,4 +257,21 @@ SetWGens<T> addCycle(const basic_group<T>& g,
   }
  }
  return SetWGens<T>();
+}
+
+/**
+  * Tests whether the callable object `phi` is a homomorphism from the group
+  * `g` to the group `h`
+  **/
+template<class Func, class T, class U>
+bool isHomomorphism(const Func& phi, const basic_group<T>& g, const basic_group<U>& h) {
+ auto isMember = [&h, &phi](const T& x) -> bool {return h.contains(phi(x)); };
+ const vector<T>& gelems = g.elements();
+ if (!all_of(gelems.begin(), gelems.end(), isMember)) return false;
+ for (const T& x: gelems) {
+  for (const T& y: gelems) {
+   if (h.oper(phi(x), phi(y)) != phi(g.oper(x,y))) return false;
+  }
+ }
+ return true;
 }
