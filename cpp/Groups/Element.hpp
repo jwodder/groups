@@ -16,7 +16,7 @@ namespace Groups {
   std::vector<Element> cycle() const;
 
   const Group* group() const {return gr; }
-  int index() const {return val; }
+	   int index() const {return val; }
 
   Element  operator*(const Element&) const;
   Element& operator*=(const Element);

@@ -9,17 +9,7 @@ namespace Groups {
 
  int Element::order() const {return gr->order(*this); }
 
- Element Element::pow(int n) const {
-  Element x(n > 0 ? *this : ~*this);
-  if (n < 0) n *= -1;
-  n %= order();
-  if (n == 0) return gr->identity();
-  int i;
-  for (i=1; !(n & i); i <<= 1) x *= x;
-  Element agg(x);
-  for (i <<= 1, x *= x; i <= n; i <<= 1, x *= x) if (n & i) agg *= x;
-  return agg;
- }
+ Element Element::pow(int n) const {return gr->pow(*this, n); }
 
  vector<Element> Element::cycle() const {
   int qty = order();
