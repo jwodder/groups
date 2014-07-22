@@ -15,5 +15,4 @@
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values?
 - Give `group` a `generate` method that's like `closure` but returns a
   `subgroup`?
-- Make `isSubgroup` behave intelligently when passed a `subgroup` object
 - Rename `group` to `basic_group`?

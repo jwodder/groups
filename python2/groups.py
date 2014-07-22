@@ -80,11 +80,16 @@ class group(object):
 	return all(self.conjugate(x,y) in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
-	elems = set(elems)
-	op = self.oper
-	return bool(elems) \
-	   and all(x in self for x in elems) \
-	   and all(op(x,y) in elems for x in elems for y in elems)
+	if isinstance(elems, subgroup):
+	    return self.supergroup == elems.supergroup \
+	       and (not isinstance(self, subgroup)
+		     or elems.elementSet <= self.elementSet)
+	else:
+	    elems = set(elems)
+	    op = self.oper
+	    return bool(elems) \
+	       and all(x in self for x in elems) \
+	       and all(op(x,y) in elems for x in elems for y in elems)
 
     def isAbelian(self):
 	op = self.oper
