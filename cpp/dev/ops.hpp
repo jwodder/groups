@@ -59,24 +59,14 @@ set<T> isSubgroup(const basic_group<T>& g, const set<T>& elems) {
 }
 
 template<class T>
-deque< set<T> > conjugacies(const basic_group<T>& g) {
- deque< set<T> > conjClasses{set<T>{g.identity()}};
- vector<bool> used(g.order(), false);
- used[0] = true;
- vector<T> elems = g.elements();
- for (size_t i=0; i<elems.size(); i++) {
-  if (!used[i]) {
-   const T& x = elems[i];
-   set<T> cclass;
-   for (const T& y: elems) {
-    T z = g.conjugate(y,x);
-    cclass.insert(z);
-    used[g.indexElem(z)] = true;
-   }
-   conjClasses.push_back(cclass);
-  }
- }
- return conjClasses;
+set< set<T> > conjugacies(const basic_group<T>& g) {
+ return partitionGroup(g, [&](const T& x) -> set<T> {
+  // TODO: Which of these two implementations is more efficient?
+  //return g.conjugate(x, vec2set(g.elements()));
+  set<T> cclass;
+  for (const T& y: g.elements()) cclass.insert(g.conjugate(y,x));
+  return cclass;
+ });
 }
 
 template<class T>
@@ -223,7 +213,7 @@ map< set<T>, set< set<T> > > subgroupGens(const basic_group<T>& g) {
   }
   for (const SetWGens<T>& sg: nova) {
    //subgrs[sg.first] = union(subgrs[sg.first], sg.second);
-   subgrs[sg.first].insert(sg.second);
+   subgrs[sg.first].insert(sg.second.begin(), sg.second.end());
   }
  }
  return subgrs;
@@ -289,19 +279,9 @@ int exponent(const basic_group<T>& g) {
   **/
 template<class T>
 set< set<T> > leftCosets(const basic_group<T>& g, const set<T>& elems) {
- set< set<T> > cosets;
- set<T> used;
- for (const T& x: g.elements()) {
-  if (used.count(x) > 0) continue;
-  set<T> c;
-  for (const T& y: elems) {
-   const T& z = g.oper(x,y);
-   used.insert(z);
-   c.insert(z);
-  }
-  cosets.insert(c);
- }
- return cosets;
+ return partitionGroup(g, [&g, &elems](const T& x) -> set<T> {
+  return g.oper(x, elems);
+ });
 }
 
 /**
@@ -310,17 +290,40 @@ set< set<T> > leftCosets(const basic_group<T>& g, const set<T>& elems) {
   **/
 template<class T>
 set< set<T> > rightCosets(const basic_group<T>& g, const set<T>& elems) {
- set< set<T> > cosets;
+ return partitionGroup(g, [&g, &elems](const T& x) -> set<T> {
+  return g.oper(elems, x);
+ });
+}
+
+// Internal function
+template<class T, class Func>
+set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
+ set< set<T> > partitions;
+ vector<bool> used(g.order(), false);
+ vector<T> elems = g.elements();
+ for (size_t i=0; i<elems.size(); i++) {
+  if (!used[i]) {
+   set<T> part = f(elems[i]);
+   for (const T& y: part) used[g.indexElem(y)] = true;
+   partitions.insert(part);
+  }
+ }
+ return partitions;
+}
+
+/* Alternative implementation:
+template<class T, class Func>
+set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
+ set< set<T> > partitions;
  set<T> used;
  for (const T& x: g.elements()) {
-  if (used.count(x) > 0) continue;
-  set<T> c;
-  for (const T& y: elems) {
-   const T& z = g.oper(y,x);
-   used.insert(z);
-   c.insert(z);
+  if (used.count(x) == 0) {
+   set<T> part = f(elems[i]);
+   //used = union(used, part);
+   used.insert(part.begin(), part.end());
+   partitions.insert(part);
   }
-  cosets.insert(c);
  }
- return cosets;
+ return partitions;
 }
+*/
