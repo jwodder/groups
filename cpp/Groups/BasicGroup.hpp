@@ -42,6 +42,18 @@ namespace Groups {
    return result;
   }
 
+  std::set<T> oper(const std::set<T>& xs, const std::set<T>& ys) const {
+   std::set<T> result;
+   typename std::set<T>::const_iterator xiter;
+   for (xiter = xs.begin(); xiter != xs.end(); xiter++) {
+    typename std::set<T>::const_iterator yiter;
+    for (yiter = ys.begin(); yiter != ys.end(); yiter++) {
+     result.insert(oper(*xiter, *yiter));
+    }
+   }
+   return result;
+  }
+
   T conjugate(const T& y, const T& x) const {
    return oper(oper(y,x), invert(y));
   }
