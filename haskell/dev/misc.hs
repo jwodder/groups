@@ -13,9 +13,10 @@
   -- * mapping from automorphism IDs to group IDs to automorphed group IDs
   -- * group of which this is the Aut
 
- -- Given a group $G$ and a subgroup $H$, returns a list of arbitrarily-chosen
- -- representatives of left cosets of $H$ (in ascending order) and a mapping
- -- from elements of $G$ to those representatives; not for export
+ -- |Given a 'Group' @g@ and a subset @h@, @cosetify g h@ returns a list of
+ -- arbitrarily-chosen representatives of left cosets of @h@ (in ascending
+ -- order) and a mapping from elements of @h@ to those representatives; not for
+ -- export
  cosetify :: Group -> [Int] -> ([Int], Array Int Int)
  cosetify g h = cosify $ listArray (bounds $ gr_dat g) $ repeat Nothing
   where cosify c = case [x | (x, Nothing) <- assocs c] of

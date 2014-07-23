@@ -35,7 +35,7 @@ least one language.
  - generating set-rank of a group
  * exponent of a group
  * conjugacy classes
- - cosets
+ * cosets
  - decompositions of elements into products of elements of a given generating
    set?
  - Thompson subgroup

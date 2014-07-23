@@ -225,6 +225,26 @@ class group(object):
 
     def exponent(self): return reduce(lcm, (self.order(x) for x in self), 1)
 
+    def leftCosets(self, elems):
+	"""Returns a `set` of the left cosets (as `frozenset`s) of a subset
+	   `elems` of the group.  `elems` must be an iterable object; whether
+	   it actually defines a subset of the group is not checked."""
+	elems = set(elems)
+	cosets = set()
+	for x in self:
+	    cosets.add(frozenset(self.oper(x,y) for y in elems))
+	return cosets
+
+    def rightCosets(self, elems):
+	"""Returns a `set` of the right cosets (as `frozenset`s) of a subset
+	   `elems` of the group.  `elems` must be an iterable object; whether
+	   it actually defines a subset of the group is not checked."""
+	elems = set(elems)
+	cosets = set()
+	for x in self:
+	    cosets.add(frozenset(self.oper(y,x) for y in elems))
+	return cosets
+
 
 class subgroup(group):
     paramNames = ('supergr', 'elementSet')
