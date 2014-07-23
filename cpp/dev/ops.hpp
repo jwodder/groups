@@ -282,3 +282,45 @@ int exponent(const basic_group<T>& g) {
  for (const T& x: g.elements()) ex = lcm(ex, g.order(x));
  return ex;
 }
+
+/**
+  * Returns a set of the left cosets of a subset of a group (whether it is an
+  * actual subset is not checked)
+  **/
+template<class T>
+set< set<T> > leftCosets(const basic_group<T>& g, const set<T>& elems) {
+ set< set<T> > cosets;
+ set<T> used;
+ for (const T& x: g.elements()) {
+  if (used.count(x) > 0) continue;
+  set<T> c;
+  for (const T& y: elems) {
+   const T& z = g.oper(x,y);
+   used.insert(z);
+   c.insert(z);
+  }
+  cosets.insert(c);
+ }
+ return cosets;
+}
+
+/**
+  * Returns a set of the right cosets of a subset of a group (whether it is an
+  * actual subset is not checked)
+  **/
+template<class T>
+set< set<T> > rightCosets(const basic_group<T>& g, const set<T>& elems) {
+ set< set<T> > cosets;
+ set<T> used;
+ for (const T& x: g.elements()) {
+  if (used.count(x) > 0) continue;
+  set<T> c;
+  for (const T& y: elems) {
+   const T& z = g.oper(y,x);
+   used.insert(z);
+   c.insert(z);
+  }
+  cosets.insert(c);
+ }
+ return cosets;
+}
