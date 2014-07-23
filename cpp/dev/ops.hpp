@@ -85,7 +85,7 @@ set<T> vec2set(const vector<T>& vec) {return set<T>(vec.begin(), vec.end()); }
 template<class T> class LowerCentralSeries {
 public:
  LowerCentralSeries(const basic_group<T>& h)
-  : g(h), whole(vec2set(h.elements)), contents(whole), _index(0) { }
+  : g(h), whole(vec2set(h.elements())), contents(whole), _index(0) { }
 
  const set<T>& operator*() const {return contents; }
 

@@ -1,5 +1,5 @@
-#ifndef BASICGROUP_H
-#define BASICGROUP_H
+#ifndef BASICGROUP_HPP
+#define BASICGROUP_HPP
 
 #include <set>
 #include <string>
@@ -24,8 +24,30 @@ namespace Groups {
   virtual bool contains(const T&) const = 0;
   virtual int indexElem(const T&) const = 0;
 
+  std::set<T> oper(const T& x, const std::set<T>& ys) const {
+   std::set<T> result;
+   typename std::set<T>::const_iterator iter;
+   for (iter = ys.begin(); iter != ys.end(); iter++) {
+    result.insert(oper(x, *iter));
+   }
+   return result;
+  }
+
+  std::set<T> oper(const std::set<T>& xs, const T& y) const {
+   std::set<T> result;
+   typename std::set<T>::const_iterator iter;
+   for (iter = xs.begin(); iter != xs.end(); iter++) {
+    result.insert(oper(*iter, y));
+   }
+   return result;
+  }
+
   T conjugate(const T& y, const T& x) const {
    return oper(oper(y,x), invert(y));
+  }
+
+  std::set<T> conjugate(const T& y, const std::set<T>& xs) const {
+   return oper(oper(y,xs), invert(y));
   }
 
   T pow(const T& x0, int n) const {
