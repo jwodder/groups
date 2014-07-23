@@ -33,7 +33,7 @@ least one language.
  - whether a group is solvable
  - whether a group is simple
  - generating set-rank of a group
- - exponent of a group
+ * exponent of a group
  * conjugacy classes
  - cosets
  - decompositions of elements into products of elements of a given generating

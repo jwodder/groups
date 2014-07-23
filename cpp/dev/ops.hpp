@@ -275,3 +275,10 @@ bool isHomomorphism(const Func& phi, const basic_group<T>& g, const basic_group<
  }
  return true;
 }
+
+template<class T>
+int exponent(const basic_group<T>& g) {
+ int ex = 1;
+ for (const T& x: g.elements()) ex = lcm(ex, g.order(x));
+ return ex;
+}

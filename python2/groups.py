@@ -223,6 +223,8 @@ class group(object):
 		cycles.setdefault(s, set()).update(g)
 	return cycles
 
+    def exponent(self): return reduce(lcm, (self.order(x) for x in self), 1)
+
 
 class subgroup(group):
     paramNames = ('supergr', 'elementSet')

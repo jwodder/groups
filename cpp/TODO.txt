@@ -12,6 +12,8 @@
  - Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
  - Should `order` (both kinds) and `indexElem` return `size_t`s instead of
    `int`s?
+ - Should internal functions be placed in a `Groups::internals` namespace in
+   order to avoid accidental/excessive pollution by `using namespace Groups;`?
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
 - Figure out a way to generalize the implementations of the

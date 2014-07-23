@@ -105,3 +105,6 @@ module Groups.Ops where
 
  conjugate :: Element -> Element -> Element
  conjugate y x = y · x · inverse y
+
+ gexponent :: Group -> Int
+ gexponent g = foldl lcm 1 $ map (g_order g) $ g_elems g
