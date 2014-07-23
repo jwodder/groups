@@ -354,8 +354,8 @@ class Cyclic(group):
 class Semidirect(group):
     paramNames = ('g', 'h', 'phi')
     # It is the user's responsibility to ensure that phi is an actual valid
-    # homomorphism from the Elements of h to the automorphism group on the
-    # Elements of g.
+    # homomorphism from the elements of h to the automorphism group on the
+    # elements of g.
 
     ### v.2.6+: Use `namedtuple` for elements
 

@@ -1,5 +1,5 @@
-#ifndef SYMMETRIC_H
-#define SYMMETRIC_H
+#ifndef ALTERNATING_HPP
+#define ALTERNATING_HPP
 
 #include <algorithm>  /* max */
 #include "Groups/BasicGroup.hpp"
