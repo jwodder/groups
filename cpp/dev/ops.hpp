@@ -59,17 +59,6 @@ set<T> isSubgroup(const basic_group<T>& g, const set<T>& elems) {
 }
 
 template<class T>
-set< set<T> > conjugacies(const basic_group<T>& g) {
- return partitionGroup(g, [&](const T& x) -> set<T> {
-  // TODO: Which of these two implementations is more efficient?
-  //return g.conjugate(x, vec2set(g.elements()));
-  set<T> cclass;
-  for (const T& y: g.elements()) cclass.insert(g.conjugate(y,x));
-  return cclass;
- });
-}
-
-template<class T>
 set<T> vec2set(const vector<T>& vec) {return set<T>(vec.begin(), vec.end()); }
 
 template<class T> class LowerCentralSeries {
@@ -271,6 +260,15 @@ int exponent(const basic_group<T>& g) {
  int ex = 1;
  for (const T& x: g.elements()) ex = lcm(ex, g.order(x));
  return ex;
+}
+
+template<class T>
+set< set<T> > conjugacies(const basic_group<T>& g) {
+ return partitionGroup(g, [&g](const T& x) -> set<T> {
+  set<T> cclass;
+  for (const T& y: g.elements()) cclass.insert(g.conjugate(y,x));
+  return cclass;
+ });
 }
 
 /**

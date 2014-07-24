@@ -95,15 +95,6 @@ class group(object):
 	op = self.oper
 	return all(op(x,y) == op(y,x) for x in self for y in self)
 
-    def conjugacies(self):
-	used = set([self.identity()])
-	yield frozenset(used)
-	for x in self:
-	    if x not in used:
-		cc = frozenset(self.conjugate(y,x) for y in self)
-		yield cc
-		used.update(cc)
-
     def lowerCentral(self):
 	whole = frozenset(self)
 	h = whole
@@ -225,25 +216,30 @@ class group(object):
 
     def exponent(self): return reduce(lcm, (self.order(x) for x in self), 1)
 
+    def conjugacies(self):
+	return self._partition(lambda x: (self.conjugate(y,x) for y in self))
+
     def leftCosets(self, elems):
-	"""Returns a `set` of the left cosets (as `frozenset`s) of a subset
-	   `elems` of the group.  `elems` must be an iterable object; whether
-	   it actually defines a subset of the group is not checked."""
+	"""Returns an iterator over the left cosets (as `frozenset`s) of a
+	   subset `elems` of the group.  `elems` must be an iterable object;
+	   whether it actually defines a subset of the group is not checked."""
 	elems = set(elems)
-	cosets = set()
-	for x in self:
-	    cosets.add(frozenset(self.oper(x,y) for y in elems))
-	return cosets
+	return self._partition(lambda x: (self.oper(x,y) for y in elems))
 
     def rightCosets(self, elems):
-	"""Returns a `set` of the right cosets (as `frozenset`s) of a subset
-	   `elems` of the group.  `elems` must be an iterable object; whether
-	   it actually defines a subset of the group is not checked."""
+	"""Returns an iterator over the right cosets (as `frozenset`s) of a
+	   subset `elems` of the group.  `elems` must be an iterable object;
+	   whether it actually defines a subset of the group is not checked."""
 	elems = set(elems)
-	cosets = set()
+	return self._partition(lambda x: (self.oper(y,x) for y in elems))
+
+    def _partition(self, func):
+	used = set()
 	for x in self:
-	    cosets.add(frozenset(self.oper(y,x) for y in elems))
-	return cosets
+	    if x not in used:
+		part = frozenset(func(x))
+		yield part
+		used.update(part)
 
 
 class subgroup(group):
