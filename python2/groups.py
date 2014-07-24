@@ -100,7 +100,7 @@ class group(object):
 	h = whole
 	while True:
 	    yield h
-	    h = frozenset(commutators(whole, h))
+	    h = frozenset(self.commutators(whole, h))
 
     def nilpotence(self):
 	if len(self) == 1: return 0
