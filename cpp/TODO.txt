@@ -28,7 +28,6 @@
 FEATURES
 - Implement all of the features in plan.txt
 - Types of groups to implement:
- - the trivial group
  - semidirect products
  - alternating groups
  - permutation groups
