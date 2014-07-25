@@ -65,7 +65,6 @@ FEATURES
 - Add a basic_element<basic_group<T>, T> class with multiplication et alii
   methods?
 - Add an `isSubset(set<T>, basic_group<T>)` function?
-- Add a utility function for outputting multiplication tables?
 - Add an easy way to convert element values from T to Element and back again
  - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
