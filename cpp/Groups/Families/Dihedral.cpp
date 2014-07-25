@@ -9,8 +9,8 @@ namespace Groups {
  typedef Dihedral::elem_t elem_t;
 
  elem_t Dihedral::oper(const elem_t& x, const elem_t& y) const {
-  return y.first ? elem_t(!x.first, (y.second - x.second) % n)
-		 : elem_t(x.first,  (x.second + y.second) % n);
+  return y.first ? elem_t(!x.first, modulo(y.second - x.second, n))
+		 : elem_t(x.first,  modulo(y.second + x.second, n));
  }
 
  elem_t Dihedral::identity() const {return elem_t(false, 0); }
@@ -18,7 +18,7 @@ namespace Groups {
  vector<elem_t> Dihedral::elements() const {return cartesian(vecFT, vecN(n)); }
 
  elem_t Dihedral::invert(const elem_t& x) const {
-  return x.first ? x : elem_t(false, -x.second % n);
+  return x.first ? x : elem_t(false, modulo(-x.second, n));
  }
 
  int Dihedral::order() const {return 2 * n; }

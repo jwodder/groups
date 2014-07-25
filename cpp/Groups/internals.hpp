@@ -37,6 +37,7 @@ namespace Groups {
  int factorial(int);
  std::ostream& expgen(std::ostream&, const std::string&, int, const std::string&);
  std::vector<int> vecN(int);
+ int modulo(int, int);
 
  template<class T, class U>
  int cmpTypes(const T& t, const U& u) {

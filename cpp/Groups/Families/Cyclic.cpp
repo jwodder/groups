@@ -12,7 +12,7 @@ namespace Groups {
 
  vector<int> Cyclic::elements() const {return vecN(n); }
 
- int Cyclic::invert(const int& x) const {return -x % n; }
+ int Cyclic::invert(const int& x) const {return modulo(-x, n); }
 
  int Cyclic::order() const {return n; }
 
@@ -37,10 +37,7 @@ namespace Groups {
 
  int Cyclic::cmp(const Cyclic& other) const {return n - other.n; }
 
- int Cyclic::residue(int x) const {
-  x %= n;
-  return x < 0 ? x+n : x;
- }
+ int Cyclic::residue(int x) const {return modulo(x,n); }
 
  bool Cyclic::contains(const int& x) const {return 0 <= x && x < n; }
 

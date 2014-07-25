@@ -34,4 +34,13 @@ namespace Groups {
   for (int i=0; iter != elems.end(); iter++, i++) *iter = i;
   return elems;
  }
+
+ int modulo(int a, int n) {
+  // Because C++ doesn't handle taking the remainder of a negative number
+  // correctly
+  if (n == 0) return a;
+  n = abs(n);
+  int x = a % n;
+  return x < 0 ? x+n : x;
+ }
 }

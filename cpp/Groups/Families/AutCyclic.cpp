@@ -32,7 +32,7 @@ namespace Groups {
    d = v - t*x;
    v = x;
   }
-  return residue(v);
+  return modulo(v,n);
  }
 
  int AutCyclic::order() const {return elems.size(); }
@@ -71,8 +71,7 @@ namespace Groups {
  int AutCyclic::cmp(const AutCyclic& other) const {return n - other.n; }
 
  int AutCyclic::residue(int x) const {
-  x %= n;
-  x = x < 0 ? x+n : x;
+  x = modulo(x,n);
   if (contains(x)) return x;
   else throw group_mismatch("AutCyclic::residue");
  }

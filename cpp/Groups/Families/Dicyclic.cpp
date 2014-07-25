@@ -11,9 +11,7 @@ namespace Groups {
  elem_t Dicyclic::oper(const elem_t& x, const elem_t& y) const {
   int i = x.first + (x.second ? -y.first : y.first);
   if (x.second && y.second) i += n;
-  i %= 2*n;
-  if (i < 0) i += 2*n;
-  return elem_t(i, x.second ^ y.second);
+  return elem_t(modulo(i, 2*n), x.second ^ y.second);
  }
 
  elem_t Dicyclic::identity() const {return elem_t(0, false); }
@@ -23,7 +21,7 @@ namespace Groups {
  }
 
  elem_t Dicyclic::invert(const elem_t& x) const {
-  return elem_t((x.second ? x.first + n : -x.first) % (2*n), x.second);
+  return elem_t(modulo(x.second ? x.first + n : -x.first, 2*n), x.second);
  }
 
  int Dicyclic::order() const {return 4 * n; }
