@@ -11,3 +11,4 @@
 - Give `group` a `generate` method that's like `closure` but returns a
   `subgroup`?
 - Rename `group` to `basic_group`?
+- Add a function for generating the Cayley table of a given group

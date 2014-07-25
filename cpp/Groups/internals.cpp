@@ -8,6 +8,9 @@ using namespace std;
 namespace Groups {
  int gcd(int x, int y) {
   int a = abs(x), b = abs(y);
+  if (a == 0 && b == 0) return 0;
+  if (a == 0) return b;
+  if (b == 0) return a;
   do {int r = a % b; a = b; b = r; } while (b != 0);
   return a;
  }

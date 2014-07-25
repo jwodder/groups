@@ -27,7 +27,7 @@ tests/conj01 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Gr
 tests/conj01.o : Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 
 tests/direct01 : Groups/internals.o Groups/Families/Dicyclic.o Groups/Element.o Groups/Families/Cyclic.o Groups/Group.o
-tests/direct01.o : Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
+tests/direct01.o : Groups/Util.hpp Groups/Families/Cyclic.hpp Groups/Group.hpp Groups/Families/Dicyclic.hpp Groups/internals.hpp closure.hpp Groups/Element.hpp Groups/BasicGroup.hpp
 
 tests/fromCycles01 : Groups/internals.o Permutation.o
 tests/fromCycles01.o : Permutation.hpp

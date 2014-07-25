@@ -28,3 +28,4 @@
 - Subset.hs: Add a `map` function (or at least something for multiplying by an
   element)
 - Make Groups.hs re-export Subgroups.hs?
+- Add a function for generating the Cayley table of a given group

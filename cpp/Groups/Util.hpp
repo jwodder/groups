@@ -9,7 +9,7 @@
 #include <stdexcept>  /* logic_error */
 #include <string>
 #include <vector>
-#include "BasicGroup.hpp"
+#include "Groups/BasicGroup.hpp"
 
 namespace Groups {
  class group_mismatch : public std::logic_error {
@@ -29,7 +29,7 @@ namespace Groups {
   out << std::left;
   out << std::string(maxLen, ' ');
   for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
-   out << '|' << std::setw(maxLen) << *yiter;
+   out << '|' << std::setw(maxLen) << g.showElem(*yiter);
   }
   out << std::endl;
   std::string tmp = std::string(maxLen, '-');
@@ -38,7 +38,7 @@ namespace Groups {
   for (int i=0; i<g.order(); i++) out << tmp;
   out << std::endl;
   for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
-   out << std::setw(maxLen) << *xiter;
+   out << std::setw(maxLen) << g.showElem(*xiter);
    for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
     out << '|' << std::setw(maxLen) << g.showElem(g.oper(*xiter, *yiter));
    }
