@@ -2,6 +2,11 @@
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
 import groups
+from groups import gcd
+
+#g = groups.Quaternion()
+#g = groups.Alternating(4)
+g = groups.Cyclic(17)
 
 def printf(format, *args): sys.stdout.write(format % args)
 
@@ -25,14 +30,6 @@ def jsonify(obj):
 
 def set2list(s): return [g.showElem(x) for x in sorted(s)]
 
-g = groups.Quaternion()
-
-printf('{\n')
-printf(' "name": %s,\n', jsonify(str(g)))
-printf(' "order": %d,\n', len(g))
-printf(' "abelian": %s,\n', jsonify(g.isAbelian()))
-printf(' "exponent": %d,\n', g.exponent())
-
 subgrSet    = g.subgroups()  # set of frozensets
 subgrKeys   = dict((h, tuple(sorted(h))) for h in subgrSet)
 subgrSorted = sorted(subgrKeys, key=lambda h: subgrKeys[h])
@@ -40,6 +37,11 @@ subgrNames  = dict((h, 'subgr%02d' % (i,)) for (i,h) in enumerate(subgrSorted))
 
 def nameSet(s): return subgrNames[frozenset(s)]
 
+printf('{\n')
+printf(' "name": %s,\n', jsonify(str(g)))
+printf(' "order": %d,\n', len(g))
+printf(' "abelian": %s,\n', jsonify(g.isAbelian()))
+printf(' "exponent": %d,\n', g.exponent())
 printf(' "center": %s,\n', jsonify(nameSet(g.center())))
 
 printf(' "elements": {')
@@ -70,6 +72,8 @@ for (i,h) in enumerate(subgrSorted):
 				  "elements": map(g.showElem, subgrKeys[h]),
 				  "normal":   g.isNormal(h),
 				  "order":    len(h),
+				  "centralizer": nameSet(g.centralizer(h)),
+				  "normalizer": nameSet(g.normalizer(h)),
 				 }))
 printf('\n },\n')
 
@@ -94,18 +98,30 @@ for h in g.lowerCentral():
 	break
 printf(' "nilpotence": %s,\n', jsonify(nilpotence))
 printf(' "lower_central_series": %s,\n', jsonify(lc))
-printf(' "commutator_subgroup": %s\n', jsonify(lc[1] if len(lc)>1 else lc[0]))
+printf(' "commutator_subgroup": %s,\n', jsonify(lc[1] if len(lc)>1 else lc[0]))
+
+if nilpotence is not None:
+    printf(' "solvable": true,\n')
+else:
+    subQtys = set()
+    for h in subgrSet:
+	subQtys.add(len(h))
+    for i in range(2, len(g)):
+	if len(g) % i == 0 and gcd(i, len(g) // i) == 1 and i not in subQtys:
+	    printf(' "solvable": false,\n')
+	    break
+    else:
+	printf(' "solvable": true,\n')
+
+printf(' "simple": %s\n', jsonify(len(g) != 1 and not any(g.isNormal(h) for h in subgrSet if len(h) not in (1, len(g)))))
 
 #rank
 #generators?
-#solvability
-#simplicity
 #commutators?
 #automorphisms elements induce by conjugation?
 #maximal subgroups?
 #maximal subgroups of each subgroup?
 #generators of subgroups?
-#centralizers and normalizers of subgroups?
 #cosets of subgroups?
 #abelianity of subgroups?
 #normal subgroups within subgroups?

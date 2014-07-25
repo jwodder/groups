@@ -31,7 +31,8 @@ grdata g = GrData {
   gd_nilpotence = abel ?: Just 1 :? (nilpot ?: nilpotence g :? Nothing),
   gd_solvable   = nilpot || and [subQtys ! i /= 0 | i <- divisors,
 						    gcd i (div n i) == 1],
-  gd_simple     = n /= 1 && not (or [q /= 0 | (m,q) <- assocs normQtys, m /= 1, m /= n]),
+  gd_simple     = n /= 1 && and [q == 0 | (m,q) <- assocs normQtys,
+					  m /= 1, m /= n],
   gd_rank       = Set.findMin $ Set.map Sub.size $ subs Map.! self,
   gd_exponent   = foldl lcm 1 [k | (k,a) <- assocs ords, a /= 0],
   gd_quantities = listArray (1,n) [mod n i == 0 ?: Just (ords ! i, subQtys ! i, normQtys ! i, ccQtys ! i) :? Nothing | i <- [1..n]]

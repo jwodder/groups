@@ -356,7 +356,7 @@ class Cyclic(group):
 
     def identity(self):    return 0
     def oper(self,x,y):    return (x + y) % self.n
-    def invert(self,x):    return -x.i % self.n
+    def invert(self,x):    return -x % self.n
     def __len__(self):     return self.n
     def __iter__(self):    return iter(range(self.n))
     def __contains__(self,x): return 0 <= x < self.n
