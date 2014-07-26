@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+import sys
+#sys.path.insert(1, sys.path[0] + '/..')
+sys.path.insert(1, '..')
+from groups import *
 
-__all__ = ["parse"]
+__all__ = ["readGroup"]
 
 def readGroup(s): return GroupReader().read(s)
 
@@ -69,10 +73,10 @@ def quat(n):
     if n < 8:
 	raise GroupReaderError('Quaternion subscript must be at least 8')
     i = 0
-    while n > 1:
+    while not (n & 1):
 	n >>= 1
 	i += 1
-    if n /= 1:
+    if n != 1:
 	raise GroupReaderError('Quaternion subscript must be a power of 2')
     return Quaternion(i-1)
 
@@ -85,70 +89,78 @@ subscripted = {"Dih": Dihedral,
 
 class GroupReader(object):
     def __init__(self):
-	self.state = GroupReader.beforeGroup
+	self.state = self.beforeGroup
 	self.stack = [[]]
 
     def read(self, s):
 	for t in lex(s):
 	    self.state = self.state(t)
-	if self.state is not GroupReader.afterGroup:
+	if self.state not in (self.afterGroup, self.afterCyclic):
 	    raise GroupReaderError('Input ended in middle of parse')
-	elif len(stack) > 1:
+	elif len(self.stack) > 1:
 	    raise GroupReaderError('Unclosed parentheses')
+	elif self.state == self.afterCyclic:  # `is` won't work here.
+	    return self.tmp
 	else:
-	    return stack[-1][-1]
+	    return self.stack[-1][-1]
 
     def pushGroup(self, g):
-	if stack[-1]:
-	    stack[-1] = [DirectProduct(stack[-1][-1], g)]
+	if self.stack[-1]:
+	    self.stack[-1] = [DirectProduct(self.stack[-1][-1], g)]
 	else:
-	    stack[-1] = [g]
+	    self.stack[-1] = [g]
 
     def beforeGroup(self, t):  # The next token sequence must be a group or (
 	if t == '(':
-	    stack.append([])
-	    return GroupReader.beforeGroup
+	    self.stack.append([])
+	    return self.beforeGroup
 	elif t == 'V_4':
 	    self.pushGroup(Klein4())
-	    return GroupReader.afterGroup
+	    return self.afterGroup
 	elif t == 1:
 	    self.pushGroup(Trivial())
-	    return GroupReader.afterGroup
+	    return self.afterGroup
 	elif t in subscripted:
 	    self.classToken = t
-	    return GroupReader.expectUnderscore
+	    return self.expectUnderscore
 	else:
 	    raise GroupReaderError('Expected group, got %r' % (t,))
 
     def expectUnderscore(self, t):
 	if t == '_':
-	    return GroupReader.expectSubscript
+	    return self.expectSubscript
 	else:
-	    raise GroupReaderError('Underscore expected after %r' % (stack[-1][-1],))
+	    raise GroupReaderError('Underscore expected after %r' 
+				    % (self.classToken,))
 
     def expectSubscript(self, t):
 	if isinstance(t, (int, long)):
-	    self.pushGroup(subscripted[self.classToken](t))
+	    self.tmp = subscripted[self.classToken](t)
 	    if self.classToken == 'Z':
-		return GroupReader.afterCyclic
+		return self.afterCyclic
 	    else:
-		return GroupReader.afterGroup
+		self.pushGroup(self.tmp)
+		return self.afterGroup
 	else:
 	    raise GroupReaderError('Number expected after subscript')
 
-    def afterGroup(self, t):  # The next token sequence must be × or )
+    def afterGroup(self, t):  # The next token must be × or )
 	if t == '×':
-	    return Group.beforeGroup
+	    return self.beforeGroup
 	elif t == ')':
-	    g = stack.pop()[0]
-	    if stack:
+	    g = self.stack.pop()[0]
+	    if self.stack:
 		self.pushGroup(g)
-		return Group.afterGroup
+		return self.afterGroup
 	    else:
 		raise GroupReaderError('Too many closing parentheses')
-
-    def afterCyclic(self, t):  # The next token sequence must be ^×, ×, or )
-	if t == '^×':
-	    stack[-1][-1] = AutCyclic(stack[-1][-1].n)
 	else:
+	    raise GroupReaderError('×, ), or end of input required after group')
+
+    def afterCyclic(self, t):  # The next token must be ^×, ×, or )
+	if t == '^×':
+	    self.pushGroup(AutCyclic(self.tmp.n))
+	    return self.afterGroup
+	else:
+	    self.pushGroup(self.tmp)
 	    return self.afterGroup(t)
