@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import .types as G
+import types as G
 
 __all__ = ["readGroup"]
 
@@ -17,7 +17,7 @@ tokens = {"Dih": ('Dih', r'\Dih', r'\operatorname{Dih}', 'D'),
 	  '×': ('times', r'\times', '×', 'x', 'X', '*'),
 	  '^×': ('^×', '^*', '^ˣ', '^x', '^X',
 		 r'^\rtimes', r'^\rtimes{}', r'^{\rtimes}', '^rtimes'),
-	  #'⋊': ('rtimes', r'\rtimes', 'x|'),
+	 #'⋊': ('rtimes', r'\rtimes', 'x|'),
 	  '_': ('_',),
 	  '(': ('(',),
 	  ')': (')',),
@@ -49,7 +49,8 @@ def lex(s):
 		yield stack[-1][None]
 		i = j
 	    else:
-		raise GroupReaderError('Invalid lexeme: %r' % (s[i:].split()[0],))
+		raise GroupReaderError('Invalid lexeme: %r'
+				       % (s[i:].split()[0],))
 	elif s[i].isdigit():
 	    j = i+1
 	    while j < len(s) and s[j].isdigit(): j += 1
@@ -60,7 +61,8 @@ def lex(s):
 	    j = i
 	    while j < len(s) and s[j].isdigit(): j += 1
 	    if i == j or j == len(s) or s[j] != '}':
-		raise GroupReaderError("'{' must be followed by a natural number and '}'")
+		raise GroupReaderError("'{' must be followed by a natural"
+				       " number and '}'")
 	    yield int(s[i:j])
 	    i = j+1
 	else:

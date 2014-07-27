@@ -2,7 +2,7 @@
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
 import groups
-from groups.types import gcd
+from groups.internals import gcd
 
 #g = groups.Quaternion()
 #g = groups.Alternating(4)
