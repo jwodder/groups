@@ -12,3 +12,4 @@
   `subgroup`?
 - Rename `group` to `basic_group`?
 - Add a function for generating the Cayley table of a given group
+- Rename `DirectProduct` to `Direct`?

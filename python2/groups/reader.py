@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
-#sys.path.insert(1, sys.path[0] + '/..')
-sys.path.insert(1, '..')
-from groups import *
+import .types as G
 
 __all__ = ["readGroup"]
 
@@ -78,13 +75,13 @@ def quat(n):
 	i += 1
     if n != 1:
 	raise GroupReaderError('Quaternion subscript must be a power of 2')
-    return Quaternion(i-1)
+    return G.Quaternion(i-1)
 
-subscripted = {"Dih": Dihedral,
-	       "Dic": Dicyclic,
-	       "Z":   Cyclic,
-	       "S":   Symmetric,
-	       "A":   Alternating,
+subscripted = {"Dih": G.Dihedral,
+	       "Dic": G.Dicyclic,
+	       "Z":   G.Cyclic,
+	       "S":   G.Symmetric,
+	       "A":   G.Alternating,
 	       "Q":   quat}
 
 class GroupReader(object):
@@ -106,7 +103,7 @@ class GroupReader(object):
 
     def pushGroup(self, g):
 	if self.stack[-1]:
-	    self.stack[-1] = [DirectProduct(self.stack[-1][-1], g)]
+	    self.stack[-1] = [G.DirectProduct(self.stack[-1][-1], g)]
 	else:
 	    self.stack[-1] = [g]
 
@@ -115,10 +112,10 @@ class GroupReader(object):
 	    self.stack.append([])
 	    return self.beforeGroup
 	elif t == 'V_4':
-	    self.pushGroup(Klein4())
+	    self.pushGroup(G.Klein4())
 	    return self.afterGroup
 	elif t == 1:
-	    self.pushGroup(Trivial())
+	    self.pushGroup(G.Trivial())
 	    return self.afterGroup
 	elif t in subscripted:
 	    self.classToken = t
@@ -159,7 +156,7 @@ class GroupReader(object):
 
     def afterCyclic(self, t):  # The next token must be ^×, ×, or )
 	if t == '^×':
-	    self.pushGroup(AutCyclic(self.tmp.n))
+	    self.pushGroup(G.AutCyclic(self.tmp.n))
 	    return self.afterGroup
 	else:
 	    self.pushGroup(self.tmp)
