@@ -201,6 +201,9 @@ public:
    * before decrementing.
    *
    * @return  the old value of the Permutation
+   *
+   * @exception logic_error  thrown if operator--(int) is called when lehmer()
+   *                         is 0, i.e., when the Permutation is the identity
    **/
  Permutation  operator--(int);
 

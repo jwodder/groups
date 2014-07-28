@@ -1,12 +1,14 @@
 #!/usr/bin/python
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
-import groups
+from groups.read      import readName
 from groups.internals import gcd
 
-#g = groups.Quaternion()
-#g = groups.Alternating(4)
-g = groups.Cyclic(17)
+if len(sys.argv) < 2:
+    sys.stderr.write("Usage: %s group\n" % (sys.argv[0],))
+    sys.exit(2)
+else:
+    g = readName(sys.argv[1])
 
 def printf(format, *args): sys.stdout.write(format % args)
 
