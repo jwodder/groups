@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import types as G
 
-__all__ = ["readGroup"]
+__all__ = ["readName"]
 
-def readGroup(s): return GroupReader().read(s)
+def readName(s): return GroupReader().read(s)
 
 class GroupReaderError(ValueError): pass
 
@@ -89,7 +89,7 @@ subscripted = {"Dih": G.Dihedral,
 class GroupReader(object):
     def __init__(self):
 	self.state = self.beforeGroup
-	self.stack = [[]]
+	self.stack = [None]
 
     def read(self, s):
 	for t in lex(s):
@@ -101,17 +101,17 @@ class GroupReader(object):
 	elif self.state == self.afterCyclic:  # `is` won't work here.
 	    return self.tmp
 	else:
-	    return self.stack[-1][-1]
+	    return self.stack[-1]
 
     def pushGroup(self, g):
-	if self.stack[-1]:
-	    self.stack[-1] = [G.DirectProduct(self.stack[-1][-1], g)]
+	if self.stack[-1] is None:
+	    self.stack[-1] = g
 	else:
-	    self.stack[-1] = [g]
+	    self.stack[-1] = G.DirectProduct(self.stack[-1], g)
 
     def beforeGroup(self, t):  # The next token sequence must be a group or (
 	if t == '(':
-	    self.stack.append([])
+	    self.stack.append(None)
 	    return self.beforeGroup
 	elif t == 'V_4':
 	    self.pushGroup(G.Klein4())
@@ -147,7 +147,7 @@ class GroupReader(object):
 	if t == '×':
 	    return self.beforeGroup
 	elif t == ')':
-	    g = self.stack.pop()[0]
+	    g = self.stack.pop()
 	    if self.stack:
 		self.pushGroup(g)
 		return self.afterGroup

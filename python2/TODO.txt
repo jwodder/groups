@@ -13,3 +13,9 @@
 - Rename `group` to `basic_group`?
 - Add a function for generating the Cayley table of a given group
 - Rename `DirectProduct` to `Direct`?
+- Add support to reader.py for:
+ - semidirect products
+ - "Aut(Z_n)" notation for AutCyclic
+ - HolCyclic
+ - CycSemiCyc
+ - subgroups

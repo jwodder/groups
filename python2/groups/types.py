@@ -6,9 +6,13 @@ from   permutation import Permutation
 import internals as I
 
 __all__ = ["group", "subgroup",
-	   "Cyclic", "Semidirect", "DirectProduct", "Dicyclic", "Quaternion",
-	   "Dihedral", "Trivial", "Klein4", "AutCyclic", "HolCyclic",
-	   "CycSemiCyc", "Symmetric", "Alternating",
+	   "Cyclic",
+	   "Semidirect", "DirectProduct",
+	   "Dicyclic", "Quaternion",
+	   "Dihedral",
+	   "Trivial", "Klein4",
+	   "AutCyclic", "HolCyclic", "CycSemiCyc",
+	   "Symmetric", "Alternating",
 	   "Group", "Element",
 	   "isHomomorphism", "direct"]
 
@@ -604,6 +608,7 @@ def HolCyclic(n):
     return Semidirect(g, h, lambda y: lambda x: g.elem((x * y) % n))
     ### TODO: Should __str__ etc. be overridden to show $\Hol(\Z_n)$?
 
+
 def CycSemiCyc(n,m,i):
     if n < 1 or m < 1:
 	raise ValueError('n and m must be positive')
@@ -670,6 +675,7 @@ def isHomomorphism(phi, g, h):
     hop = h.oper
     return all(phi(x) in h for x in g) \
        and all(hop(phi(x), phi(y)) == phi(gop(x,y)) for x in g for y in g)
+
 
 def direct(g,h):
     if isinstance(g, Group) and isinstance(h, Group):
