@@ -70,7 +70,7 @@ namespace Groups {
 
   virtual bool abelian() const {return left->abelian() && right->abelian(); }
 
-  virtual Direct<T,U>* copy() const {return new Direct(left, right); }
+  virtual Direct<T,U>* copy() const {return new Direct<T,U>(left, right); }
 
   virtual int cmp(const basic_group<elem_t>* other) const {
    int ct = cmpTypes(*this, *other);

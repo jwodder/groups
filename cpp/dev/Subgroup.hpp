@@ -92,7 +92,7 @@ namespace Groups {
   const basic_group<T>* supergroup() const {return super; }
 
   static Subgroup<T> generate(const basic_group<T>* g, const std::set<T>& a) {
-   return Subgroup(g, g->closure(a));
+   return Subgroup<T>(g, g->closure(a));
   }
 
  private:
