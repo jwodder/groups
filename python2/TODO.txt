@@ -1,19 +1,23 @@
 - Document everything!
 - Handle all of the sections marked "TODO" in the code
-- Implement permutation groups
+- Implement permutation groups? (or just use subgroups of Symmetric)
 - Implement configurable element showing
+- Add a way to set an individual group's __str__, __unicode__, & LaTeX values?
+ - subgroups returned by `generate` should have their name be "⟨elements of
+   generating set⟩"
 - Add __copy__ and __deepcopy__ methods (see the `copy` module)
  - Add Element.copy()
 - Should .oper (and other group methods?) raise a TypeError/ValueError when
   given values outside the group?
 - permutation.py: Make fewer things properties?
-- Add a way to set an individual group's __str__, __unicode__, & LaTeX values?
-- Rename `group` to `basic_group`?
 - Add a function for generating the Cayley table of a given group
+- Rename `group` to `basic_group`?
 - Rename `DirectProduct` to `Direct`?
 - Add support to groups/read.py for:
  - semidirect products
- - "Aut(Z_n)" notation for AutCyclic
+ - "Z/nZ" notation for Cyclic
+ - "Aut(Z_n)" (and "Aut(Z/nZ)") notation for AutCyclic
  - HolCyclic
  - CycSemiCyc
  - subgroups
+ - symdat.hs-style Symmetric subgroups
