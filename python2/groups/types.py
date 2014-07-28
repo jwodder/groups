@@ -121,7 +121,11 @@ class group(object):
     def closure(self, iterable): return closure2A(self.oper, iterable)
 	# assumes the iterable is over elements of `self`
 	# returns an iterator
-	### TODO: Should this return a set or subgroup?
+	### TODO: Should this return a set?
+
+    def generate(self, iterable):
+	# like `closure`, but returns a `subgroup` object
+        return subgroup(self, self.closure(iterable), check=False)
 
     def commutator(self, x, y):
 	return self.oper(self.invert(self.oper(y,x)), self.oper(x,y))
@@ -250,9 +254,9 @@ class group(object):
 class subgroup(group):
     paramNames = ('supergr', 'elementSet')
 
-    def __init__(self, supergr, elementSet):
+    def __init__(self, supergr, elementSet, check=True):
 	elementSet = frozenset(elementSet)
-	if not supergr.isSubgroup(elementSet):
+	if check and not supergr.isSubgroup(elementSet):
 	    raise ValueError('arguments do not define a valid subgroup')
 	supergr = supergr.supergroup
 	super(subgroup, self).__init__(supergr, elementSet)
