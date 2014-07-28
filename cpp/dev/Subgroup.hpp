@@ -17,7 +17,7 @@ namespace Groups {
  public:
 
   // TODO: Insert checks in the constructors to ensure `elems` is actually a
-  // subgroup!
+  // subgroup! (but make sure `generate` bypasses these checks)
 
   Subgroup(const basic_group<T>& g, const std::set<T>& els)
    : super(g.copy()), elems(els) { }
@@ -90,6 +90,10 @@ namespace Groups {
   }
 
   const basic_group<T>* supergroup() const {return super; }
+
+  static Subgroup<T> generate(const basic_group<T>* g, const std::set<T>& a) {
+   return Subgroup(g, g->closure(a));
+  }
 
  private:
   basic_group<T>* super;
