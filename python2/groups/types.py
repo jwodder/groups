@@ -442,7 +442,7 @@ class DirectProduct(Semidirect):
     def order(self,x):     return I.lcm(self.g.order(x[0]), self.h.order(x[1]))
     def __str__(self):     return I.showbinop(self.g,   '*', self.h)
     def __unicode__(self): return I.showbinopU(self.g, u'×', self.h)
-    def LaTeX(self): return I.showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
+    def LaTeX(self):       return I.showbinop(self.g.LaTeX(), r'\times', self.h.LaTeX())
 
     # identity, __len__, __iter__, __contains__, showElem, showUElem, and
     # LaTeXElem are inherited from semidirect (though the last three might have
