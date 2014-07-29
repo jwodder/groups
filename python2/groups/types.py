@@ -268,7 +268,7 @@ class subgroup(group):
     def oper(self,x,y):       return self.supergroup.oper(x,y)
     def invert(self,x):       return self.supergroup.invert(x)
     def __len__(self):        return len(self.elementSet)
-    def __iter__(self):       return iter(self.elementSet)
+    def __iter__(self):       return iter(sorted(self.elementSet))
     def __contains__(self,x): return x in self.elementSet
     def order(self,x):        return self.supergroup.order(x)
 
