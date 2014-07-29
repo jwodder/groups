@@ -622,6 +622,8 @@ def CycSemiCyc(n,m,i):
 	g = Cyclic(n)
 	h = Cyclic(m)
 	return Semidirect(g, h, lambda y: lambda x: g.elem((x * i**y) % n))
+	### TODO: Override __str__ etc. to show "Z_n \rtimes_i Z_m" (dropping
+	### the "_i" when -1)
 
 
 class Symmetric(group):

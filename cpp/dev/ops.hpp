@@ -68,14 +68,14 @@ public:
 
  const set<T>& operator*() const {return contents; }
 
- LowerCentralSeries& operator++() {
+ LowerCentralSeries<T>& operator++() {
   contents = commutators(g, whole, contents);
   _index++;
   return *this;
  }
 
- LowerCentralSeries operator++(int) {
-  LowerCentralSeries tmp = *this;
+ LowerCentralSeries<T> operator++(int) {
+  LowerCentralSeries<T> tmp = *this;
   ++*this;
   return tmp;
  }
@@ -91,13 +91,13 @@ private:
 
 template<class T>
 LowerCentralSeries<T> lowerCentral(const basic_group<T>& g) {
- return LowerCentralSeries(g);
+ return LowerCentralSeries<T>(g);
 }
 
 template<class T>
 int nilpotence(const basic_group<T>& g) {
  if (g.order() == 1) return 0;
- LowerCentralSeries lc = lowerCentral(g);
+ LowerCentralSeries<T> lc = lowerCentral(g);
  set<T> prev = *lc;
  for (;;) {
   const set<T>& h = *++lc;
@@ -124,9 +124,9 @@ set<T> commutators(const basic_group<T>& g, const set<T>& a, const set<T>& b) {
 }
 
 /**
-  * Given two subsets of the group that are already closed under the group
+  * Given two subsets of a group that are already closed under the group
   * operation (i.e., that are subgroups; this precondition is not checked),
-  * subgroupUnion() computes the closure of their union as a set<T>.
+  * subgroupUnion() computes the closure of their union.
   **/
 template<class T>
 set<T> subgroupUnion(const basic_group<T>& g, const set<T>& a, const set<T>& b)
