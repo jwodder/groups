@@ -98,10 +98,9 @@ class GroupReader(object):
 	    raise GroupReaderError('Input ended in middle of parse')
 	elif len(self.stack) > 1:
 	    raise GroupReaderError('Unclosed parentheses')
-	elif self.state == self.afterCyclic:  # `is` won't work here.
-	    return self.tmp
-	else:
-	    return self.stack[-1]
+	if self.state == self.afterCyclic:  # `is` doesn't work here.
+	    self.pushGroup(self.tmp)
+	return self.stack[-1]
 
     def pushGroup(self, g):
 	if self.stack[-1] is None:
