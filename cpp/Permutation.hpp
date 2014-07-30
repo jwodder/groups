@@ -120,15 +120,19 @@ public:
 
  /**
    * Returns a vector<int> of the results of applying the Permutation to the
-   * integers 1 through degree().  If `v = p.toImage()`, then `v[0] == p(1)`,
-   * `v[1] == p(2)`, etc.
+   * integers 1 through `n`, or through degree() if `n` is unspecified or less
+   * than degree().  If `v = p.toImage()`, then `v[0] == p(1)`, `v[1] == p(2)`,
+   * etc.
    *
-   * When the Permutation is the identity, toImage() returns an empty
-   * vector<int>.
+   * When the Permutation is the identity, toImage() called without an argument
+   * returns an empty vector<int>.
    *
-   * @return  the image of 1 through degree() under the Permutation
+   * @param n  the minimum length of the image to return
+   *
+   * @return  the image of 1 through either `n` or degree() (whichever is
+   *          larger) under the Permutation
    **/
- std::vector<int> toImage() const;
+ std::vector<int> toImage(int = -1) const;
 
  /**
    * Applies the Permutation to `x`, returning the value that the Permutation

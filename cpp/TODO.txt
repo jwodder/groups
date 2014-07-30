@@ -25,7 +25,7 @@
  - elements() should always return a sorted vector.
  - The identity should always be the first element of elements().
  - indexElem() should return an element's index in the elements() vector.
-- Implement move constructors & move assignment
+- Implement move constructors & move assignment operators
 
 FEATURES
 - Implement all of the features in plan.txt

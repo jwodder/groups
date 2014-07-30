@@ -236,7 +236,12 @@ vector<Permutation> Permutation::s_n(int degree) {
  return elems;
 }
 
-vector<int> Permutation::toImage() const {return pmap; }
+vector<int> Permutation::toImage(int n) const {
+ //if (n <= degree()) return pmap;
+ vector<int> imap(pmap);
+ for (int i=degree()+1; i<=n; i++) imap.push_back(i);
+ return imap;
+}
 
 Permutation Permutation::fromImage(const vector<int>& img) {
  vector<bool> used(img.size(), false);
