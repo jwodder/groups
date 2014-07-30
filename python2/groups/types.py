@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import itertools
-import re
 from   closure     import closure2A, close2, view
 from   permutation import Permutation
 import internals as I

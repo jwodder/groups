@@ -8,8 +8,8 @@
 #  - normal subgroups within subgroups?
 
 import sys
-from groups.types     import group
-from groups.internals import gcd
+from .types     import group
+from .internals import gcd
 
 __all__ = ["about", "printAbout"]
 

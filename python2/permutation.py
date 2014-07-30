@@ -228,7 +228,13 @@ class Permutation(object):
 	    yield p
 	    p = p.next()
 
-    def toImage(self): return self._map
+    def toImage(self, n=None):
+	# Returns the image of 1 through `n` (or self.degree, whichever's
+	# bigger) under the permutation
+	if n is None or n <= self.degree:
+	    return self._map
+	else:
+	    return self._map + tuple(range(self.degree+1, n+1))
 
     @classmethod
     def fromImage(cls, img):

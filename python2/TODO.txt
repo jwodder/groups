@@ -20,7 +20,6 @@
  - HolCyclic
  - CycSemiCyc
  - subgroups
-  - symdat.hs-style Symmetric subgroups?
 - Make DirectProduct's (and Semidirect's?) `showElem` family "flatten" elements
   -- e.g., writing "(a,b,c)" instead of "((a,b),c)"
 - Make DirectProduct's `__str__` etc. "flatten" their output -- e.g., writing
