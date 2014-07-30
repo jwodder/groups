@@ -11,7 +11,7 @@ module Permutation (
   fromArray,
   readCycles,
   -- * Deconstruction
-  toCycles, toArray, showCycles,
+  toCycles, toArray, toArray', showCycles,
   -- * Properties
   order, isEven, isOdd, sign, degree, lehmer, disjoint
  ) where
@@ -216,10 +216,14 @@ module Permutation (
  snBounds n | n < 0 = error "Permutation.snBounds: invalid argument"
 	    | otherwise = (identity, lastOfDegree n)
 
- toArray :: Permutation -> Array Int Int
+ toArray :: Permutation -> Array Int Int  -- Rename "toImage"?
  toArray (Perm σ) = σ
 
- fromArray :: Array Int Int -> Permutation
+ toArray' :: Int -> Permutation -> Array Int Int  -- Rename "toImage'"?
+ toArray' n p@(Perm σ) | n <= degree p = σ
+		       | otherwise = listArray (1,n) $ elems σ++[degree p+1..n]
+
+ fromArray :: Array Int Int -> Permutation  -- Rename "fromImage"?
  fromArray σ | rangeSize (a,b) == 0 = identity
 	     | a < 1 = error "Permutation.fromArray: values must be positive"
 	     | all (== 1) $ elems $ accumArray (+) (0 :: Int) (a,b) [(x,1) | x <- elems σ] = trim $ Perm $ array (1,b) $ [(i,i) | i <- [1..a-1]] ++ assocs σ
