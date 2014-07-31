@@ -5,8 +5,6 @@
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values?
  - subgroups returned by `generate` should have their name be "⟨elements of
    generating set⟩"
-- Add __copy__ and __deepcopy__ methods (see the `copy` module)
- - Add Element.copy()
 - Should .oper (and other group methods?) raise a TypeError/ValueError when
   given values outside the group?
 - permutation.py: Make fewer things properties?
@@ -24,3 +22,4 @@
   -- e.g., writing "(a,b,c)" instead of "((a,b),c)"
 - Make DirectProduct's `__str__` etc. "flatten" their output -- e.g., writing
   "Z_2 * Z_3 * Z_4" instead of "(Z_2 * Z_3) * Z_4"
+- Implement pickling methods?

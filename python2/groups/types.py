@@ -43,9 +43,6 @@ class group(object):
     # Subclasses also need to define __len__, __iter__, __contains__, __str__,
     # and (optionally) __unicode__.
 
-    @property
-    def family(self): return self.__class__.__name__
-
     def __hash__(self): return hash((self.family, self.params))
 
     def __nonzero__(self): return len(self) > 1
@@ -56,12 +53,21 @@ class group(object):
     def __repr__(self):
 	return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
 
-    def elements(self): return list(iter(self))
+    def __copy__(self): return self.__class__(*self.params)
 
-    def copy(self): return self.__class__(*self.params)
+    copy = __copy__
+
+    def __deepcopy__(self, memo):
+	from copy import deepcopy
+	return self.__class__(*(deepcopy(p, memo) for p in self.params))
 
     @property
     def supergroup(self): return self
+
+    @property
+    def family(self): return self.__class__.__name__
+
+    def elements(self): return list(iter(self))
 
     def product(self, xs): return reduce(self.oper, xs, self.identity())
 
@@ -346,6 +352,15 @@ class Element(object):
     def __hash__(self): return hash((self.rawGroup, self.value))
 
     def __nonzero__(self): return self.value != self.group.identity().value
+
+    def __copy__(self): return self.__class__(self.value, self.group)
+
+    copy = __copy__
+
+    def __deepcopy__(self, memo):
+	from copy import deepcopy
+	return self.__class__(deepcopy(self.value, memo),
+			      deepcopy(self.group, memo))
 
     def __pow__(self, n):
 	return Element(self.rawGroup.pow(self.value, n), self.group)
