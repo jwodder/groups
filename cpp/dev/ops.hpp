@@ -14,7 +14,7 @@ set<T> centralizer(const basic_group<T>& g, Iter first, Iter last) {
 
 template<class T>
 set<T> center(const basic_group<T>& g) {
- const vector<T> elems = g.elements();
+ const vector<T>& elems = g.elements();
  return centralizer(g, elems.begin(), elems.end());
 }
 
@@ -38,7 +38,7 @@ set<T> normalizer(const basic_group<T>& g, const set<T>& elems) {
 template<class T>
 bool isNormal(const basic_group<T>& g, const set<T>& elems) {
  // whether `elems` is actually a subgroup is not checked
- const vector<T> gelems = g.elements();
+ const vector<T>& gelems = g.elements();
  return all_of(gelems.begin(), gelems.end(), [&](const T& x) -> bool {
   return normalizes(g, x, elems);
  });
@@ -46,10 +46,7 @@ bool isNormal(const basic_group<T>& g, const set<T>& elems) {
 
 template<class T>
 set<T> isSubgroup(const basic_group<T>& g, const set<T>& elems) {
- auto isMember = [&g](const T& x) -> bool {return g.contains(x); };
- // TODO: Look for a better way to accomplish the above.
- if (elems.empty() || !all_of(elems.begin(), elems.end(), isMember))
-  return false;
+ if (elems.empty() || !g.isSubset(elems)) return false;
  for (const T& x: elems) {
   for (const T& y: elems) {
    if (elems.count(g.oper(x,y)) == 0) return false;
@@ -298,7 +295,7 @@ template<class T, class Func>
 set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
  set< set<T> > partitions;
  vector<bool> used(g.order(), false);
- vector<T> elems = g.elements();
+ const vector<T>& elems = g.elements();
  for (size_t i=0; i<elems.size(); i++) {
   if (!used[i]) {
    set<T> part = f(elems[i]);

@@ -84,6 +84,14 @@ namespace Groups {
    return closure2A<T>(opcall(this), first, last);
   }
 
+  bool isSubset(const std::set<T>& elems) {
+   std::set<T>::const_iterator iter;
+   for (iter = elems.begin(); iter != elems.end(); iter++) {
+    if (!contains(*iter)) return false;
+   }
+   return true;
+  }
+
  private:
   struct opcall {  // TODO: Look for a better way to accomplish this.
    const basic_group<T>* g;

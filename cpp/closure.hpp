@@ -66,7 +66,7 @@ std::set<T> closure1m(const Func& f, Iter first, Iter last) {
   U newVals = f(nova.front());
   nova.pop();
 #if defined(__cplusplus) && __cplusplus >= 201103L
-  for (U uval : newVals) {
+  for (const U& uval: newVals) {
    if (seen.insert(uval).second) nova.push(uval);
   }
 #else

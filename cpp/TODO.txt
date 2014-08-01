@@ -32,7 +32,7 @@ FEATURES
 - Types of groups to implement:
  - semidirect products
  - alternating groups
- - permutation groups
+ - permutation groups?
 - Operations to add:
  * calculating centralizers & centers
  * calculating normalizers
@@ -42,7 +42,7 @@ FEATURES
  * calculating conjugacy classes
  * calculating lower central series
  - calculating all abelian groups of a given order
- - calculating left & right cosets of groups
+ * calculating left & right cosets of groups
 - Add methods for configuring how to display the elements of a group:
  - setting the strings to display for generators and the identity
  - setting whether cyclic groups should use the notation $x^a$, $a$, $\bar{a}$,
@@ -65,7 +65,6 @@ FEATURES
 - Add methods for showing names of groups
 - Add a basic_element<basic_group<T>, T> class with multiplication et alii
   methods?
-- Add an `isSubset(set<T>, basic_group<T>)` function?
 - Add an easy way to convert element values from T to Element and back again
  - Give `Element` an `Element(const basic_group<T>&, const T&)` constructor?
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
