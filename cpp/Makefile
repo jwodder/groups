@@ -2,7 +2,7 @@ CXX = c++
 CPPFLAGS = -std=c++98 -Wall -I.
 CC = $(CXX)  # for linking
 
-TESTS = tests/closure01 tests/closure03 tests/conj01 tests/direct01 tests/direct02 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/indices07 tests/indices08 tests/indices09 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01
+TESTS = tests/closure01 tests/closure03 tests/conj01 tests/direct01 tests/direct02 tests/fromCycles01 tests/indices01 tests/indices02 tests/indices03 tests/indices04 tests/indices05 tests/indices06 tests/indices07 tests/indices08 tests/indices09 tests/lehmer02 tests/lehmer03 tests/perminc01 tests/readCycles01 tests/subgrgens
 
 all : Groups/internals.o Groups/Families/Dihedral.o Groups/Families/Klein4.o Groups/Families/Symmetric.o Groups/Families/Dicyclic.o Permutation.o Groups/Families/Cyclic.o Groups/Families/AutCyclic.o Groups/Group.o Groups/Element.o $(TESTS)
 
@@ -73,6 +73,9 @@ tests/perminc01.o : Permutation.hpp
 
 tests/readCycles01 : Groups/internals.o Permutation.o
 tests/readCycles01.o : Permutation.hpp
+
+tests/subgrgens : Groups/internals.o Groups/Families/Symmetric.o Permutation.o
+tests/subgrgens.o : Groups/Families/Symmetric.hpp Groups/internals.hpp closure.hpp Groups/BasicGroup.hpp Permutation.hpp
 
 clean :
 	rm -f *.o Groups/*.o Groups/*/*.o tests/*.o

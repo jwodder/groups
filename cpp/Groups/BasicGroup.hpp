@@ -85,7 +85,7 @@ namespace Groups {
   }
 
   bool isSubset(const std::set<T>& elems) {
-   std::set<T>::const_iterator iter;
+   typename std::set<T>::const_iterator iter;
    for (iter = elems.begin(); iter != elems.end(); iter++) {
     if (!contains(*iter)) return false;
    }

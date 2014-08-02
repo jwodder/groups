@@ -37,7 +37,7 @@ SetWGens<T> addCycle(const basic_group<T>& g,
    set< set<T> > newGens;
    for (const set<T>& a: gens) {
     for (const set<T>& b: gs) {
-     newGens.insert(union(difference(a, cyc), b));
+     newGens.insert(set_union(difference(a, cyc), b));
     }
    }
    return std::make_pair(newSubgr, newGens);
@@ -47,7 +47,7 @@ SetWGens<T> addCycle(const basic_group<T>& g,
 }
 
 template<class T>
-set<T> union(const set<T>& a, const set<T>& b) {
+set<T> set_union(const set<T>& a, const set<T>& b) {
  set<T> c;
  std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::inserter(c, c.end()));
  return c;
@@ -72,7 +72,7 @@ set<T> difference(const set<T>& a, const set<T>& b) {
 template<class T>
 void update(set<T>& a, const set<T>& b) {
  // TODO: Which of these two is faster?
- //a = union(a,b);
+ //a = set_union(a,b);
  a.insert(b.begin(), b.end());
 }
 

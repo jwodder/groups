@@ -154,7 +154,7 @@ template<class T>
 set<T> subgroupUnion(const basic_group<T>& g, const set<T>& a, const set<T>& b)
 {
  queue<T> nova(deque<T>(a.begin(), a.end()));
- set<T> seen = union(a,b);
+ set<T> seen = set_union(a,b);
  while (!nova.empty()) {
   T x = nova.front();
   nova.pop();

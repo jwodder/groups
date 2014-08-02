@@ -23,7 +23,7 @@ template<class T> set<T> cycle(const basic_group<T>& g, const T& x) {
 }
 
 template<class T>
-set<T> union(const set<T>& a, const set<T>& b) {
+set<T> set_union(const set<T>& a, const set<T>& b) {
  set<T> c;
  std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::inserter(c, c.end()));
  return c;
@@ -39,7 +39,7 @@ set<T> difference(const set<T>& a, const set<T>& b) {
 template<class T>
 void update(set<T>& a, const set<T>& b) {
  // TODO: Which of these two is faster?
- //a = union(a,b);
+ //a = set_union(a,b);
  a.insert(b.begin(), b.end());
 }
 
@@ -52,12 +52,14 @@ template<class T>
 set<T> subgroupUnion(const basic_group<T>& g, const set<T>& a, const set<T>& b)
 {
  queue<T> nova(deque<T>(a.begin(), a.end()));
- set<T> seen = union(a,b);
+ set<T> seen = set_union(a,b);
  while (!nova.empty()) {
   T x = nova.front();
   nova.pop();
   const set<T> seenCopy(seen);
-  for (const T& y: seenCopy) {
+  typename set<T>::const_iterator sciter;
+  for (sciter = seen.begin(); sciter != seen.end(); sciter++) {
+   const T& y = *sciter;
    T z1 = g.oper(x,y);
    if (seen.insert(z1).second) nova.push(z1);
    T z2 = g.oper(y,x);
@@ -91,9 +93,10 @@ addCycle(const basic_group<T>& g,
    }
    set<T> newSubgr = subgroupUnion(g, subgr, cyc);
    set< set<T> > newGens;
-   for (const set<T>& a: gens) {
-    for (const set<T>& b: gs) {
-     newGens.insert(union(difference(a, cyc), b));
+   typename set< set<T> >::const_iterator gensIter2, gsIter2;
+   for (gensIter2 = gens.begin(); gensIter2 != gens.end(); gensIter2++) {
+    for (gsIter2 = gs.begin(); gsIter2 != gs.end(); gsIter2++) {
+     newGens.insert(set_union(difference(*gensIter2, cyc), *gsIter2));
     }
    }
    return std::make_pair(newSubgr, newGens);
@@ -154,12 +157,12 @@ int main() {
  map< set<elem_t>, set< set<elem_t> > > sg = subgroupGens(g);
  map< set<elem_t>, set< set<elem_t> > >::iterator sgiter;
  for (sgiter = sg.begin(); sgiter != sg.end(); sgiter++) {
-  showElemSet(sgiter->first);
+  showElemSet(g, sgiter->first);
   cout << endl;
   set< set<elem_t> >::iterator gensiter;
-  for (gensiter = sgiter->second->begin(); gensiter != sgiter->second->end(); gensiter++) {
+  for (gensiter = sgiter->second.begin(); gensiter != sgiter->second.end(); gensiter++) {
    cout << ' ';
-   showElemSet(*gensiter);
+   showElemSet(g, *gensiter);
    cout << endl;
   }
   cout << endl;
