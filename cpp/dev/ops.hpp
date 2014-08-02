@@ -1,4 +1,20 @@
-template<class T, Iter>
+#include <algorithm>  /* all_of */
+#include <deque>
+#include <map>
+#include <queue>
+#include <set>
+#include <vector>
+#include "Groups/BasicGroup.hpp"
+#include "ops_int.hpp"
+using std::all_of;
+using std::deque;
+using std::map;
+using std::queue;
+using std::set;
+using std::vector;
+using Groups::basic_group;
+
+template<class T, class Iter>
 set<T> centralizer(const basic_group<T>& g, Iter first, Iter last) {
  const vector<T> elemVec = g.elements();
  set<T> elems(elemVec.begin(), elemVec.end());
@@ -54,9 +70,6 @@ set<T> isSubgroup(const basic_group<T>& g, const set<T>& elems) {
  }
  return true;
 }
-
-template<class T>
-set<T> vec2set(const vector<T>& vec) {return set<T>(vec.begin(), vec.end()); }
 
 template<class T> class LowerCentralSeries {
 public:
@@ -120,6 +133,18 @@ set<T> commutators(const basic_group<T>& g, const set<T>& a, const set<T>& b) {
  return g.closure(outset);
 }
 
+template<class T>
+set<T> cycle(const basic_group<T>& g, const T& x) {
+ const T id = g.identity();
+ set<T> cyke{id};
+ T y = x;
+ while (y != id) {
+  cyke.insert(y);
+  y = g.oper(y,x);
+ }
+ return cyke;
+}
+
 /**
   * Given two subsets of a group that are already closed under the group
   * operation (i.e., that are subgroups; this precondition is not checked),
@@ -144,18 +169,6 @@ set<T> subgroupUnion(const basic_group<T>& g, const set<T>& a, const set<T>& b)
  return seen;
 }
 
-template<class T>
-set<T> cycle(const basic_group<T>& g, const T& x) {
- const T id = g.identity();
- set<T> cyke{id};
- T y = x;
- while (y != id) {
-  cyke.insert(y);
-  y = g.oper(y,x);
- }
- return cyke;
-}
-
 /** Returns a `set` of all subgroups of the given group */
 template<class T>
 set< set<T> > subgroups(const basic_group<T>& g) {
@@ -173,12 +186,10 @@ set< set<T> > subgroups(const basic_group<T>& g) {
     nova.insert(subgroupUnion(g, subgr, cycCg.first));
    }
   }
-  subs = union(subs, nova);
+  update(subs, nova);
  }
  return subs;
 }
-
-template<class T> using SetWGens = pair<set<T>, set< set<T> > >;
 
 /** Returns a `map` mapping subgroups to `set`s of (minimal?) generating `set`s
   */
@@ -198,41 +209,10 @@ map< set<T>, set< set<T> > > subgroupGens(const basic_group<T>& g) {
    if (!newSub.first.empty()) nova.push_back(newSub);
   }
   for (const SetWGens<T>& sg: nova) {
-   //subgrs[sg.first] = union(subgrs[sg.first], sg.second);
-   subgrs[sg.first].insert(sg.second.begin(), sg.second.end());
+   update(subgrs[sg.first], sg.second);
   }
  }
  return subgrs;
-}
-
-template<class T>
-SetWGens<T> addCycle(const basic_group<T>& g,
-		     const set<T>& cyc,   const set< set<T> >& gs,
-		     const set<T>& subgr, const set< set<T> >& gens) {
- /* TODO: Is there any reason for this to only check singletons?  What effect
-  * would checking whether the first element of `gs` was a subset of `subgr`
-  * have on performance? */
- for (const set<T>& cgSet: gs) {
-  if (cgSet.size() == 1) {
-   const T& cg = *cgSet.begin();
-   if (subgr.count(cg) > 0) return SetWGens<T>();
-   for (const set<T>& h: gens) {
-    if (h.size() == 1) {
-     if (cyc.count(*h.begin()) > 0) return SetWGens<T>();
-     else break;
-    }
-   }
-   set<T> newSubgr = subgroupUnion(g, subgr, cyc);
-   set< set<T> > newGens;
-   for (const set<T>& a: gens) {
-    for (const set<T>& b: gs) {
-     newGens.insert(union(difference(a, cyc), b));
-    }
-   }
-   return make_pair(newSubgr, newGens);
-  }
- }
- return SetWGens<T>();
 }
 
 /**
@@ -289,36 +269,3 @@ set< set<T> > rightCosets(const basic_group<T>& g, const set<T>& elems) {
   return g.oper(elems, x);
  });
 }
-
-// Internal function
-template<class T, class Func>
-set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
- set< set<T> > partitions;
- vector<bool> used(g.order(), false);
- const vector<T>& elems = g.elements();
- for (size_t i=0; i<elems.size(); i++) {
-  if (!used[i]) {
-   set<T> part = f(elems[i]);
-   for (const T& y: part) used[g.indexElem(y)] = true;
-   partitions.insert(part);
-  }
- }
- return partitions;
-}
-
-/* Alternative implementation:
-template<class T, class Func>
-set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
- set< set<T> > partitions;
- set<T> used;
- for (const T& x: g.elements()) {
-  if (used.count(x) == 0) {
-   set<T> part = f(elems[i]);
-   //used = union(used, part);
-   used.insert(part.begin(), part.end());
-   partitions.insert(part);
-  }
- }
- return partitions;
-}
-*/
