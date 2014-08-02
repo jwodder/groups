@@ -1,7 +1,7 @@
 /* Internal helper functions for ops.hpp */
 
 #include <algorithm>
-#include <iterator>
+#include <iterator>  /* inserter */
 #include <set>
 #include <vector>
 #include <utility>  /* pair, make_pair */
