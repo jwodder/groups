@@ -5,7 +5,7 @@
 #include <utility>  /* pair */
 #include "Groups/BasicGroup.hpp"
 #include "Groups/Util.hpp"
-#include "Groups/internals.hpp"  /* cartesian */
+#include "Groups/internals.hpp"  /* cartesian, lcm */
 
 namespace Groups {
  template<class T, class U>

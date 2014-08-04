@@ -8,7 +8,6 @@
 - Should .oper (and other group methods?) raise a TypeError/ValueError when
   given values outside the group?
 - permutation.py: Make fewer things properties?
-- Add a function for generating the Cayley table of a given group
 - Rename `group` to `basic_group`?
 - Rename `DirectProduct` to `Direct`?
 - Add support to groups/read.py for:
@@ -25,3 +24,15 @@
 - Implement pickling methods?
 - Make the subclasses of `group` (other than `subgroup` and `Group`) redefine
   `exponent`?
+- Make groups/about.py calculate/output the following:
+ - automorphisms that elements induce by conjugation
+ - commutators?
+ - maximal subgroups?
+ - maximal subgroups of each subgroup?
+ - cosets of subgroups?
+ - abelianity of subgroups?
+ - normal subgroups within subgroups?
+ - the Cayley table?
+- Add a LaTeX version of the `cayley` method
+- Give cayley.py switches for setting the output format (plain ASCII, Unicode,
+  and eventually LaTeX)

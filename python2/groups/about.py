@@ -1,12 +1,3 @@
-# TO ADD:
-#  - commutators?
-#  - automorphisms that elements induce by conjugation?
-#  - maximal subgroups?
-#  - maximal subgroups of each subgroup?
-#  - cosets of subgroups?
-#  - abelianity of subgroups?
-#  - normal subgroups within subgroups?
-
 import sys
 from .types     import group
 from .internals import gcd

@@ -255,6 +255,42 @@ class group(object):
 		yield part
 		used.update(part)
 
+    def cayley(self):
+	"""Returns a `str` representation of the Cayley table of the group"""
+	show = self.showElem
+	fwidth = max(len(show(x)) for x in self)
+	tblstr = ' ' * fwidth
+	for y in self:
+	    tblstr += '|%-*s' % (fwidth, show(y))
+	tblstr = tblstr.rstrip()
+	tblstr += '\n' + '-' * fwidth + ('|' + '-' * fwidth) * len(self) + '\n'
+	for x in self:
+	    tblstr += '%-*s' % (fwidth, show(x))
+	    for y in self:
+		tblstr += '|%-*s' % (fwidth, show(self.oper(x,y)))
+	    tblstr = tblstr.rstrip()
+	    tblstr += '\n'
+	return tblstr
+
+    def cayleyU(self):
+	"""Returns a `unicode` representation of the Cayley table of the
+	   group"""
+	show = self.showUElem
+	fwidth = max(len(show(x)) for x in self)
+	tblstr = u' ' * fwidth
+	for y in self:
+	    tblstr += u'|%-*s' % (fwidth, show(y))
+	tblstr = tblstr.rstrip()
+	tblstr += u'\n' + u'-' * fwidth + (u'|' + u'-' * fwidth) * len(self)
+	tblstr += u'\n'
+	for x in self:
+	    tblstr += u'%-*s' % (fwidth, show(x))
+	    for y in self:
+		tblstr += u'|%-*s' % (fwidth, show(self.oper(x,y)))
+	    tblstr = tblstr.rstrip()
+	    tblstr += u'\n'
+	return tblstr
+
 
 class subgroup(group):
     paramNames = ('supergr', 'elementSet')
