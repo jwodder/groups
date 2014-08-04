@@ -15,6 +15,7 @@ __all__ = ["about", "printAbout"]
 
 def about(g):
     subgrGens   = g.subgroupGens()
+    subgrGens[frozenset([g.identity()])].add(frozenset())
     subgrKeys   = dict((h, tuple(sorted(h))) for h in subgrGens.iterkeys())
     subgrSorted = sorted(subgrKeys, key=lambda h: subgrKeys[h])
     subgrNames  = dict((h, 'subgr%02d' % (i,))
@@ -49,6 +50,7 @@ def about(g):
 	"exponent": g.exponent(),
 	"rank":     min(len(gen) for gen in subgrGens[frozenset(g)]),
 	"center":   nameSet(g.center()),
+	"identity": g.showElem(g.identity()),
 	"elements": dict((g.showElem(x),
 			  {"index":       i,
 			   "order":       g.order(x),
@@ -75,9 +77,9 @@ def about(g):
 					  if len(h) not in (1, len(g))),
     }
 
-aboutOrder = "name order abelian exponent rank center elements subgroups" \
-	     " conjugacy_classes nilpotence lower_central_series" \
-	     " commutator_subgroup solvable simple".split()
+aboutOrder = """name order abelian exponent rank center identity elements
+		subgroups conjugacy_classes nilpotence lower_central_series
+		commutator_subgroup solvable simple""".split()
 
 def printAbout(data, out=None, indent=0):
     if isinstance(data, group):

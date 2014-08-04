@@ -103,7 +103,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
 \end{itemize}
 
 
-\section{Selected Group Families}
+\section{Selected Groups \& Group Families}
 \begin{itemize}
 \item The \emph{trivial group}, denoted $1$, is the group containing one element with a trivially-defined operation.
 
@@ -116,6 +116,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item $\Z_n$ is abelian.
  \item $\Z_n$ represents addition \emph{modulo} $n$.
  \item Every nontrivial finite abelian group can be uniquely expressed as $\Z_{n_1}\times\Z_{n_2}\times\cdots\times\Z_{n_s}$ for some integers $n_1, n_2, \ldots, n_s$ such that each $n_i$ is greater than 1 and is divisible by the $n_{i+1}$ after it (if any).  These integers $n_i$ are the \emph{invariant factors} of the group.
+ \item Alternative notations for $\Z_n$ include $\Z/n\Z$ and $C_n$.
  \end{itemize}
 
 \item Given a positive integer $n$, the \emph{multiplicative group of integers \emph{modulo} $n$}, denoted $\Z_n^\times$, is the set $\{i\in\N_n : \gcd(i,n) = 1\}$ with the operation defined by: $$x\cdot y\coloneqq xy\pmod{n}$$  It has the following properties:
@@ -126,6 +127,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item $\Z_n^\times$ is abelian.
  \item $\Z_n^\times$ represents multiplication \emph{modulo} $n$ on those elements that have modular multiplicative inverses.
  \item $\Z_n^\times \cong \Aut(\Z_n)$
+ \item Alternative notations for $\Z_n^\times$ include $(\Z/n\Z)^\times$.
  \end{itemize}
 
 \item Given groups $G$ and $H$, the \emph{direct product of $G$ and $H$}, denoted $G\times H$, is the set $G\times H$ with the operation defined by: $$(g_1, h_1)\cdot(g_2, h_2)\coloneqq (g_1g_2, h_1h_2)$$  It has the following properties:
@@ -184,6 +186,7 @@ A \emph{group} is a set $G$ together with a binary operation $\star\colon G\time
  \item $\Dih_n$ is abelian if \& only if $n<3$.
  \item $\Dih_n$ represents the symmetries of a regular $n$-gon; $(1,0)$ is reflection, and $(0,1)$ is rotation by $2\pi/n$ radians.
  \item $\Dih_n \cong \Dih(\Z_n) \cong \Z_n\rtimes\Z_2$
+ \item Alternative notations for $\Dih_n$ include $D_n$ and $D_{2n}$.
  \end{itemize}
 \item Given an abelian group $G$, the \emph{generalized dihedral group of $G$}, denoted $\Dih(G)$, is $G\rtimes_\varphi\Z_2$ where $\varphi$ maps the nonidentity element of $\Z_2$ to inversion on $G$.
 
