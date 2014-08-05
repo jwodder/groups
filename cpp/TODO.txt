@@ -30,9 +30,9 @@
 FEATURES
 - Implement all of the features in plan.txt
 - Types of groups to implement:
- - semidirect products
- - alternating groups
- - permutation groups?
+ * semidirect products
+ * alternating groups
+ * subgroups
 - Operations to add:
  * calculating centralizers & centers
  * calculating normalizers

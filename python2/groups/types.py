@@ -427,6 +427,8 @@ class Cyclic(group):
      ### TODO: Add an option for changing the name of the variable
     LaTeXElem = showElem
 
+    def exponent(self): return self.n
+
 
 class Semidirect(group):
     paramNames = ('g', 'h', 'phi')
@@ -501,6 +503,9 @@ class DirectProduct(Semidirect):
     @property
     def phi(self): return lambda y: lambda x: x
 
+    ### TODO: Prove this is correct:
+    #def exponent(self): return I.lcm(self.g.exponent(), self.h.exponent())
+
 
 class Dicyclic(group):
     paramNames = ('n',)
@@ -540,6 +545,8 @@ class Dicyclic(group):
 	return pre + I.multish(I.shexp('i', i), 'j' if x[1] else '1')
 
     LaTeXElem = showElem
+
+    def exponent(self): return 2*self.n
 
 
 class Quaternion(Dicyclic):
@@ -586,6 +593,8 @@ class Dihedral(group):
 
     LaTeXElem = showElem
 
+    def exponent(self): return I.lcm(2, self.n)
+
 
 class Trivial(group):
     paramNames = ()
@@ -600,6 +609,7 @@ class Trivial(group):
     def LaTeX(self):       return '1'
     def showElem(self,x):  return '1'
     LaTeXElem = showElem
+    def exponent(self):    return 1
 
 
 class Klein4(group):
@@ -608,7 +618,7 @@ class Klein4(group):
     def identity(self):    return (False, False)
     def oper(self,x,y):    return (x[0] != y[0], x[1] != y[1])
     def invert(self,x):    return x
-    def order(self,x):     return 2 if x else 1
+    def order(self,x):     return 2 if any(x) else 1
     def __len__(self):     return 4
     def __iter__(self):    return ((a,b) for a in [False, True]
 					 for b in [False, True])
@@ -620,6 +630,8 @@ class Klein4(group):
 
     def __contains__(self, x):
 	return I.isPair(x) and x[0] in (0,1) and x[1] in (0,1)
+
+    def exponent(self):    return 2
 
 
 class AutCyclic(group):
@@ -697,6 +709,9 @@ class Symmetric(group):
 
     def __contains__(self, x):
 	return isinstance(x, Permutation) and x.degree <= self.n
+
+    ### TODO: Prove this is correct:
+    #def exponent(self): return reduce(I.lcm, xrange(1, self.n+1), 1)
 
 
 class Alternating(group):

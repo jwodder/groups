@@ -61,7 +61,7 @@ bool isNormal(const basic_group<T>& g, const set<T>& elems) {
 }
 
 template<class T>
-set<T> isSubgroup(const basic_group<T>& g, const set<T>& elems) {
+bool isSubgroup(const basic_group<T>& g, const set<T>& elems) {
  if (elems.empty() || !g.isSubset(elems)) return false;
  for (const T& x: elems) {
   for (const T& y: elems) {
