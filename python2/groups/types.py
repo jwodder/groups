@@ -427,7 +427,8 @@ class Cyclic(group):
      ### TODO: Add an option for changing the name of the variable
     LaTeXElem = showElem
 
-    def exponent(self): return self.n
+    def exponent(self):  return self.n
+    def isAbelian(self): return True
 
 
 class Semidirect(group):
@@ -506,6 +507,8 @@ class DirectProduct(Semidirect):
     ### TODO: Prove this is correct:
     #def exponent(self): return I.lcm(self.g.exponent(), self.h.exponent())
 
+    def isAbelian(self): return self.g.isAbelian() and self.h.isAbelian()
+
 
 class Dicyclic(group):
     paramNames = ('n',)
@@ -546,7 +549,8 @@ class Dicyclic(group):
 
     LaTeXElem = showElem
 
-    def exponent(self): return 2*self.n
+    def exponent(self):  return 2*self.n
+    def isAbelian(self): return False
 
 
 class Quaternion(Dicyclic):
@@ -593,7 +597,8 @@ class Dihedral(group):
 
     LaTeXElem = showElem
 
-    def exponent(self): return I.lcm(2, self.n)
+    def exponent(self):  return I.lcm(2, self.n)
+    def isAbelian(self): return self.n < 3
 
 
 class Trivial(group):
@@ -610,6 +615,7 @@ class Trivial(group):
     def showElem(self,x):  return '1'
     LaTeXElem = showElem
     def exponent(self):    return 1
+    def isAbelian(self):   return True
 
 
 class Klein4(group):
@@ -632,6 +638,7 @@ class Klein4(group):
 	return I.isPair(x) and x[0] in (0,1) and x[1] in (0,1)
 
     def exponent(self):    return 2
+    def isAbelian(self):   return True
 
 
 class AutCyclic(group):
@@ -665,6 +672,8 @@ class AutCyclic(group):
     def showElem(self,x):  return  '*'       + str(x)     if x else  '1'
     def showUElem(self,x): return u'⋅'       + unicode(x) if x else u'1'
     def LaTeXElem(self,x): return r'\cdot{}' + str(x)     if x else  '1'
+
+    def isAbelian(self):   return True
 
 
 def HolCyclic(n):
@@ -713,6 +722,8 @@ class Symmetric(group):
     ### TODO: Prove this is correct:
     #def exponent(self): return reduce(I.lcm, xrange(1, self.n+1), 1)
 
+    def isAbelian(self):   return self.n < 3
+
 
 class Alternating(group):
     paramNames = ('n',)
@@ -737,6 +748,8 @@ class Alternating(group):
 
     def __contains__(self, x):
 	return isinstance(x, Permutation) and x.degree <= self.n and x.isEven
+
+    def isAbelian(self):   return self.n < 4
 
 
 def isHomomorphism(phi, g, h):
