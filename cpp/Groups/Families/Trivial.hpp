@@ -5,7 +5,15 @@
 #include "Groups/internals.hpp"
 
 namespace Groups {
- struct unit { };
+ struct unit {
+  int cmp(const unit&) const {return 0; }
+  bool operator==(const unit&) const {return true; }
+  bool operator< (const unit&) const {return false; }
+  bool operator> (const unit&) const {return false; }
+  bool operator>=(const unit&) const {return true; }
+  bool operator<=(const unit&) const {return true; }
+  bool operator!=(const unit&) const {return false; }
+ };
 
  class Trivial : public basic_group<unit>, public cmp_with<Trivial> {
  public:

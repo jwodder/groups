@@ -95,6 +95,10 @@ namespace Groups {
    return Subgroup<T>(g, g->closure(a));
   }
 
+  virtual std::set<T> elementSet() const {return elems; }
+
+  operator std::set<T>() const {return elems; }
+
  private:
   basic_group<T>* super;
   std::set<T> elems;

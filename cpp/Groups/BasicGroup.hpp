@@ -24,6 +24,11 @@ namespace Groups {
   virtual bool contains(const T&) const = 0;
   virtual int indexElem(const T&) const = 0;
 
+  virtual std::set<T> elementSet() const {
+   const std::vector<T>& elems = elements();
+   return std::set<T>(elems.begin(), elems.end());
+  }
+
   std::set<T> oper(const T& x, const std::set<T>& ys) const {
    std::set<T> result;
    typename std::set<T>::const_iterator iter;

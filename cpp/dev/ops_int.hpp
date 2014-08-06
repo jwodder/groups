@@ -11,9 +11,6 @@ using std::set;
 using std::vector;
 using Groups::basic_group;
 
-template<class T>
-set<T> vec2set(const vector<T>& vec) {return set<T>(vec.begin(), vec.end()); }
-
 template<class T> using SetWGens = pair<set<T>, set<set<T>>>;
 
 template<class T>
