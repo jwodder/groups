@@ -2,7 +2,6 @@
 - Add a header file that re-exports all of the other header files
 - Possible coding changes:
  - Rename `basic_group::order()` to `size`?
- - Rename "abelian" to "isAbelian"?
  - Rethink the memory management of basic_group objects passed to Direct's
    constructor
  - Rethink the way Element manages its Group*

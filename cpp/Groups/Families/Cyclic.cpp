@@ -24,7 +24,7 @@ namespace Groups {
   return out.str();
  }
 
- bool Cyclic::abelian() const {return true; }
+ bool Cyclic::isAbelian() const {return true; }
 
  Cyclic* Cyclic::copy() const {return new Cyclic(n); }
 

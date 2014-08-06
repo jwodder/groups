@@ -5,13 +5,12 @@ from   permutation import Permutation
 import internals as I
 
 __all__ = ["group", "subgroup",
-	   "Cyclic",
+	   "Cyclic", "AutCyclic", "HolCyclic", "CycSemiCyc",
 	   "Semidirect", "DirectProduct",
 	   "Dicyclic", "Quaternion",
 	   "Dihedral",
-	   "Trivial", "Klein4",
-	   "AutCyclic", "HolCyclic", "CycSemiCyc",
 	   "Symmetric", "Alternating",
+	   "Trivial", "Klein4",
 	   "Group", "Element",
 	   "isHomomorphism", "direct"]
 

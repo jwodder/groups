@@ -35,7 +35,7 @@ namespace Groups {
 
  string Alternating::showElem(const Permutation& x) const {return string(x); }
 
- bool Alternating::abelian() const {return degree < 4; }
+ bool Alternating::isAbelian() const {return degree < 4; }
 
  Alternating* Alternating::copy() const {return new Alternating(degree); }
 

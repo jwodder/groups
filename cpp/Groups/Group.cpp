@@ -57,7 +57,7 @@ namespace Groups {
   return strs[x.val];
  }
 
- bool Group::abelian() const {return abel; }
+ bool Group::isAbelian() const {return abel; }
 
  Group* Group::copy() const {return new Group(*this); }
 

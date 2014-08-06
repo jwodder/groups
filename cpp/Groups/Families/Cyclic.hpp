@@ -21,7 +21,7 @@ namespace Groups {
   virtual int order() const;
   virtual int order(const int&) const;
   virtual std::string showElem(const int&) const;
-  virtual bool abelian() const;
+  virtual bool isAbelian() const;
   virtual Cyclic* copy() const;
   virtual int cmp(const basic_group<int>*) const;
   virtual bool contains(const int&) const;

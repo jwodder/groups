@@ -18,7 +18,7 @@ namespace Groups {
   virtual int order() const;
   virtual int order(const Permutation&) const;
   virtual std::string showElem(const Permutation&) const;
-  virtual bool abelian() const;
+  virtual bool isAbelian() const;
   virtual Symmetric* copy() const;
   virtual int cmp(const basic_group<Permutation>*) const;
   virtual bool contains(const Permutation&) const;

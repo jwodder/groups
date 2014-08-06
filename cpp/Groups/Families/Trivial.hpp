@@ -18,7 +18,7 @@ namespace Groups {
   virtual int order() const {return 1; }
   virtual int order(const unit&) const {return 1; }
   virtual std::string showElem(const unit&) const {return "1"; }
-  virtual bool abelian() const {return true; }
+  virtual bool isAbelian() const {return true; }
   virtual Trivial* copy() const {return new Trivial(); }
   virtual int cmp(const basic_group<unit>*) const {return 0; }
   virtual bool contains(const unit&) const {return true; }

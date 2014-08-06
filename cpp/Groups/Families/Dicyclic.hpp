@@ -24,7 +24,7 @@ namespace Groups {
   virtual int order() const;
   virtual int order(const elem_t&) const;
   virtual std::string showElem(const elem_t&) const;
-  virtual bool abelian() const;
+  virtual bool isAbelian() const;
   virtual Dicyclic* copy() const;
   virtual int cmp(const basic_group<elem_t>*) const;
   virtual bool contains(const elem_t&) const;

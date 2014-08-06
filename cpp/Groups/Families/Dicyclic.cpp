@@ -42,7 +42,7 @@ namespace Groups {
   return out.str();
  }
 
- bool Dicyclic::abelian() const {return false; }
+ bool Dicyclic::isAbelian() const {return false; }
 
  Dicyclic* Dicyclic::copy() const {return new Dicyclic(n); }
 

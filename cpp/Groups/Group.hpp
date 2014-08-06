@@ -35,7 +35,7 @@ namespace Groups {
     orders[i] = g.order(gelems[i]);
     strs[i] = g.showElem(gelems[i]);
    }
-   abel = g.abelian();
+   abel = g.isAbelian();
   }
 
   Group(const Group& t)
@@ -54,7 +54,7 @@ namespace Groups {
   virtual int order(const Element&) const;
 	  std::string showElem(const int&) const;
   virtual std::string showElem(const Element&) const;
-  virtual bool abelian() const;
+  virtual bool isAbelian() const;
   virtual Group* copy() const;
   virtual int cmp(const basic_group<Element>*) const;
 	  bool contains(const int&) const;

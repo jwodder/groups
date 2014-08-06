@@ -68,7 +68,9 @@ namespace Groups {
    }
   }
 
-  virtual bool abelian() const {return left->abelian() && right->abelian(); }
+  virtual bool isAbelian() const {
+   return left->isAbelian() && right->isAbelian();
+  }
 
   virtual Direct<T,U>* copy() const {return new Direct<T,U>(left, right); }
 

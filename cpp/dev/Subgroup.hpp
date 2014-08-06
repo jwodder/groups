@@ -54,9 +54,9 @@ namespace Groups {
 
   virtual std::string showElem(const T& x) const {return super->showElem(x); }
 
-  virtual bool abelian() const {
+  virtual bool isAbelian() const {
    // TODO: Should this be cached?
-   if (super->abelian()) return true;
+   if (super->isAbelian()) return true;
    for (const T& x: elems) {
     for (const T& y: elems) {
      if (super->oper(x,y) != super->oper(y,x)) return false;

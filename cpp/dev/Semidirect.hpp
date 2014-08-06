@@ -79,8 +79,8 @@ namespace Groups {
    }
   }
 
-  virtual bool abelian() const {
-   return left->abelian() && right->abelian() && ??? ;
+  virtual bool isAbelian() const {
+   return left->isAbelian() && right->isAbelian() && ??? ;
   }
 
   virtual Semidirect<T,U,Func>* copy() const {

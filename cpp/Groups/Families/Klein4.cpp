@@ -25,7 +25,7 @@ namespace Groups {
 		 : x.second ?  "b" : "1";
  }
 
- bool Klein4::abelian() const {return true; }
+ bool Klein4::isAbelian() const {return true; }
 
  Klein4* Klein4::copy() const {return new Klein4(); }
 

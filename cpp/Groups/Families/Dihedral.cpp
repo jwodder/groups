@@ -37,7 +37,7 @@ namespace Groups {
   }
  }
 
- bool Dihedral::abelian() const {return n < 3; }
+ bool Dihedral::isAbelian() const {return n < 3; }
 
  Dihedral* Dihedral::copy() const {return new Dihedral(n); }
 

@@ -57,7 +57,7 @@ namespace Groups {
   }
  }
 
- bool AutCyclic::abelian() const {return true; }
+ bool AutCyclic::isAbelian() const {return true; }
 
  AutCyclic* AutCyclic::copy() const {return new AutCyclic(n); }
 

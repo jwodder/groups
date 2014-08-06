@@ -25,7 +25,7 @@ namespace Groups {
 
  string Symmetric::showElem(const Permutation& x) const {return string(x); }
 
- bool Symmetric::abelian() const {return degree < 3; }
+ bool Symmetric::isAbelian() const {return degree < 3; }
 
  Symmetric* Symmetric::copy() const {return new Symmetric(degree); }
 

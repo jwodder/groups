@@ -18,7 +18,7 @@ namespace Groups {
   virtual int order(const T&) const = 0;
   virtual std::vector<T> elements() const = 0;
   virtual std::string showElem(const T&) const = 0;
-  virtual bool abelian() const = 0;
+  virtual bool isAbelian() const = 0;
   virtual basic_group<T>* copy() const = 0;
   virtual int cmp(const basic_group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
