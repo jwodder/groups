@@ -85,7 +85,8 @@ class group(object):
 
     def isNormal(self, elems):
 	# whether `elems` is actually a subgroup is not checked
-	elems = set(elems)
+	if not isinstance(elems, subgroup):
+	    elems = set(elems)
 	return all(self.conjugate(x,y) in elems for x in self for y in elems)
 
     def isSubgroup(self, elems):
@@ -236,14 +237,16 @@ class group(object):
 	"""Returns an iterator over the left cosets (as `frozenset`s) of a
 	   subset `elems` of the group.  `elems` must be an iterable object;
 	   whether it actually defines a subset of the group is not checked."""
-	elems = set(elems)
+	if not isinstance(elems, subgroup):
+	    elems = set(elems)
 	return self._partition(lambda x: (self.oper(x,y) for y in elems))
 
     def rightCosets(self, elems):
 	"""Returns an iterator over the right cosets (as `frozenset`s) of a
 	   subset `elems` of the group.  `elems` must be an iterable object;
 	   whether it actually defines a subset of the group is not checked."""
-	elems = set(elems)
+	if not isinstance(elems, subgroup):
+	    elems = set(elems)
 	return self._partition(lambda x: (self.oper(y,x) for y in elems))
 
     def _partition(self, func):
