@@ -24,6 +24,7 @@ namespace Groups {
   virtual bool contains(const Permutation&) const;
   virtual int indexElem(const Permutation&) const;
   virtual int cmp(const Symmetric&) const;
+  //virtual int exponent() const;
   int getDegree() const {return degree; }
   int getN()      const {return degree; }
  private:

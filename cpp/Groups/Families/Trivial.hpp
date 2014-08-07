@@ -32,6 +32,7 @@ namespace Groups {
   virtual bool contains(const unit&) const {return true; }
   virtual int indexElem(const unit&) const {return 0; }
   virtual int cmp(const Trivial&) const {return 0; }
+  virtual int exponent() const {return 1; }
  };
 }
 

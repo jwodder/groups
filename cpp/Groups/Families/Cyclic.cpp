@@ -45,4 +45,6 @@ namespace Groups {
   if (contains(x)) return x;
   else throw group_mismatch("Cyclic::indexElem");
  }
+
+ int Cyclic::exponent() const {return n; }
 }

@@ -233,13 +233,6 @@ bool isHomomorphism(const Func& phi, const basic_group<T>& g, const basic_group<
 }
 
 template<class T>
-int exponent(const basic_group<T>& g) {
- int ex = 1;
- for (const T& x: g.elements()) ex = lcm(ex, g.order(x));
- return ex;
-}
-
-template<class T>
 set< set<T> > conjugacies(const basic_group<T>& g) {
  return partitionGroup(g, [&g](const T& x) -> set<T> {
   set<T> cclass;

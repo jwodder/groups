@@ -329,6 +329,9 @@ class subgroup(group):
     def showUElem(self,x):    return self.supergroup.showUElem(x)
     def LaTeXElem(self,x):    return self.supergroup.LaTeXElem(x)
 
+    def isAbelian(self):
+	return self.supergroup.isAbelian() or super(subgroup, self).isAbelian()
+
 
 class Group(group):
     paramNames = ('group',)

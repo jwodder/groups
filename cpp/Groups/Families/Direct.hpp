@@ -97,6 +97,12 @@ namespace Groups {
    else throw group_mismatch("Direct::indexElem");
   }
 
+/* TODO: Prove this is correct:
+  virtual int exponent() const {
+   return lcm(left->exponent(), right->exponent());
+  }
+*/
+
 //	basic_group<T>* leftGroup()        {return left; }
   const basic_group<T>* leftGroup()  const {return left; }
 //	basic_group<U>* rightGroup()       {return right; }

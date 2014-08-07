@@ -89,12 +89,22 @@ namespace Groups {
    return closure2A<T>(opcall(this), first, last);
   }
 
-  bool isSubset(const std::set<T>& elems) {
+  bool isSubset(const std::set<T>& elems) const {
    typename std::set<T>::const_iterator iter;
    for (iter = elems.begin(); iter != elems.end(); iter++) {
     if (!contains(*iter)) return false;
    }
    return true;
+  }
+
+  int exponent() const {
+   int ex = 1;
+   const std::vector<T>& elems = elements();
+   typename std::vector<T>::const_iterator iter;
+   for (iter = elems.begin(); iter != elems.end(); iter++) {
+    ex = lcm(ex, order(*iter));
+   }
+   return ex;
   }
 
  private:

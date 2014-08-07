@@ -27,6 +27,7 @@ namespace Groups {
   virtual bool contains(const int&) const;
   virtual int indexElem(const int&) const;
   virtual int cmp(const Cyclic&) const;
+  virtual int exponent() const;
   int residue(int) const;
   int getN() const {return n; }
  private:

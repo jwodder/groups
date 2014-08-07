@@ -24,6 +24,7 @@ namespace Groups {
   virtual bool contains(const elem_t&) const;
   virtual int indexElem(const elem_t&) const;
   virtual int cmp(const Klein4&) const;
+  virtual int exponent() const;
  };
 }
 

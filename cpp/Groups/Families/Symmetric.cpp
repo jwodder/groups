@@ -45,4 +45,12 @@ namespace Groups {
  }
 
  int Symmetric::indexElem(const Permutation& x) const {return x.lehmer(); }
+
+/* TODO: Prove this is correct:
+ int Symmetric::exponent() const {
+  int ex = 1;
+  for (int i=2; i<=degree; i++) ex = lcm(ex, i);
+  return ex;
+ }
+*/
 }

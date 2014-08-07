@@ -140,7 +140,7 @@ class GroupReader(object):
 		self.pushGroup(self.tmp)
 		return self.afterGroup
 	else:
-	    raise GroupReaderError('Number expected after subscript')
+	    raise GroupReaderError('Number expected after underscore')
 
     def afterGroup(self, t):  # The next token must be × or )
 	if t == '×':

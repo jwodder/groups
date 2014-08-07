@@ -63,4 +63,6 @@ namespace Groups {
   if (contains(x)) return x.first * 2 + x.second;
   else throw group_mismatch("Dicyclic::indexElem");
  }
+
+ int Dicyclic::exponent() const {return 2*n; }
 }

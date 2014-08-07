@@ -58,4 +58,6 @@ namespace Groups {
   if (contains(x)) return x.second + x.first * n;
   else throw group_mismatch("Dihedral::indexElem");
  }
+
+ int Dihedral::exponent() const {return lcm(2,n); }
 }

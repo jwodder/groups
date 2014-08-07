@@ -38,4 +38,6 @@ namespace Groups {
  bool Klein4::contains(const elem_t& x) const {return true; }
 
  int Klein4::indexElem(const elem_t& x) const {return x.first * 2 + x.second; }
+
+ int Klein4::exponent() const {return 2; }
 }
