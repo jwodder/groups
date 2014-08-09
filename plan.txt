@@ -39,6 +39,7 @@ least one language.
  - decompositions of elements into products of elements of a given generating
    set?
  - Thompson subgroup
+ - Frattini subgroup
 - Types of groups to implement:
  * trivial group
  * Klein 4-group
