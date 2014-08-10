@@ -3,23 +3,24 @@
 -- at the same height/rank.  Try to keep this from happening.
 
 import Data.Array
-import Data.IntSet (IntSet)
-import qualified Data.IntSet as ISet
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups (subgroups)
-import Groups.Types.Subset (Subset(..))
+import Groups.Types.Subset (Subset(..), (⊆))
+import qualified Groups.Types.Subset as Sub
 
+group :: Group
 --group = cycSemiCyc 8 4 (-1)
 --group = cycSemiCyc 8 4 3
 group = symmetric 4
 
+main :: IO ()
 main = do putStrLn "graph {"
 	  mapM_ (\(order, subs) -> do
 	   putStrLn $ " subgraph order" ++ show order ++ " {"
 	   putStrLn "  rank = \"same\""
 	   mapM_ (\i -> putStrLn $ "  s" ++ show i ++ " [shape = \"point\"" ++
-	    (if isNormal $ Subset (group, subsDex ! i) then "]"
+	    (if isNormal (subsDex ! i) then "]"
 	     else ", fillcolor = \"white\"]")) subs
 	   putStrLn " }") byOrdr
 	  mapM_ putStrLn [' ' : 's' : show i ++ " -- s" ++ show j
@@ -28,7 +29,7 @@ main = do putStrLn "graph {"
  where subsSet = subgroups group
        subsDex = listArray (0, Set.size subsSet - 1) $ Set.toAscList subsSet
        graph = lattice subsDex
-       byOrdr = classify (ISet.size . (subsDex !)) $ indices subsDex
+       byOrdr = classify (Sub.size . (subsDex !)) $ indices subsDex
 
 -- |Given a set of distinct subgroups of a single group, 'lattice' associates
 -- each pair @(g,h)@ of subgroups with 'True' if & only if @h@ covers @g@ under
@@ -36,13 +37,13 @@ main = do putStrLn "graph {"
 -- there is no other proper subgroup of @h@ that @g@ is also a subgroup of.
 -- Each subgroup is associated with an 'Ix' value by the supplied input 'Array'
 -- for ease of structuring the output data.
-lattice :: Ix a => Array a IntSet -> Array (a,a) Bool
+lattice :: Ix a => Array a Subset -> Array (a,a) Bool
 lattice subgrs = fst $ until (null . snd) (\(graph, (i,ss):xs) ->
  (graph // concat [((s,g), True) : [((h,g), False) | h <- below graph s]
 		   | s <- ss, (gn, gxs) <- xs, mod gn i == 0, g <- gxs,
-		     ISet.isSubsetOf (subgrs ! s) (subgrs ! g)], xs))
+		     (subgrs ! s) ⊆ (subgrs ! g)], xs))
  (listArray ((a,a), (b,b)) $ repeat False, byOrdr)
- where byOrdr = classify (ISet.size . (subgrs !)) $ indices subgrs
+ where byOrdr = classify (Sub.size . (subgrs !)) $ indices subgrs
        (a,b) = bounds subgrs
        below tbl g = [h | ((h, g'), True) <- assocs tbl, g' == g]
 
