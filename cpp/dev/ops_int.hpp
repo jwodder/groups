@@ -103,3 +103,8 @@ set< set<T> > partitionGroup(const basic_group<T>& g, const Func& f) {
  return partitions;
 }
 */
+
+template<class T>
+bool isSubset(const set<T>& a, const set<T>& b) {  // a ⊆ b
+ return includes(b.begin(), b.end(), a.begin(), a.end());
+}

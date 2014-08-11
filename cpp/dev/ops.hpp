@@ -262,3 +262,31 @@ set< set<T> > rightCosets(const basic_group<T>& g, const set<T>& elems) {
   return g.oper(elems, x);
  });
 }
+
+template<class T>
+vector<vector<bool>> lattice(const vector<set<T>>& subgrs) {
+ map<size_t, set<size_t>> byOrder;
+ for (size_t i=0; i<subgrs.size(); i++) {
+  byOrder[subgrs[i].size()].insert(i);
+ }
+ vector<vector<bool>> graph(subgrs.size(), vector<bool>(subgrs.size(), false));
+ map<size_t, set<size_t>>::iterator iter;
+ for (iter = byOrder.begin(); iter != byOrder.end(); iter++) {
+  map<size_t, set<size_t>>::iterator supIter = iter;
+  for (supIter++; supIter != byOrder.end(); supIter++) {
+   if (supIter->first % iter->first == 0) {
+    for (size_t i: iter->second) {
+     for (size_t j: supIter->second) {
+      if (isSubset(subgrs[i], subgrs[j])) {
+       graph[i][j] = true;
+       for (size_t k=0; k<subgrs.size(); k++) {
+	if (graph[k][i]) graph[k][j] = false;
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+ return graph;
+}
