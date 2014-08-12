@@ -9,6 +9,7 @@
   - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
   - Testing whether a given function is a valid homomorphism
   - Calculating left & right cosets of groups
+  - generalized dihedral groups
 - Make dev/lattice.hs use `Subset`s instead of `IntSet`s
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
   then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &

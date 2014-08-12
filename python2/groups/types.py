@@ -6,9 +6,8 @@ import internals as I
 
 __all__ = ["group", "subgroup",
 	   "Cyclic", "AutCyclic", "HolCyclic", "CycSemiCyc",
-	   "Semidirect", "DirectProduct",
+	   "Semidirect", "DirectProduct", "GDih", "Dihedral",
 	   "Dicyclic", "Quaternion",
-	   "Dihedral",
 	   "Symmetric", "Alternating",
 	   "Trivial", "Klein4",
 	   "Group", "Element",
@@ -491,7 +490,8 @@ class Semidirect(group):
 
 
 class DirectProduct(Semidirect):
-    paramNames = ('g', 'h')
+    def __init__(self, g, h):
+	super(DirectProduct, self).__init__(g, h, lambda y: lambda x: x)
 
     def oper(self, x, y):  return (self.g.oper(x[0], y[0]),
 				   self.h.oper(x[1], y[1]))
@@ -506,13 +506,33 @@ class DirectProduct(Semidirect):
     # LaTeXElem are inherited from semidirect (though the last three might have
     # to be overridden if "ba"-style showing is ever implemented).
 
-    @property
-    def phi(self): return lambda y: lambda x: x
-
     ### TODO: Prove this is correct:
     #def exponent(self): return I.lcm(self.g.exponent(), self.h.exponent())
 
     def isAbelian(self): return self.g.isAbelian() and self.h.isAbelian()
+
+
+class GDih(Semidirect):
+    ### Should `h` be a "boolean" group instead?  Should the "bool" element
+    ### come before the abelian element, as with Dihedral, or should Dihedral
+    ### have its elements flipped?
+
+    def __init__(self, g):
+	if not g.isAbelian():
+	    raise ValueError('argument must be abelian')
+	super(GDih, self).__init__(g, Cyclic(2),
+				   lambda y: lambda x: g.invert(x) if y else x)
+
+    def invert(self,x): return x if x[1] else (self.g.invert(x[0]), 0)
+    def order(self, x): return 2 if x[1] else self.g.order(x[0])
+
+    def __str__(self): return 'Dih(%s)' % (str(self.g),)
+    def __unicode__(self): return u'Dih(%s)' % (unicode(self.g),)
+    def LaTeX(self): return r'\operatorname{Dih}(%s)' % (self.g.LaTeX(),)
+
+    def exponent(self):  return I.lcm(2, self.g.exponent())
+
+    ###def isAbelian(self): ### `g` is of the form E_{2^n} for some n
 
 
 class Dicyclic(group):

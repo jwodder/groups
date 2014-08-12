@@ -18,10 +18,6 @@ Q8sZ2 = Semidirect(Quaternion(2), Cyclic(2),
 V4sZ4 = Semidirect(Klein4(), Cyclic(4),
 		   lambda x: lambda (a,b): (b,a) if x%2 else (a,b))
 
-def gdih(g):
-    return Semidirect(g, Cyclic(2), lambda y: lambda x: g.invert(x) if y else x)
-    ### TODO: Set name to "\Dih(" + str(g) + ")"
-
 o32nonA = [
     Quaternion(4),
     Dihedral(16),
@@ -42,7 +38,7 @@ o32nonA = [
     direct(Dihedral(4), Cyclic(4)),
     CycSemiCyc(8,4,5),
     CycSemiCyc(16,2,9),
-    gdih(direct(Cyclic(4), Cyclic(4))),
+    GDih(direct(Cyclic(4), Cyclic(4))),
     ### Q_8\rtimes\Z_4
     ### Q_8\rtimes V_4
 ]
@@ -73,7 +69,7 @@ groupList = [
       direct(Dihedral(4), Cyclic(2)), CycSemiCyc(4,4,-1), V4sZ4, Dihedral(8)]),
     ([Cyclic(17)], []),
     ([Cyclic(18), direct(Cyclic(6), Cyclic(3))],
-     [Dihedral(9), direct(Symmetric(3), Cyclic(3)), gdih(elemAbel(3,2))]),
+     [Dihedral(9), direct(Symmetric(3), Cyclic(3)), GDih(elemAbel(3,2))]),
     ([Cyclic(19)], []),
     ([Cyclic(20), direct(Cyclic(10), Cyclic(2))],
      [CycSemiCyc(5,4,3),  ### TODO: Set name to "F_{20}"

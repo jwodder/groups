@@ -27,6 +27,7 @@
  - CycSemiCyc
  - subgroups
  - elementary abelian groups?
+ - GDih
 - Make `groups/about.py` calculate/output the following:
  - automorphisms that elements induce by conjugation
  - commutators?

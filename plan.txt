@@ -46,7 +46,7 @@ least one language.
  * cyclic groups
  * multiplication modulo n
  * dihedral groups
-  - generalized dihedral groups
+  * generalized dihedral groups
  * dicyclic groups
   * generalized quaternion groups
    * quaternion group
