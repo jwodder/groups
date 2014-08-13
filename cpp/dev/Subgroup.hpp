@@ -27,7 +27,7 @@ namespace Groups {
 
   Subgroup(const Subgroup<T>& g) : super(g.super->copy()), elems(g.elems) { }
 
-  Subgroup& operator=(const Subgroup& g) {
+  Subgroup<T>& operator=(const Subgroup<T>& g) {
    if (this != &g) {
     delete super;
     super = g.super->copy();
