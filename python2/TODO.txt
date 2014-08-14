@@ -1,7 +1,6 @@
 - Document everything!
 - Handle all of the sections marked "TODO" in the code
 - Implement all of the features in plan.txt
- - Implement permutation groups? (or just use subgroups of Symmetric)
  - Implement configurable element showing
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values
  - subgroups returned by `generate` should have their name be "⟨elements of

@@ -4,11 +4,11 @@
 - Add a Makefile for dev/ and tests/
 - Implement all of the features in plan.txt
  - Features that the Haskell version is behind on:
-  - Subgroups as a group type
-  - Converting elements to strings
-  - Creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
-  - Testing whether a given function is a valid homomorphism
-  - Calculating left & right cosets of groups
+  - subgroups as a group type
+  - converting elements to strings
+  - creating arbitrary elements of given groups (cf. `mkelem` in dev/misc.hs)
+  - testing whether a given function is a valid homomorphism
+  - calculating left & right cosets of groups
   - generalized dihedral groups
 - Make dev/lattice.hs use `Subset`s instead of `IntSet`s
 - Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
@@ -30,3 +30,4 @@
   element)
 - Make Groups.hs re-export Subgroups.hs?
 - Add a function for generating the Cayley table of a given group
+- Replace permutation groups with subgroups of symmetric groups

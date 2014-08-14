@@ -18,11 +18,21 @@ namespace Groups {
   virtual int order(const T&) const = 0;
   virtual std::vector<T> elements() const = 0;
   virtual std::string showElem(const T&) const = 0;
-  virtual bool isAbelian() const = 0;
   virtual basic_group<T>* copy() const = 0;
   virtual int cmp(const basic_group<T>*) const = 0;
   virtual bool contains(const T&) const = 0;
   virtual int indexElem(const T&) const = 0;
+
+  virtual bool isAbelian() const {
+   const std::vector<T>& elems = elements();
+   typename std::vector<T>::const_iterator xiter, yiter;
+   for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
+    for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
+     if (oper(*xiter, *yiter) != oper(*yiter, *xiter)) return false;
+    }
+   }
+   return true;
+  }
 
   virtual std::set<T> elementSet() const {
    const std::vector<T>& elems = elements();
