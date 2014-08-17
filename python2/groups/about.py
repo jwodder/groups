@@ -1,5 +1,6 @@
 import sys
-from .types     import group
+from operator   import and_
+from .types     import group, lattice
 from .internals import gcd
 
 __all__ = ["about", "printAbout"]
@@ -13,6 +14,8 @@ def about(g):
 		       for (i,h) in enumerate(subgrSorted))
     def set2list(s): return [g.showElem(x) for x in sorted(s)]
     def nameSet(s):  return subgrNames[frozenset(s)]
+    graph = lattice(subgrGens.iterkeys())
+    total = frozenset(g)
     lc = []
     for h in g.lowerCentral():
 	lc.append(nameSet(h))
@@ -37,9 +40,10 @@ def about(g):
 	"order":    len(g),
 	"abelian":  g.isAbelian(),
 	"exponent": g.exponent(),
-	"rank":     min(len(gen) for gen in subgrGens[frozenset(g)]),
-	"center":   nameSet(g.center()),
+	"rank":     min(len(gen) for gen in subgrGens[total]),
 	"identity": g.showElem(g.identity()),
+	"center":   nameSet(g.center()),
+	"total_subgroup": nameSet(total),
 	"elements": dict((g.showElem(x),
 			  {"index":       i,
 			   "order":       g.order(x),
@@ -55,6 +59,7 @@ def about(g):
 			    "centralizer": nameSet(g.centralizer(h)),
 			    "normalizer":  nameSet(g.normalizer(h)),
 			    "generators":  [map(g.showElem, gen) for gen in sorted(tuple(sorted(gen)) for gen in subgrGens[h])],
+			    "maximal_subgroups": [nameSet(k) for k in sorted(graph[h], key=lambda k: subgrKeys[k])],
 			   }) for (i,h) in enumerate(subgrSorted)),
 	"conjugacy_classes":    map(set2list, g.conjugacies()),
 	"nilpotence":           nilpotence,
@@ -64,11 +69,14 @@ def about(g):
 	"simple": len(g) != 1 and not any(g.isNormal(h)
 					  for h in subgrGens
 					  if len(h) not in (1, len(g))),
+	"Frattini_subgroup": nameSet(reduce(and_, graph[total]) if graph[total]
+								else total),
     }
 
-aboutOrder = """name order abelian exponent rank center identity elements
-		subgroups conjugacy_classes nilpotence lower_central_series
-		commutator_subgroup solvable simple""".split()
+aboutOrder = """name order abelian exponent rank identity center total_subgroup
+		elements subgroups conjugacy_classes nilpotence
+		lower_central_series commutator_subgroup solvable simple
+		Frattini_subgroup""".split()
 
 def printAbout(data, out=None, indent=0):
     if isinstance(data, group):

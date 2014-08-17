@@ -18,6 +18,7 @@
 - Add a LaTeX version of the `cayley` method
 - Give `bin/cayley.py` switches for setting the output format (plain ASCII,
   Unicode, and eventually LaTeX)
+- Add a way to call `Quaternion` with the size of the desired group
 - Add support to groups/read.py for:
  - semidirect products
  - "Z/nZ" notation for Cyclic
@@ -29,8 +30,6 @@
  - GDih
 - Make `groups/about.py` calculate/output the following:
  - automorphisms that elements induce by conjugation
- - maximal subgroups
- - maximal subgroups of each subgroup
  - commutators?
  - cosets of subgroups?
  - abelianity of subgroups?
