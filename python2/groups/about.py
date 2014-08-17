@@ -25,9 +25,7 @@ def about(g):
     if nilpotence is not None:
 	solvable = True
     else:
-	subQtys = set()
-	for h in subgrGens:
-	    subQtys.add(len(h))
+	subQtys = set(len(h) for h in subgrGens)
 	for i in range(2, len(g)):
 	    if len(g) % i == 0 and gcd(i, len(g)//i) == 1 and i not in subQtys:
 		solvable = False

@@ -30,5 +30,5 @@ for order in sorted(byOrder):
 graph = lattice(subsSet)
 for j in graph:
     for i in graph[j]:
-	print ' s%d -- s%d' % (subsDex[i], subsDex[j])
+	print ' s%d -- s%d' % (subsDex[j], subsDex[i])
 print '}'

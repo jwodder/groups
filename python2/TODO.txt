@@ -29,9 +29,9 @@
  - GDih
 - Make `groups/about.py` calculate/output the following:
  - automorphisms that elements induce by conjugation
+ - maximal subgroups
+ - maximal subgroups of each subgroup
  - commutators?
- - maximal subgroups?
- - maximal subgroups of each subgroup?
  - cosets of subgroups?
  - abelianity of subgroups?
  - normal subgroups within subgroups?
