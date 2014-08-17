@@ -3,7 +3,7 @@
 - Implement all of the features in plan.txt
  - Implement configurable element showing
 - Add a way to set an individual group's __str__, __unicode__, & LaTeX values
- - subgroups returned by `generate` should have their name be "⟨elements of
+ - Subgroups returned by `generate` should have their names be "⟨elements of
    generating set⟩"
 - Should .oper (and other group methods?) raise a TypeError/ValueError when
   given values outside the group?

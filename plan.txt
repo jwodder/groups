@@ -40,6 +40,7 @@ least one language.
    set?
  - Thompson subgroup
  - Frattini subgroup
+ - maximal subgroups of groups & subgroups
 - Types of groups to implement:
  * trivial group
  * Klein 4-group

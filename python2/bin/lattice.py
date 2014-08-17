@@ -1,3 +1,8 @@
+#!/usr/bin/python
+"""Prints the subgroup lattice of a given group as a DOT file.  Normal
+   subgroups are represented as filled circles, while non-normal subgroups are
+   empty circles."""
+
 # TODO: It seems that, if two adjacent subgraphs have no lines between them
 # (e.g., the 8 and 6 subgraphs in the S_4 lattice), then `dot` will draw them
 # at the same height/rank.  Try to keep this from happening.
