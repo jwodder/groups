@@ -583,9 +583,20 @@ class Dicyclic(group):
 
 
 class Quaternion(Dicyclic):
-    def __init__(self, n=2):
-	if n < 2: raise ValueError('n must be at least 2')
-	super(Quaternion, self).__init__(1 << (n-1))
+    def __init__(self, index=None, order=None):
+	if index is not None:
+	    if index < 2: raise ValueError('index must be at least 2')
+	    n = 1 << (index-1)
+	elif order is not None:
+	    if order < 8: raise ValueError('order must be at least 8')
+	    o = order
+	    while not (o & 1):
+		o >>= 1
+	    if o != 1: raise ValueError('order must be a power of 2')
+	    n = order >> 2
+	else:
+	    n = 2
+	super(Quaternion, self).__init__(n)
 
     def __str__(self): return 'Q' + I.sub(len(self))
 

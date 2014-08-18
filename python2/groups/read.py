@@ -68,23 +68,12 @@ def lex(s):
 	else:
 	    raise GroupReaderError('Invalid lexeme: %r' % (s[i:].split()[0],))
 
-def quat(n):
-    if n < 8:
-	raise GroupReaderError('Quaternion subscript must be at least 8')
-    i = 0
-    while not (n & 1):
-	n >>= 1
-	i += 1
-    if n != 1:
-	raise GroupReaderError('Quaternion subscript must be a power of 2')
-    return G.Quaternion(i-1)
-
 subscripted = {"Dih": G.Dihedral,
 	       "Dic": G.Dicyclic,
 	       "Z":   G.Cyclic,
 	       "S":   G.Symmetric,
 	       "A":   G.Alternating,
-	       "Q":   quat}
+	       "Q":   lambda n: G.Quaternion(order=n)}
 
 class GroupReader(object):
     def __init__(self):
