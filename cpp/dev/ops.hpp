@@ -14,26 +14,6 @@ using std::set;
 using std::vector;
 using Groups::basic_group;
 
-template<class T, class Iter>
-set<T> centralizer(const basic_group<T>& g, Iter first, Iter last) {
- const vector<T> elemVec = g.elements();
- set<T> elems(elemVec.begin(), elemVec.end());
- for (; first != last; first++) {
-  set<T>::iterator iter;
-  for (iter = elems.begin(); iter != elems.end(); ) {
-   if (g.oper(*first, *iter) != g.oper(*iter, *first)) elems.erase(iter++);
-   else iter++;
-  }
- }
- return elems;
-}
-
-template<class T>
-set<T> center(const basic_group<T>& g) {
- const vector<T>& elems = g.elements();
- return centralizer(g, elems.begin(), elems.end());
-}
-
 template<class T>
 bool normalizes(const basic_group<T>& g, const T& x, const set<T>& elems) {
  // cf. `norms` in the Haskell version

@@ -131,6 +131,28 @@ namespace Groups {
    return cyke;
   }
 
+  template<class Iter>
+  std::set<T> centralizer(Iter first, Iter last) const {
+   std::set<T> elems = elementSet();
+   for (; first != last; first++) {
+    typename std::set<T>::iterator iter;
+    for (iter = elems.begin(); iter != elems.end(); ) {
+     if (oper(*first, *iter) != oper(*iter, *first)) elems.erase(iter++);
+     else iter++;
+    }
+   }
+   return elems;
+  }
+
+  std::set<T> centralizer(const std::set<T>& xs) const {
+   return centralizer(xs.begin(), xs.end());
+  }
+
+  std::set<T> center() const {
+   const std::vector<T>& elems = elements();
+   return centralizer(elems.begin(), elems.end());
+  }
+
  private:
   struct opcall {  // TODO: Look for a better way to accomplish this.
    const basic_group<T>* g;
