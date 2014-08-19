@@ -107,7 +107,7 @@ namespace Groups {
    return true;
   }
 
-  int exponent() const {
+  virtual int exponent() const {
    int ex = 1;
    const std::vector<T>& elems = elements();
    typename std::vector<T>::const_iterator iter;
@@ -115,6 +115,20 @@ namespace Groups {
     ex = lcm(ex, order(*iter));
    }
    return ex;
+  }
+
+  std::set<T> cycle(const T& x) const {
+   // TODO: Rename this to `cycleSet` in order to keep its return type from
+   // being confused with that of `Element::cycle`?
+   const T& id = identity();
+   std::set<T> cyke;
+   cyke.insert(id);
+   T y = x;
+   while (y != id) {
+    cyke.insert(y);
+    y = oper(y,x);
+   }
+   return cyke;
   }
 
  private:

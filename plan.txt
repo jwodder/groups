@@ -25,8 +25,8 @@ least one language.
  * whether a given function is a valid homomorphism
  - whether two groups are isomorphic
  - automorphisms
- - commutators
- - commutator subgroup
+ * commutators
+ * commutator subgroup
  * lower central series
  - upper central series
  * nilpotence class

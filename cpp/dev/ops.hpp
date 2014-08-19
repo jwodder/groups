@@ -133,18 +133,6 @@ set<T> commutators(const basic_group<T>& g, const set<T>& a, const set<T>& b) {
  return g.closure(outset);
 }
 
-template<class T>
-set<T> cycle(const basic_group<T>& g, const T& x) {
- const T id = g.identity();
- set<T> cyke{id};
- T y = x;
- while (y != id) {
-  cyke.insert(y);
-  y = g.oper(y,x);
- }
- return cyke;
-}
-
 /**
   * Given two subsets of a group that are already closed under the group
   * operation (i.e., that are subgroups; this precondition is not checked),

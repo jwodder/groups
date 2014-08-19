@@ -10,18 +10,6 @@
 using namespace std;
 using namespace Groups;
 
-template<class T> set<T> cycle(const basic_group<T>& g, const T& x) {
- const T id = g.identity();
- set<T> cyke;
- cyke.insert(id);
- T y = x;
- while (y != id) {
-  cyke.insert(y);
-  y = g.oper(y,x);
- }
- return cyke;
-}
-
 template<class T>
 set<T> set_union(const set<T>& a, const set<T>& b) {
  set<T> c;
@@ -115,7 +103,7 @@ map< set<T>, set< set<T> > > subgroupGens(const basic_group<T>& g) {
  for (giter = gelems.begin(); giter != gelems.end(); giter++) {
   set<T> single;
   single.insert(*giter);
-  cycles[cycle(g, *giter)].insert(single);
+  cycles[g.cycle(*giter)].insert(single);
  }
  map< set<T>, set< set<T> > > subgrs(cycles);
  typename map< set<T>, set< set<T> > >::iterator cyclesIter;

@@ -24,13 +24,12 @@
  - "Aut(Z_n)" (and "Aut(Z/nZ)") notation for AutCyclic
  - HolCyclic
  - CycSemiCyc
+ - GDih
  - subgroups
  - elementary abelian groups
- - GDih
 - Make `groups/about.py` calculate/output the following:
  - automorphisms that elements induce by conjugation
  - commutators?
- - cosets of subgroups?
  - abelianity of subgroups?
  - normal subgroups within subgroups?
  - the Cayley table?
