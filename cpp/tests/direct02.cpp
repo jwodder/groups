@@ -10,7 +10,7 @@ using namespace Groups;
 int main() {
  Dicyclic raw1(2);
  Cyclic raw2(2);
- Direct<pair<int,bool>, int> raw3(raw1, raw2);
+ Direct<Dicyclic, Cyclic> raw3(raw1, raw2);
  Group g(raw3);
  showTable(cout, g);
  return 0;

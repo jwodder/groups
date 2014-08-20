@@ -8,114 +8,99 @@
 #include "Groups/internals.hpp"  /* cartesian, lcm */
 
 namespace Groups {
- template<class T, class U>
- class Direct : public basic_group< std::pair<T,U> >,
-		public cmp_with< Direct<T,U> > {
+ template<class G, class H>
+ class Direct : public basic_group< std::pair<typename G::elem_t,
+					      typename H::elem_t> >,
+		public cmp_with< Direct<G,H> > {
  public:
-  typedef std::pair<T,U> elem_t;  // Why is this necessary?
+  typedef std::pair<typename G::elem_t, typename H::elem_t> elem_t;
+   // Why is this necessary?
 
-  Direct(const basic_group<T>& g, const basic_group<U>& h)
-   : left(g.copy()), right(h.copy()) { }
+  Direct(const G& g, const H& h) : _left(g), _right(h) { }
 
-  Direct(const basic_group<T>* g, const basic_group<U>* h)
-   : left(g->copy()), right(h->copy()) { }
-
-  Direct(const Direct<T,U>& d)
-   : left(d.left->copy()), right(d.right->copy()) { }
-
-  Direct& operator=(const Direct& d) {
-   if (this != &d) {
-    delete left;
-    delete right;
-    left = d.left->copy();
-    right = d.right->copy();
-   }
-   return *this;
-  }
-
-  virtual ~Direct() {delete left; delete right; }
+  virtual ~Direct() { }
 
   virtual elem_t oper(const elem_t& x, const elem_t& y) const {
-   return elem_t(left->oper(x.first, y.first), right->oper(x.second, y.second));
+   return elem_t(_left.oper(x.first, y.first), _right.oper(x.second, y.second));
   }
 
   virtual elem_t identity() const {
-   return elem_t(left->identity(), right->identity());
+   return elem_t(_left.identity(), _right.identity());
   }
 
   virtual std::vector<elem_t> elements() const {
-   return cartesian(left->elements(), right->elements());
+   return cartesian(_left.elements(), _right.elements());
   }
 
   virtual elem_t invert(const elem_t& x) const {
-   return elem_t(left->invert(x.first), right->invert(x.second));
+   return elem_t(_left.invert(x.first), _right.invert(x.second));
   }
 
-  virtual int order() const {return left->order() * right->order(); }
+  virtual int order() const {return _left.order() * _right.order(); }
 
   virtual int order(const elem_t& x) const {
-   return lcm(left->order(x.first), right->order(x.second));
+   return lcm(_left.order(x.first), _right.order(x.second));
   }
 
   virtual std::string showElem(const elem_t& x) const {
-   if (x.first == left->identity() && x.second == right->identity()) {
+   if (x.first == _left.identity() && x.second == _right.identity()) {
     return "1";
    } else {
     std::ostringstream out;
-    out << '(' << left->showElem(x.first) << ", " << right->showElem(x.second)
+    out << '(' << _left.showElem(x.first) << ", " << _right.showElem(x.second)
 	<< ')';
     return out.str();
    }
   }
 
   virtual bool isAbelian() const {
-   return left->isAbelian() && right->isAbelian();
+   return _left.isAbelian() && _right.isAbelian();
   }
 
-  virtual Direct<T,U>* copy() const {return new Direct<T,U>(left, right); }
+  virtual Direct<G,H>* copy() const {return new Direct<G,H>(_left, _right); }
 
   virtual int cmp(const basic_group<elem_t>* other) const {
    int ct = cmpTypes(*this, *other);
    if (ct != 0) return ct;
-   const Direct<T,U>* c = static_cast<const Direct<T,U>*>(other);
+   const Direct<G,H>* c = static_cast<const Direct<G,H>*>(other);
    return cmp(*c);
   }
 
-  virtual int cmp(const Direct<T,U>& other) const {
-   int cmpLeft = left->cmp(other.left);
+  virtual int cmp(const Direct<G,H>& other) const {
+   int cmpLeft = _left.cmp(other._left);
    if (cmpLeft != 0) return cmpLeft;
-   return right->cmp(other.right);
+   return _right.cmp(other._right);
   }
 
   virtual bool contains(const elem_t& x) const {
-   return left->contains(x.first) && right->contains(x.second);
+   return _left.contains(x.first) && _right.contains(x.second);
   }
 
   virtual int indexElem(const elem_t& x) const {
    if (contains(x))
-    return left->indexElem(x.first)*right->order() + right->indexElem(x.second);
+    return _left.indexElem(x.first)*_right.order() + _right.indexElem(x.second);
    else throw group_mismatch("Direct::indexElem");
   }
 
 /* TODO: Prove this is correct:
   virtual int exponent() const {
-   return lcm(left->exponent(), right->exponent());
+   return lcm(_left.exponent(), _right.exponent());
   }
 */
 
-//	basic_group<T>* leftGroup()        {return left; }
-  const basic_group<T>* leftGroup()  const {return left; }
-//	basic_group<U>* rightGroup()       {return right; }
-  const basic_group<U>* rightGroup() const {return right; }
+	G  left()        {return _left; }
+  const G& left()  const {return _left; }
+	H  right()       {return _right; }
+  const H& right() const {return _right; }
 
-  elem_t pair(const T& x, const U& y) const {
-   if (left->contains(x) && right->contains(y)) return elem_t(x,y);
+  elem_t pair(const typename G::elem_t& x, const typename H::elem_t& y) const {
+   if (_left.contains(x) && _right.contains(y)) return elem_t(x,y);
    else throw group_mismatch("Direct::pair");
   }
 
  private:
-  basic_group<T>* left;
-  basic_group<U>* right;
+  G _left;
+  H _right;
  };
 }
 

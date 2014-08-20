@@ -2,18 +2,15 @@
 - Add a header file that re-exports all of the other header files
 - Possible coding changes:
  - Rename `basic_group::order()` to `size`?
- - Rethink the memory management of basic_group objects passed to Direct's
-   constructor
  - Rethink the way Element manages its Group*
- - Should Direct take the types of its component groups rather than their
-   elements as its template parameters? (e.g., `Direct<Cyclic, Symmetric>`
-   rather than `Direct<int, Permutation>`)
  - Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
  - Should `order` (both kinds) and `indexElem` return `size_t`s instead of
    `int`s?
  - Should `Permutation` use `size_t`s instead of `int`s?
  - Should internal functions be placed in a `Groups::internals` namespace in
    order to avoid accidental/excessive pollution by `using namespace Groups;`?
+ - Eliminate `basic_group::cmp(basic_group<T>*)`?
+ - Eliminate `basic_group::copy`?
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
 - Figure out a way to generalize the implementations of the
@@ -25,6 +22,7 @@
  - The identity should always be the first element of elements().
  - indexElem() should return an element's index in the elements() vector.
 - Implement move constructors & move assignment operators
+- Bring back Tabular and name it RawGroup?
 
 FEATURES
 - Implement all of the features in plan.txt

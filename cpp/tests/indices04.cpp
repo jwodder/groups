@@ -9,8 +9,8 @@ using namespace Groups;
 int main() {
  Cyclic g1(5);
  Dicyclic g2(3);
- Direct<int, Dicyclic::elem_t> g(g1, g2);
- typedef Direct<int, Dicyclic::elem_t>::elem_t elem_t;
+ Direct<Cyclic, Dicyclic> g(g1, g2);
+ typedef Direct<Cyclic, Dicyclic>::elem_t elem_t;
  vector<elem_t> elems = g.elements();
  for (int i=0; i < (int) elems.size(); i++) {
   int j = g.indexElem(elems[i]);

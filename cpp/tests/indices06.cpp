@@ -10,7 +10,7 @@ using namespace Groups;
 int main() {
  Cyclic g1(5);
  Dicyclic g2(3);
- Group g(Direct<int, Dicyclic::elem_t>(g1, g2));
+ Group g(Direct<Cyclic, Dicyclic>(g1, g2));
  typedef Element elem_t;
  vector<elem_t> elems = g.elements();
  for (int i=0; i < (int) elems.size(); i++) {
