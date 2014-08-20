@@ -85,7 +85,7 @@ namespace Groups {
   }
 
   // TODO: Rethink name:
-	G  base()       {return _base; }
+	G& base()       {return _base; }
   const G& base() const {return _base; }
 
  private:

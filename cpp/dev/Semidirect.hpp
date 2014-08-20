@@ -8,127 +8,114 @@
 #include "Groups/internals.hpp"  /* cartesian */
 
 namespace Groups {
- template<class T, class U, class Func>
- class Semidirect : public basic_group< std::pair<T,U> >,
-		    public cmp_with< Semidirect<T,U,Func> > {
+ template<class G, class H, class Func>
+ class Semidirect : public basic_group< std::pair<typename G::elem_t,
+						  typename H::elem_t> >,
+		    public cmp_with< Semidirect<G,H,Func> > {
  public:
-  typedef std::pair<T,U> elem_t;  // Why is this necessary?
+  typedef typename G::elem_t left_t;
+  typedef typename H::elem_t right_t;
+  typedef std::pair<left_t, right_t> elem_t;  // Why is this necessary?
 
-  Semidirect(const basic_group<T>& g, const basic_group<U>& h, const Func& f)
-   : left(g.copy()), right(h.copy()), phi(f) { }
+  Semidirect(const G& g, const H& h, const Func& f) : left(g), right(h), phi(f)
+  { }
 
-  Semidirect(const basic_group<T>* g, const basic_group<U>* h, const Func& f)
-   : left(g->copy()), right(h->copy()), phi(f) { }
-
-  Semidirect(const Semidirect<T,U>& d)
-   : left(d.left->copy()), right(d.right->copy()), phi(d.phi) { }
-
-  Semidirect& operator=(const Semidirect& d) {
-   if (this != &d) {
-    delete left;
-    delete right;
-    left = d.left->copy();
-    right = d.right->copy();
-    phi = d.phi;
-   }
-   return *this;
-  }
-
-  virtual ~Semidirect() {delete left; delete right; }
+  virtual ~Semidirect() { }
 
   virtual elem_t oper(const elem_t& x, const elem_t& y) const {
-   return elem_t(left->oper(x.first, phi(x.second)(y.first)),
-		 right->oper(x.second, y.second));
+   return elem_t(_left.oper(x.first, phi(x.second, y.first)),
+		 _right.oper(x.second, y.second));
   }
 
   virtual elem_t identity() const {
-   return elem_t(left->identity(), right->identity());
+   return elem_t(_left.identity(), _right.identity());
   }
 
   virtual std::vector<elem_t> elements() const {
-   return cartesian(left->elements(), right->elements());
+   return cartesian(_left.elements(), _right.elements());
   }
 
   virtual elem_t invert(const elem_t& x) const {
-   const U& binv = right->invert(x.second);
-   return elem_t(phi(binv)(left->invert(x.first)), binv);
+   const U& binv = _right.invert(x.second);
+   return elem_t(phi(binv, _left.invert(x.first)), binv);
   }
 
-  virtual int order() const {return left->order() * right->order(); }
+  virtual int order() const {return _left.order() * _right.order(); }
 
   virtual int order(const elem_t& x) const {
    // Should the results be cached somehow?
    int i = 1;
    elem_t val = x;
-   while (val.first != left->identity() && val.second != right->identity()) {
+   while (val.first != _left.identity() && val.second != _right.identity()) {
     val = oper(val, x);
     i++;
    }
-   if (val.first == left->identity()) return i * right->order(val.second);
-   else return i * left->order(val.first);
+   if (val.first == _left.identity()) return i * _right.order(val.second);
+   else return i * _left.order(val.first);
   }
 
   virtual std::string showElem(const elem_t& x) const {
-   if (x.first == left->identity() && x.second == right->identity()) {
+   if (x.first == _left.identity() && x.second == _right.identity()) {
     return "1";
    } else {
     std::ostringstream out;
-    out << '(' << left->showElem(x.first) << ", " << right->showElem(x.second)
+    out << '(' << _left.showElem(x.first) << ", " << _right.showElem(x.second)
 	<< ')';
     return out.str();
    }
   }
 
   virtual bool isAbelian() const {
-   return left->isAbelian() && right->isAbelian() && ??? ;
+   return _left.isAbelian() && _right.isAbelian() && ??? ;
   }
 
-  virtual Semidirect<T,U,Func>* copy() const {
-   return new Semidirect(left, right, phi);
-  }
+  virtual Semidirect<G,H,Func>* copy() const {return new Semidirect(*this); }
 
   virtual int cmp(const basic_group<elem_t>* other) const {
    int ct = cmpTypes(*this, *other);
    if (ct != 0) return ct;
-   const Semidirect<T,U,Func>* c
-    = static_cast<const Semidirect<T,U,Func>*>(other);
+   const Semidirect<G,H,Func>* c
+    = static_cast<const Semidirect<G,H,Func>*>(other);
    return cmp(*c);
   }
 
-  virtual int cmp(const Semidirect<T,U>& other) const {
-   int cmpLeft = left->cmp(other.left);
+  virtual int cmp(const Semidirect<G,H>& other) const {
+   int cmpLeft = _left.cmp(other._left);
    if (cmpLeft != 0) return cmpLeft;
-   int cmpRight = right->cmp(other.right);
+   int cmpRight = _right.cmp(other._right);
    if (cmpRight != 0) return cmpRight;
-   return phi < other.phi ? -1 : phi > other.phi ? 1 : 0;
+   return _phi < other._phi ? -1 : _phi > other._phi ? 1 : 0;
   }
 
   virtual bool contains(const elem_t& x) const {
-   return left->contains(x.first) && right->contains(x.second);
+   return _left.contains(x.first) && _right.contains(x.second);
   }
 
   virtual int indexElem(const elem_t& x) const {
    if (contains(x))
-    return left->indexElem(x.first)*right->order() + right->indexElem(x.second);
+    return _left.indexElem(x.first)*_right.order() + _right.indexElem(x.second);
    else throw group_mismatch("Semidirect::indexElem");
   }
 
-//	basic_group<T>* leftGroup()        {return left; }
-  const basic_group<T>* leftGroup()  const {return left; }
-//	basic_group<U>* rightGroup()       {return right; }
-  const basic_group<U>* rightGroup() const {return right; }
+	G& left()        {return _left; }
+  const G& left()  const {return _left; }
+	H& right()       {return _right; }
+  const H& right() const {return _right; }
 
-  const Func& getPhi() const {return phi; }
+	Func& phi()       {return _phi; }
+  const Func& phi() const {return _phi; }
 
-  elem_t pair(const T& x, const U& y) const {
-   if (left->contains(x) && right->contains(y)) return elem_t(x,y);
+  left_t phi(const right_t& y, const left_t& x) {return _phi(y)(x); }
+
+  elem_t pair(const left_t& x, const right_t& y) const {
+   if (_left.contains(x) && _right.contains(y)) return elem_t(x,y);
    else throw group_mismatch("Semidirect::pair");
   }
 
  private:
-  basic_group<T>* left;
-  basic_group<U>* right;
-  Func phi;
+  G _left;
+  H _right;
+  Func _phi;
  };
 }
 

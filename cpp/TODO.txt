@@ -11,6 +11,7 @@
    order to avoid accidental/excessive pollution by `using namespace Groups;`?
  - Eliminate `basic_group::cmp(basic_group<T>*)`?
  - Eliminate `basic_group::copy`?
+ - Eliminate `Direct::pair` and `Semidirect::pair`?
 - Could the creation of basic_group subclasses be simplified using templates
   and/or std::function somehow?
 - Figure out a way to generalize the implementations of the

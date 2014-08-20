@@ -13,8 +13,9 @@ namespace Groups {
 					      typename H::elem_t> >,
 		public cmp_with< Direct<G,H> > {
  public:
-  typedef std::pair<typename G::elem_t, typename H::elem_t> elem_t;
-   // Why is this necessary?
+  typedef typename G::elem_t left_t;
+  typedef typename H::elem_t right_t;
+  typedef std::pair<left_t, right_t> elem_t;  // Why is this necessary?
 
   Direct(const G& g, const H& h) : _left(g), _right(h) { }
 
@@ -88,12 +89,12 @@ namespace Groups {
   }
 */
 
-	G  left()        {return _left; }
+	G& left()        {return _left; }
   const G& left()  const {return _left; }
-	H  right()       {return _right; }
+	H& right()       {return _right; }
   const H& right() const {return _right; }
 
-  elem_t pair(const typename G::elem_t& x, const typename H::elem_t& y) const {
+  elem_t pair(const left_t& x, const right_t& y) const {
    if (_left.contains(x) && _right.contains(y)) return elem_t(x,y);
    else throw group_mismatch("Direct::pair");
   }
