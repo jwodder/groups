@@ -12,8 +12,8 @@
 namespace Groups {
  template<class T>
  class Subgroup : public basic_group<T>, public cmp_with< Subgroup<T> > {
- // TODO: Should this take the class of the supergroup as a template parameter
- // instead?
+ // TODO: Make this take the class of the supergroup as a template parameter
+ // instead
  public:
 
   // TODO: Insert checks in the constructors to ensure `elems` is actually a

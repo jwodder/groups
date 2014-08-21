@@ -33,19 +33,28 @@ def shexp(x,i):
 
 def cycOrd(n,x): return n // gcd(x,n)
 
+def parenth(s):
+    """Parenthesizes a string if & only if it contains an unparenthesized
+       space"""
+    if isinstance(s, unicode):
+	(sp, p1, p2) = (u' ', u'(', u')')
+    else: 
+	(sp, p1, p2) = (' ', '(', ')')
+    lvl = 0
+    for c in s:
+	if c == sp and lvl == 0:
+	    return p1 + s + p2
+	elif c == p1:
+	    lvl += 1
+	elif c == p2:
+	    lvl -= 1
+    return s
+
 def showbinop(x,op,y):
-    x = str(x)
-    y = str(y)
-    if ' ' in x: x = '(' + x + ')'
-    if ' ' in y: y = '(' + y + ')'
-    return x + ' ' + op + ' ' + y
+    return parenth(str(x)) + ' ' + op + ' ' + parenth(str(y))
 
 def showbinopU(x,op,y):
-    x = unicode(x)
-    y = unicode(y)
-    if u' ' in x: x = u'(' + x + u')'
-    if u' ' in y: y = u'(' + y + u')'
-    return x + u' ' + op + u' ' + y
+    return parenth(unicode(x)) + u' ' + op + u' ' + parenth(unicode(y))
 
 def factorial(n):
     x=1

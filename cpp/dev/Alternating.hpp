@@ -6,6 +6,8 @@
 #include "Groups/internals.hpp"
 #include "Permutation.hpp"
 
+// TODO: Add `operator Subgroup<Symmetric>`
+
 namespace Groups {
  class Alternating : public basic_group<Permutation>,
 		     public cmp_with<Alternating> {
