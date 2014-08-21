@@ -17,8 +17,8 @@ namespace Groups {
   typedef typename H::elem_t right_t;
   typedef std::pair<left_t, right_t> elem_t;  // Why is this necessary?
 
-  Semidirect(const G& g, const H& h, const Func& f) : left(g), right(h), phi(f)
-  { }
+  Semidirect(const G& g, const H& h, const Func& f)
+   : _left(g), _right(h), _phi(f) { }
 
   virtual ~Semidirect() { }
 

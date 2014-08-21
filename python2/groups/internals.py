@@ -34,19 +34,14 @@ def shexp(x,i):
 def cycOrd(n,x): return n // gcd(x,n)
 
 def parenth(s):
-    """Parenthesizes a string if & only if it contains an unparenthesized
-       space"""
-    if isinstance(s, unicode):
-	(sp, p1, p2) = (u' ', u'(', u')')
-    else: 
-	(sp, p1, p2) = (' ', '(', ')')
+    """Parenthesizes a string if & only if it contains an unbracketed space"""
     lvl = 0
     for c in s:
-	if c == sp and lvl == 0:
-	    return p1 + s + p2
-	elif c == p1:
+	if c == ' ' and lvl == 0:
+	    return '(' + s + ')'
+	elif c in '([{':
 	    lvl += 1
-	elif c == p2:
+	elif c in '}])':
 	    lvl -= 1
     return s
 

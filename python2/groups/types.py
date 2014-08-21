@@ -451,11 +451,12 @@ class Semidirect(group):
     def identity(self): return (self.g.identity(), self.h.identity())
 
     def oper(self,x,y):
-	return (self.g.oper(x[0] * self.phi(x[1])(y[0])),
-		self.h.oper(x[1] * y[1]))
+	return (self.g.oper(x[0], self.phi(x[1])(y[0])),
+		self.h.oper(x[1], y[1]))
 
     def invert(self,x):
-	return (self.phi(h.invert(x[1]))(g.invert(x[0])), h.invert(x[1]))
+	x1inv = self.h.invert(x[1])
+	return (self.phi(x1inv)(self.g.invert(x[0])), x1inv)
 
     def __len__(self):  return len(self.g) * len(self.h)
 
@@ -801,7 +802,7 @@ class Quotient(group):
 	if check and not g.isNormal(n):
 	    raise ValueError('n must be a normal subgroup of g')
 	super(Quotient, self).__init__(g,n)
-	self._elems = list(self.leftCosets(n))
+	self._elems = list(g.leftCosets(n))
 	self._toReps = dict((c, min(c)) for c in self._elems)
 	self._fromReps = dict((x,c) for c in self._elems for x in c)
 
@@ -810,11 +811,11 @@ class Quotient(group):
     def oper(self, x, y):
 	x = self._toReps[x]
 	y = self._toReps[y]
-	return self.fromReps[self.g.oper(x,y)]
+	return self._fromReps[self.g.oper(x,y)]
 
     def invert(self, x):
 	x = self._toReps[x]
-	return self.fromReps[self.g.invert(x)]
+	return self._fromReps[self.g.invert(x)]
 
     def order(self, x): return self.g.order(self._toReps[x])
 
