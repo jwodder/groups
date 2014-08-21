@@ -26,6 +26,7 @@
  - CycSemiCyc
  - GDih
  - subgroups
+ - quotient groups
  - elementary abelian groups
 - Make `groups/about.py` calculate/output the following:
  - automorphisms that elements induce by conjugation

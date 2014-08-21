@@ -32,6 +32,7 @@ FEATURES
  * alternating groups
  * subgroups
  * generalized dihedral groups
+ - quotient groups
 - Operations to add:
  * calculating centralizers & centers
  * calculating normalizers

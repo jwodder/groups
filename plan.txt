@@ -56,7 +56,7 @@ least one language.
  * symmetric groups
  * alternating groups
  * permutation groups
- - quotient groups
+ * quotient groups
  - automorphism groups
  - holomorphs
  - wreath products
