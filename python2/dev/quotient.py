@@ -10,7 +10,7 @@ class Quotient(group):
 	self._toReps = dict((c, min(c)) for c in self._elems)
 	self._fromReps = dict((x,c) for c in self._elems for x in c)
 
-    def identity(self): return self.n.elementSet
+    def identity(self): return self.n.elems
 
     def oper(self, x, y):
 	x = self._toReps[x]

@@ -96,7 +96,7 @@ class group(object):
 	if isinstance(elems, subgroup):
 	    return self.supergroup == elems.supergroup \
 	       and (not isinstance(self, subgroup)
-		     or elems.elementSet <= self.elementSet)
+		     or elems.elems <= self.elems)
 	else:
 	    elems = set(elems)
 	    op = self.oper
@@ -298,14 +298,14 @@ class group(object):
 
 
 class subgroup(group):
-    paramNames = ('supergr', 'elementSet')
+    paramNames = ('supergr', 'elems')
 
-    def __init__(self, supergr, elementSet, check=True):
-	elementSet = frozenset(elementSet)
-	if check and not supergr.isSubgroup(elementSet):
+    def __init__(self, supergr, elems, check=True):
+	elems = frozenset(elems)
+	if check and not supergr.isSubgroup(elems):
 	    raise ValueError('arguments do not define a valid subgroup')
 	supergr = supergr.supergroup
-	super(subgroup, self).__init__(supergr, elementSet)
+	super(subgroup, self).__init__(supergr, elems)
 
     @property
     def supergroup(self): return self.supergr
@@ -313,20 +313,20 @@ class subgroup(group):
     def identity(self):       return self.supergroup.identity()
     def oper(self,x,y):       return self.supergroup.oper(x,y)
     def invert(self,x):       return self.supergroup.invert(x)
-    def __len__(self):        return len(self.elementSet)
-    def __iter__(self):       return iter(sorted(self.elementSet))
-    def __contains__(self,x): return x in self.elementSet
+    def __len__(self):        return len(self.elems)
+    def __iter__(self):       return iter(sorted(self.elems))
+    def __contains__(self,x): return x in self.elems
     def order(self,x):        return self.supergroup.order(x)
 
     ### TODO: Rethink these three methods:
     def __str__(self):
-	return '{' + ', '.join(map(self.showElem, self.elementSet)) + '}'
+	return '{' + ', '.join(map(self.showElem, self.elems)) + '}'
 
     def __unicode__(self):
-	return '{' + ', '.join(map(self.showUElem, self.elementSet)) + '}'
+	return '{' + ', '.join(map(self.showUElem, self.elems)) + '}'
 
     def LaTeX(self):
-	return r'\{' + ', '.join(map(self.LaTeXElem, self.elementSet)) + r'\}'
+	return r'\{' + ', '.join(map(self.LaTeXElem, self.elems)) + r'\}'
 
     def showElem(self,x):     return self.supergroup.showElem(x)
     def showUElem(self,x):    return self.supergroup.showUElem(x)
