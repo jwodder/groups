@@ -3,7 +3,7 @@ from types import *
 __all__ = ["groupList"]
 
 def elemAbel(p,n):
-    return reduce(DirectProduct, [Cyclic(p)] * n)
+    return reduce(Direct, [Cyclic(p)] * n)
     ### TODO: Set the name of the group to `sub('E', p**n)`
 
 QD16 = CycSemiCyc(8,2,3)  ### Change name to "QD_{16}"

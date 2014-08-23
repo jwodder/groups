@@ -9,11 +9,10 @@
   given values outside the group?
 - permutation.py: Make fewer things properties?
 - Rename `group` to `basic_group`?
-- Rename `DirectProduct` to `Direct`?
-- Make DirectProduct's (and Semidirect's?) `showElem` family "flatten" elements
+- Make Direct's (and Semidirect's?) `showElem` family "flatten" elements
   -- e.g., writing "(a,b,c)" instead of "((a,b),c)"
-- Make DirectProduct's `__str__` etc. "flatten" their output -- e.g., writing
-  "Z_2 * Z_3 * Z_4" instead of "(Z_2 * Z_3) * Z_4"
+- Make Direct's `__str__` etc. "flatten" their output -- e.g., writing "Z_2 *
+  Z_3 * Z_4" instead of "(Z_2 * Z_3) * Z_4"
 - Implement pickling methods?
 - Add a LaTeX version of the `cayley` method
 - Give `bin/cayley.py` switches for setting the output format (plain ASCII,

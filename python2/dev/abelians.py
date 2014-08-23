@@ -15,7 +15,7 @@ def abelians(n):
 	    else: return a*b
 	for xs in itertools.product(*vals):
 	    xs2 = reduce(lambda a,b: map(mully, a, b), xs)
-	    yield (reduce(DirectProduct, map(Cyclic, xs2)), xs2)
+	    yield (reduce(Direct, map(Cyclic, xs2)), xs2)
 
 def partitions(n):
     def gen(qty, mx):

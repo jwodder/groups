@@ -7,7 +7,7 @@ import internals as I
 __all__ = [
     "group", "subgroup",
     "Cyclic", "AutCyclic", "HolCyclic", "CycSemiCyc",
-    "Semidirect", "DirectProduct", "GDih", "Dihedral",
+    "Semidirect", "Direct", "GDih", "Dihedral",
     "Quotient",
     "Dicyclic", "Quaternion",
     "Symmetric", "Alternating",
@@ -495,9 +495,9 @@ class Semidirect(group):
     def LaTeX(self): return I.showbinop(self.g.LaTeX(), r'\rtimes', self.h.LaTeX())
 
 
-class DirectProduct(Semidirect):
+class Direct(Semidirect):
     def __init__(self, g, h):
-	super(DirectProduct, self).__init__(g, h, lambda y: lambda x: x)
+	super(Direct, self).__init__(g, h, lambda y: lambda x: x)
 
     def oper(self, x, y):  return (self.g.oper(x[0], y[0]),
 				   self.h.oper(x[1], y[1]))
@@ -857,9 +857,9 @@ def isHomomorphism(phi, g, h):
 
 def direct(g,h):
     if isinstance(g, Group) and isinstance(h, Group):
-	return Group(DirectProduct(g.group, h.group))
+	return Group(Direct(g.group, h.group))
     else:
-	return DirectProduct(g,h)
+	return Direct(g,h)
 
 
 def lattice(subgrs):

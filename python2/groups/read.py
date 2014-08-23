@@ -95,7 +95,7 @@ class GroupReader(object):
 	if self.stack[-1] is None:
 	    self.stack[-1] = g
 	else:
-	    self.stack[-1] = G.DirectProduct(self.stack[-1], g)
+	    self.stack[-1] = G.Direct(self.stack[-1], g)
 
     def beforeGroup(self, t):  # The next token sequence must be a group or (
 	if t == '(':
