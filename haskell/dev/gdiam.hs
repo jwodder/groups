@@ -9,8 +9,8 @@ main :: IO ()
 main = do
  n <- getArgs >>= readIO . fromHead "5"
  let group = symmetric' n
- --let gens = map (transpose 1) [2..n]
- let gens = (fromCycle [1..n] :) $ if n == 1 then [] else [transpose 1 2]
+ --let gens = map (transposition 1) [2..n]
+ let gens = (fromCycle [1..n] :) $ if n == 1 then [] else [transposition 1 2]
  print $ gdiameter (mkgroup group) $ map (g'index group) gens
 
 fromHead :: a -> [a] -> a

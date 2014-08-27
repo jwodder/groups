@@ -4,7 +4,7 @@ module Permutation (
   -- * Basic operations
   (!), permuteSeq, compose, invert,
   -- * Construction
-  identity, transpose,
+  identity, transposition,
   firstOfDegree, lastOfDegree, snBounds, s_n,
   fromLehmer,
   fromCycle, fromCycles,
@@ -56,7 +56,7 @@ module Permutation (
   enumFrom = iterate succ
   enumFromTo x z = takeWhile (<= z) $ iterate succ x
 
-  succ s | degree s < 2 = transpose 1 2
+  succ s | degree s < 2 = transposition 1 2
   succ (Perm σ) = case [i | i <- [2..n], σ A.! i > σ A.! (i-1)] of
 		   []  -> firstOfDegree (n+1)
 		   i:_ -> let (xs, y:ys) = span (σ A.! i <=) $ elems σ
@@ -104,11 +104,10 @@ module Permutation (
  identity :: Permutation
  identity = Perm $ array (1,0) []
 
- transpose :: Int -> Int -> Permutation
- -- TODO: Rename "transposition"?
- transpose a b | a < 1 || b < 1 = error "Permutation.transpose: values must be positive"
- transpose a b | a == b = identity
- transpose a b = Perm $ array rng [(x, if x == a then b
+ transposition :: Int -> Int -> Permutation
+ transposition a b | a < 1 || b < 1 = error "Permutation.transposition: values must be positive"
+ transposition a b | a == b = identity
+ transposition a b = Perm $ array rng [(x, if x == a then b
 				       else if x == b then a
 				       else x) | x <- range rng]
   where rng = (1, max a b)
@@ -191,10 +190,10 @@ module Permutation (
 
  -- |@firstOfDegree n@ returns the first 'Permutation' of degree @n@ in
  -- modified Lehmer code order.  If @n@ is 0 or 1 (or anything less than 0),
- -- this is the identity.  For higher degrees, this is @transpose n (n-1)@.
+ -- this is the identity.  For higher degrees, this is @transposition n (n-1)@.
  firstOfDegree :: Int -> Permutation
  firstOfDegree n | n < 2     = identity
-		 | otherwise = transpose n (n-1)
+		 | otherwise = transposition n (n-1)
 
  -- |@lastOfDegree n@ returns the last 'Permutation' of degree @n@ in
  -- modified Lehmer code order.  If @n@ is 0 or 1 (or anything less than 0),
