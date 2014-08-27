@@ -436,6 +436,27 @@ public:
   return p;
  }
 
+ /**
+   * Reorders the elements of a vector according to the Permutation
+   *
+   * @tparam T  a type that is default-constructible and copy-assignable
+   * @param xs  a vector of at least degree() elements
+   *
+   * @return  a permuted vector
+   *
+   * @exception invalid_argument  thrown if `xs.size()` is less than degree()
+   **/
+ template<class T>
+ std::vector<T> permuteSeq(const std::vector<T>& xs) {
+  if ((int) xs.size() < degree())
+   throw std::invalid_argument("Permutation::permuteSeq: sequence must have at least `degree` elements");
+  std::vector<T> out(xs.size());
+  for (int i=0; i < (int) xs.size(); i++) {
+   out[(*this)(i+1)-1] = xs[i];
+  }
+  return out;
+ }
+
 private:
  Permutation(const std::vector<int>&, int=-1, int=-1, int=-1);
  std::vector<int> pmap;
