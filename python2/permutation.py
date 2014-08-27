@@ -110,7 +110,8 @@ class Permutation(object):
 	while x > 0:
 	    c = x % f
 	    for (i,y) in enumerate(mapping):
-		if y >= c: mapping[i] += 1
+		if y >= c:
+		    mapping[i] += 1
 	    mapping.append(c)
 	    x //= f
 	    f += 1
@@ -241,11 +242,19 @@ class Permutation(object):
 	img = tuple(img)
 	used = [False] * len(img)
 	for i in img:
-	    if i < 1: raise ValueError('values must be positive')
+	    if i < 1:        raise ValueError('values must be positive')
 	    if i > len(img): raise ValueError('value missing from input')
-	    if used[i-1]: raise ValueError('value repeated in input')
+	    if used[i-1]:    raise ValueError('value repeated in input')
 	    used[i-1] = True
 	return cls(img)
+
+    def permuteSeq(self, xs):
+	if len(xs) < self.degree:
+	    raise ValueError('sequence must have at least `degree` elements')
+	out = [None] * len(xs)
+	for i in range(len(xs)):
+	    out[self(i+1)-1] = xs[i]
+	return out
 
 
 def gcd(x,y):
