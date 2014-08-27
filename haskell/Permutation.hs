@@ -2,7 +2,7 @@ module Permutation (
   -- * Permutation type
   Permutation,
   -- * Basic operations
-  (!), compose, invert,
+  (!), permuteSeq, compose, invert,
   -- * Construction
   identity, transpose,
   firstOfDegree, lastOfDegree, snBounds, s_n,
@@ -229,6 +229,10 @@ module Permutation (
 	     | all (== 1) $ elems $ accumArray (+) (0 :: Int) (a,b) [(x,1) | x <- elems σ] = trim $ Perm $ array (1,b) $ [(i,i) | i <- [1..a-1]] ++ assocs σ
 	     | otherwise = error "Permutation.fromArray: each index must be an element exactly once"
 	     where (a,b) = bounds σ
+
+ permuteSeq :: Permutation -> [a] -> [a]
+ permuteSeq p xs | length xs < degree p = error "Permutation.permuteSeq: sequence must have at least `degree` elements"
+		 | otherwise = map (\i -> xs !! (i-1)) $ elems $ toArray' (length xs) $ invert p
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ
