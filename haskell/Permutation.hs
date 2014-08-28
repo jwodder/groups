@@ -2,7 +2,7 @@ module Permutation (
   -- * Permutation type
   Permutation,
   -- * Basic operations
-  (!), permuteSeq, compose, invert,
+  (!), permuteSeq, compose, inverse,
   -- * Construction
   identity, transposition,
   firstOfDegree, lastOfDegree, snBounds, s_n,
@@ -96,9 +96,8 @@ module Permutation (
  compose s t = trim $ Perm $ array (1,n) [(i, s ! (t ! i)) | i <- [1..n]]
   where n = degree s `max` degree t
 
- invert :: Permutation -> Permutation
- -- TODO: Rename "inverse"?
- invert (Perm σ) = Perm $ array (bounds σ) [(b,a) | (a,b) <- assocs σ]
+ inverse :: Permutation -> Permutation
+ inverse (Perm σ) = Perm $ array (bounds σ) [(b,a) | (a,b) <- assocs σ]
   -- Trimming is not needed here (assuming the input is trimmed).
 
  identity :: Permutation
@@ -231,7 +230,7 @@ module Permutation (
 
  permuteSeq :: Permutation -> [a] -> [a]
  permuteSeq p xs | length xs < degree p = error "Permutation.permuteSeq: sequence must have at least `degree` elements"
-		 | otherwise = map (\i -> xs !! (i-1)) $ elems $ toArray' (length xs) $ invert p
+		 | otherwise = map (\i -> xs !! (i-1)) $ elems $ toArray' (length xs) $ inverse p
 
  trim :: Permutation -> Permutation  -- internal function
  trim (Perm σ) = Perm $ ixmap (1, deg) id σ

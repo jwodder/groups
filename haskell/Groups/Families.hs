@@ -123,7 +123,7 @@ module Groups.Families where
   g'elems = P.s_n n,
   g'index = P.lehmer,
   g'oper = P.compose,
-  g'invert = P.invert,
+  g'invert = P.inverse,
   g'order = P.order,
   g'id = P.identity
  }
@@ -138,7 +138,7 @@ module Groups.Families where
   g'elems = els,
   g'index = (!) dex . P.lehmer,
   g'oper = P.compose,
-  g'invert = P.invert,
+  g'invert = P.inverse,
   g'order = P.order,
   g'id = P.identity
  } where facN = product [1..n]
@@ -155,7 +155,7 @@ module Groups.Families where
   g'elems  = els,
   g'index  = (!) dex . P.lehmer,
   g'oper   = P.compose,
-  g'invert = P.invert,
+  g'invert = P.inverse,
   g'order  = P.order,
   g'id     = P.identity
  } where els = closure2A P.compose perms
