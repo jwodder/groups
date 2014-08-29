@@ -1,0 +1,26 @@
+- Add a README
+- Expand defs.tex
+- Standardize the test programs and store all of their correct outputs in
+  test-out/
+- Make calculation of orders in $\Z_n^\times$ more efficient with
+  <http://rosettacode.org/wiki/Multiplicative_order>
+- Implement methods for converting non-permutation groups to permutation
+  groups?
+- Make `subgroupGens` actually return only minimal generating sets
+ - ∅ should be the only generating set for the trivial subgroup; {1} is not a
+   minimal generating set for anything
+
+- Permutation:
+ - Add a method for getting the inversion number of permuted sequences?
+   <http://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)>
+ - Make isEven more efficient by counting inversions instead?
+ - Add a method for getting a list of all permuted integers?
+ - Add methods for converting to & from old Lehmer codes
+ - Write a LaTeX file describing the modified Lehmer codes
+ - Make operator*/__mul__ pre-calculate the order when the operands are
+   disjoint
+ - Add a method for getting the cycle type?
+ - C++ and Python: Cache the results of `toCycle` rather than `even` and
+   `order`?
+ - C++ and Python: Stop caching the results of `lehmer`?
+ - C++: Add a `lehmer_t` typedef?
