@@ -32,8 +32,10 @@ module Groups.Ops where
  isAbelian :: Eq a => Group a -> Bool
  -- TODO: Try to reimplement this using information about @g@'s family rather
  -- than brute force.
- isAbelian g = all (centers g $ gtotal g) $ gelems g
- --isAbelian g = and [centers g (Set.fromDistinctAscList xs) x | x:xs <- tails $ gelems g]
+ isAbelian g = abel $ tail $ gelems g
+  where abel [] = True
+	abel [_] = True
+	abel (x:xs) = all (\y -> goper g x y == goper g y x) xs && abel xs
 
  -- |@norms g h x@ tests whether @h@ is invariant under conjugation by @x@
  -- (i.e., whether @x@ normalizes @h@).
