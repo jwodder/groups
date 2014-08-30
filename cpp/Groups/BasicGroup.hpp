@@ -25,9 +25,10 @@ namespace Groups {
 
   virtual bool isAbelian() const {
    const std::vector<T>& elems = elements();
-   typename std::vector<T>::const_iterator xiter, yiter;
+   typename std::vector<T>::const_iterator xiter;
    for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
-    for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
+    typename std::vector<T>::const_iterator yiter = xiter;
+    for (yiter++; yiter != elems.end(); yiter++) {
      if (oper(*xiter, *yiter) != oper(*yiter, *xiter)) return false;
     }
    }

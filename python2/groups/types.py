@@ -107,7 +107,12 @@ class group(object):
 
     def isAbelian(self):
 	op = self.oper
-	return all(op(x,y) == op(y,x) for x in self for y in self)
+	elems = self.elements()
+	for (i,x) in enumerate(elems):
+	    for y in elems[i+1:]:
+		if op(x,y) != op(y,x):
+		    return False
+	return True
 
     def lowerCentral(self):
 	whole = frozenset(self)
