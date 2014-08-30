@@ -1,37 +1,20 @@
 {-# OPTIONS_HADDOCK hide #-}
 
 module Groups.Internals where
- import Control.Monad (guard, liftM2)
+ import Control.Monad (liftM2)
  import Data.Bits (bit, testBit)
- import Data.IntSet (IntSet)
- import qualified Data.IntSet as ISet
+ import Data.Set (Set)
+ import Closure (view)
  import Groups.Types
 
  cycOrd :: Int -> Int -> Int
  cycOrd n x = n `div` gcd x n
 
- fromElems :: [Element] -> Maybe ([Int], Group)
- -- TODO: Move this to Element.hs?
- fromElems [] = Nothing
- fromElems xs@(Element (_,g) : _) = fromels xs
-  where fromels (Element (y,h) : ys) = do guard (g == h)
-					  (zs, g') <- fromels ys
-					  Just (y:zs, g')
-	fromels [] = Just ([], g)
-
- toElems :: Group -> [Int] -> [Element]
- toElems g xs = [Element (i,g) | i <- xs]
-
- closure' :: Group -> ([Int], IntSet) -> IntSet
+ closure' :: Ord a => Group a -> ([a], Set a) -> Set a
  closure' g (xs, is) = close (xs, is)
-  where func ys = [g_oper g y x | y <- ys, x <- xs]
+  where func ys = [goper g y x | y <- ys, x <- xs]
 	close ([],  seen) = seen
 	close (new, seen) = close $ view (func new) seen
-
- view :: [Int] -> IntSet -> ([Int], IntSet)
- view [] seen = ([], seen)
- view (x:xs) seen | ISet.member x seen = view xs seen
- view (x:xs) seen = x &: view xs (ISet.insert x seen)
 
  infixr 5 &:
  (&:) :: a -> ([a], b) -> ([a], b)
