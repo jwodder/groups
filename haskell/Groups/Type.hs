@@ -13,7 +13,7 @@ module Groups.Type where
   ginvert :: a -> a,
   gorder  :: a -> Int,
   gid     :: a
-  -- TODO: Add a `contains` or `(∈)` function
+  -- TODO: Add a `gcontains` or `(∈)` function
  }
 
  tabulate :: Group a -> Group Int

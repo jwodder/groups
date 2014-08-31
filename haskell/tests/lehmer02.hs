@@ -1,12 +1,13 @@
 import Groups
-import Permutation (showCycles, fromLehmer)
+import Permutation (Permutation, showCycles, fromLehmer)
 
-n = 5
-group = symmetric' n
+group :: Group Permutation
+group = symmetric 5
 
-main = mapM_ (\x -> let lehmer = g'index group x
+main :: IO ()
+main = mapM_ (\x -> let lehmer = gindex group x
 			remhel = fromLehmer lehmer
 		    in if x /= remhel then putStrLn $ showCycles x ++ " -> "
 						   ++ show lehmer  ++ " -> "
 						   ++ showCycles remhel
-		       else return ()) $ g'elems group
+		       else return ()) $ gelems group
