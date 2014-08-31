@@ -1,4 +1,4 @@
-module Groups.Types where
+module Groups.Type where
  import Data.Array
  import qualified Data.Set as Set
 

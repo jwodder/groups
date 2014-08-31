@@ -2,7 +2,7 @@ module Groups.Families where
  import Data.Array
  import Data.List (sort)
  import Closure (closure2A)
- import Groups.Types
+ import Groups.Type
  import Groups.Internals
  import qualified Permutation as P
 

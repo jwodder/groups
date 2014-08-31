@@ -5,7 +5,7 @@ module Groups.Subgroups (subgroups, subgroupGens) where
  import qualified Data.Map as Map
  import Data.Set (Set)
  import qualified Data.Set as Set
- import Groups.Types
+ import Groups.Type
  import Groups.Ops (gcycle, subgroupUnion)
 
  -- |Returns a 'Set' of all subgroups of the given 'Group'

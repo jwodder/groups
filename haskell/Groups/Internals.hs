@@ -5,7 +5,7 @@ module Groups.Internals where
  import Data.Bits (bit, testBit)
  import Data.Set (Set)
  import Closure (view)
- import Groups.Types
+ import Groups.Type
 
  cycOrd :: Int -> Int -> Int
  cycOrd n x = n `div` gcd x n

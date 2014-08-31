@@ -2,7 +2,7 @@ module Groups.Ops where
  import Data.Set (Set)
  import qualified Data.Set as Set
  import Closure (closureS)
- import Groups.Types
+ import Groups.Type
  import Groups.Internals
 
  gexp :: Group a -> a -> Int -> a
