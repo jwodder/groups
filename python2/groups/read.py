@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import types as G
+from . import types as G
 
 __all__ = ["readName"]
 

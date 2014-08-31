@@ -25,6 +25,8 @@
  - indexElem() should return an element's index in the elements() vector.
 - Implement move constructors & move assignment operators
 - Bring back Tabular and name it RawGroup?
+- Eliminate Group and Element (renaming basic_group to group) in favor of just
+  Tabular/RawGroup?
 
 FEATURES
 - Implement all of the features in plan.txt

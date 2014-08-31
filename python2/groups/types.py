@@ -2,7 +2,7 @@
 import itertools
 from   closure     import closure2A, close2, view
 from   permutation import Permutation
-import internals as I
+from   .           import internals as I
 
 __all__ = [
     "group", "subgroup",

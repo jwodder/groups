@@ -31,3 +31,5 @@
  - abelianity of subgroups?
  - normal subgroups within subgroups?
  - the Cayley table?
+- Get rid of Group and Element?
+- Make groups/__init__.py use a relative import somehow

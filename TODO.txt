@@ -1,4 +1,5 @@
 - Add a README
+- Document everything!
 - Expand defs.tex
 - Standardize the test programs and store all of their correct outputs in
   test-out/
