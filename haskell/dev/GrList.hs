@@ -3,7 +3,7 @@ module GrList (groupList, o32nonA) where
  import Groups
  import Groups.Internals ((?:), TernaryBranch(..))
 
- type GrEntry = (String, Group, [String])
+ type GrEntry = (String, Group Int, [String])
 
  groupList :: [GrEntry]
  groupList = flatten groupList'
@@ -12,7 +12,7 @@ module GrList (groupList, o32nonA) where
 
  groupList' :: [([GrEntry], [GrEntry])]
  groupList' = [
-   ([("1", trivial, ["cyclic", "symmetric", "alternating"])], []),
+   ([("1", tabulate trivial, ["cyclic", "symmetric", "alternating"])], []),
    ([cyc 2], []),
    ([cyc 3], []),
    ([cyc 4, v4], []),
@@ -34,7 +34,7 @@ module GrList (groupList, o32nonA) where
    ([cyc 18, cyc 6 ⨯ cyc 3], [dih 9, sym 3 ⨯ cyc 3, gdih $ elemAbel 3 2]),
    ([cyc 19], []),
    ([cyc 20, cyc 10 ⨯ cyc 2],
-    [("F_{20}", cycSemiCyc 5 4 3, []), dic 5, dih 10]),
+    [("F_{20}", tabulate $ cycSemiCyc 5 4 3, []), dic 5, dih 10]),
    ([cyc 21], [csc 7 3 2]),
    ([cyc 22], [dih 11]),
    ([cyc 23], []),
@@ -72,19 +72,19 @@ module GrList (groupList, o32nonA) where
   ]
 
  v4 :: GrEntry
- v4 = ("V_4", klein4, ["dihedral"])
+ v4 = ("V_4", tabulate $ klein4, ["dihedral"])
 
  qd16 :: GrEntry
- qd16 = ("QD_{16}", cycSemiCyc 8 2 3, [])
+ qd16 = ("QD_{16}", tabulate $ cycSemiCyc 8 2 3, [])
 
  m16 :: GrEntry
- m16 = ("M", cycSemiCyc 8 2 5, [])
+ m16 = ("M", tabulate $ cycSemiCyc 8 2 5, [])
 
  q8sz2 :: GrEntry
- q8sz2 = ("Q_8\\rtimes\\Z_2", mkgroup $ semidirect' quaternion' boolean' (\x (i,j) -> x ?: (mod (i + 2*mod i 2 + 2*fromEnum j) 4, j) :? (i,j)), [])
+ q8sz2 = ("Q_8\\rtimes\\Z_2", tabulate $ semidirect quaternion boolean (\x (i,j) -> x ?: (mod (i + 2*mod i 2 + 2*fromEnum j) 4, j) :? (i,j)), [])
 
  v4sz4 :: GrEntry
- v4sz4 = ("V_4\\rtimes\\Z_4", mkgroup $ semidirect' klein4' (cyclic' 4) (\x (a,b) -> odd x ?: (b,a) :? (a,b)), [])
+ v4sz4 = ("V_4\\rtimes\\Z_4", tabulate $ semidirect klein4 (cyclic 4) (\x (a,b) -> odd x ?: (b,a) :? (a,b)), [])
 
  o32nonA :: [GrEntry]
  o32nonA = [
@@ -96,7 +96,7 @@ module GrList (groupList, o32nonA) where
    dih 8 ⨯ cyc 2,
    csc 8 4 (-1),
    csc 8 4 3,
-   ("\\Hol(\\Z_8)", holCyclic 8, []),  -- ≅ \Z_8\rtimes V_4
+   ("\\Hol(\\Z_8)", tabulate $ holCyclic 8, []),  -- ≅ \Z_8\rtimes V_4
    m16 ⨯ cyc 2,
    quat 2 ⨯ v4,
    q8sz2 ⨯ cyc 2,
@@ -113,36 +113,35 @@ module GrList (groupList, o32nonA) where
   ]
 
  cyc :: Int -> GrEntry
- cyc n = (sub "\\Z" n, cyclic n, ["cyclic"])
+ cyc n = (sub "\\Z" n, tabulate $ cyclic n, ["cyclic"])
 
  dih :: Int -> GrEntry
- dih n = (sub "\\Dih" n, dihedral n, ["dihedral"])
+ dih n = (sub "\\Dih" n, tabulate $ dihedral n, ["dihedral"])
 
  gdih :: GrEntry -> GrEntry
- gdih (n, g, _) = ("\\Dih(" ++ n ++ ")", mkgroup $ semidirect' g' boolean' (?: g'invert g' :? id), [])
-  where g' = unmkgroup g
+ gdih (n, g, _) = ("\\Dih(" ++ n ++ ")", tabulate $ semidirect g boolean (?: ginvert g :? id), [])
 
  elemAbel :: Int -> Int -> GrEntry
- elemAbel p n = (sub "E" $ p^n, foldl1 direct $ replicate n $ cyclic p, [])
+ elemAbel p n = (sub "E" $ p^n, foldl1 (\g h -> tabulate $ direct g h) $ replicate n $ cyclic p, [])
 
  sym :: Int -> GrEntry
- sym n = (sub "S" n, symmetric n, ["symmetric"])
+ sym n = (sub "S" n, tabulate $ symmetric n, ["symmetric"])
 
  alt :: Int -> GrEntry
- alt n = (sub "A" n, alternating n, ["alternating"])
+ alt n = (sub "A" n, tabulate $ alternating n, ["alternating"])
 
  dic :: Int -> GrEntry
- dic n = (sub "\\Dic" n, dicyclic n, ["dicyclic"])
+ dic n = (sub "\\Dic" n, tabulate $ dicyclic n, ["dicyclic"])
 
  quat :: Int -> GrEntry
- quat n = (sub "Q" $ 2^(n+1), genquaternion n, ["dicyclic", "quaternion"])
+ quat n = (sub "Q" $ 2^(n+1), tabulate $ genquaternion n, ["dicyclic", "quaternion"])
 
  csc :: Int -> Int -> Int -> GrEntry
- csc a b c = (sub "\\Z" a ++ op ++ sub "\\Z" b, cycSemiCyc a b c, [])
+ csc a b c = (sub "\\Z" a ++ op ++ sub "\\Z" b, tabulate $ cycSemiCyc a b c, [])
   where op = c == -1 ?: "\\rtimes" :? sub "\\rtimes" c
 
  (⨯) :: GrEntry -> GrEntry -> GrEntry
- (n1, g1, _) ⨯ (n2, g2, _) = (binop n1 "\\times" n2, direct g1 g2, [])
+ (n1, g1, _) ⨯ (n2, g2, _) = (binop n1 "\\times" n2, tabulate $ direct g1 g2, [])
 
  sub :: String -> Int -> String
  sub s n = s ++ '_' : sub' (show n)

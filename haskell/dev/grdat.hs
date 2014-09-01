@@ -6,7 +6,7 @@ import GrList
 main :: IO ()
 main = mapM_ (\g -> putStrLn (grdata' g) >> hFlush stdout) groups
 
-groups :: [(String, Group, [String])]
+groups :: [(String, Group Int, [String])]
 groups = groupList
 --groups = o32nonA
 
@@ -17,4 +17,4 @@ groups = [(intercalate "\\times" $ map (zahlen . show) xs, g, [])
        zahlen xs = "\\Z_{" ++ xs ++ "}"
 -}
 
---groups = [("\\Dic_{" ++ show n ++ "}", dicyclic n, ["dicyclic"]) | n <- [1..20]]
+--groups = [("\\Dic_{" ++ show n ++ "}", tabulate $ dicyclic n, ["dicyclic"]) | n <- [1..20]]

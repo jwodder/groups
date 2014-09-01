@@ -4,8 +4,7 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Groups
 import Groups.Subgroups
-import qualified Groups.Types.Subset as Sub
-import Groups.Internals  -- factor and Ternary
+import Groups.Internals (factor, (?:), TernaryBranch(..))
 
 data GrData = GrData {
  gd_order      :: Int,  -- Rename "gd_size"?
@@ -24,7 +23,7 @@ data GrData = GrData {
   --  * number of conjugacy classes of order n
 } deriving (Eq, Ord, Read, Show)
 
-grdata :: Group -> GrData
+grdata :: Ord a => Group a -> GrData
 grdata g = GrData {
   gd_order      = n,
   gd_abelian    = abel,
@@ -33,23 +32,23 @@ grdata g = GrData {
 						    gcd i (div n i) == 1],
   gd_simple     = n /= 1 && and [q == 0 | (m,q) <- assocs normQtys,
 					  m /= 1, m /= n],
-  gd_rank       = Set.findMin $ Set.map Sub.size $ subs Map.! self,
+  gd_rank       = Set.findMin $ Set.map Set.size $ subs Map.! self,
   gd_exponent   = foldl lcm 1 [k | (k,a) <- assocs ords, a /= 0],
   gd_quantities = listArray (1,n) [mod n i == 0 ?: Just (ords ! i, subQtys ! i, normQtys ! i, ccQtys ! i) :? Nothing | i <- [1..n]]
- } where n        = g_size g
-	 self     = Sub.total g
+ } where n        = gsize g
+	 self     = gtotal g
 	 divisors = filter ((== 0) . mod n) [2..n]
 	 subs     = subgroupGens g
-	 ords     = freqArray (1,n) $ map snd $ elems $ gr_dat g
-	 subQtys  = freqArray (1,n) $ map Sub.size $ Map.keys subs
-	 normQtys = freqArray (1,n) $ map Sub.size $ filter isNormal
+	 ords     = freqArray (1,n) $ map (gorder g) $ gelems g
+	 subQtys  = freqArray (1,n) $ map Set.size $ Map.keys subs
+	 normQtys = freqArray (1,n) $ map Set.size $ filter (isNormal g)
 						   $ Map.keys subs
-	 ccQtys   = freqArray (1,n) $ map Sub.size $ conjugacies g
+	 ccQtys   = freqArray (1,n) $ map Set.size $ conjugacies g
 	 abel     = isAbelian g
 	 nilpot   = abel || and [subQtys ! (p^a) == normQtys ! (p^a)
 				 | (p,a) <- factor n]
 
-grdata' :: (String, Group, [String]) -> String
+grdata' :: Ord a => (String, Group a, [String]) -> String
 grdata' (name, g, props) = showData (name, grdata g, props)
 
 showData :: (String, GrData, [String]) -> String
