@@ -1,8 +1,8 @@
 module Groups (
  module Groups.Families,
  module Groups.Ops,
- module Groups.Types
+ module Groups.Type
 ) where
 import Groups.Families
 import Groups.Ops
-import Groups.Types
+import Groups.Type

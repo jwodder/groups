@@ -11,24 +11,11 @@
   - calculating left & right cosets of groups
   - generalized dihedral groups
   - quotient groups
-- Make dev/lattice.hs use `Subset`s instead of `IntSet`s
-- Idea: Get rid of `Groups.hs` and the re-exporting parts of `Types.hs`, and
-  then rename the functions in `Group.hs`, `Element.hs`, `Subset.hs`, &
-  `Ops.hs` so that they all use the same (conflicting) names for the same
-  things
- - Rename both `Element.getGroup` and `Subset.getGroup` to just `group`
- - Rename `Element.getGroup'` to `getGroup`?
-- Consider giving Element an Ix instance that yields nonempty lists only when
-  the groups of the bounds match; this will then make it possible to implement
-  a group table function with type `Group -> Array (Element, Element) Element`
-- Actually make the `Group`, `Element`, and `Subset` constructors private
-- Ops.hs: Make `norms` and `centers` take `Element`s intead of `Int`s
-- Element.hs: Add a function for constructing from an `Int`
-- Add a function for testing whether a given Subset is normal within another
-  Subset?
+- Make the `Group` constructor private?
+- Add a function for testing whether a given subset is normal within another
+  subset?
 - Replace the "undefined"s in Families.hs with descriptive error messages
-- Subset.hs: Add a `map` function (or at least something for multiplying by an
-  element)
 - Make Groups.hs re-export Subgroups.hs?
 - Add a function for generating the Cayley table of a given group
 - Replace permutation groups with subgroups of symmetric groups
+- Give Group a `gcontains` field and then reimplement Groups.Ops.isSubset

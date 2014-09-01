@@ -1,110 +1,96 @@
 module Groups.Ops where
- import Data.Array
- import Data.Maybe (isJust)
- import qualified Data.IntSet as ISet
- import Groups.Types
- import Groups.Types.Subset (Subset(..))
- import qualified Groups.Types.Subset as Sub
+ import Data.Set (Set)
+ import qualified Data.Set as Set
+ import Closure (closureS)
+ import Groups.Type
  import Groups.Internals
 
- gexp :: Element -> Int -> Element  -- Move this to Element.hs?
- gexp (Element (i, g)) n = n' == 0 ?: identity g
-				   :? Element (expfa (g_oper g) n'' i', g)
-  where (inv, ordr) = gr_dat g ! i
+ gexp :: Group a -> a -> Int -> a
+ gexp g x n = n' == 0 ?: gid g :? expfa (goper g) n'' x'
+  where ordr = gorder g x
 	n' = mod n ordr
-	(n'', i') = ordr - n' < div ordr 2 ?: (ordr - n', inv) :? (n', i)
+	(n'', x') = ordr-n' < div ordr 2 ?: (ordr-n', ginvert g x) :? (n', x)
 
- gcycle :: Element -> [Element]
- gcycle (Element (x,g)) = toElems g $ g_cycle g x
+ gcycle :: Eq a => Group a -> a -> [a]
+ gcycle g x = gid g : takeWhile (/= gid g) (iterate (goper g x) x)
 
- gclosure :: Subset -> Subset
- gclosure (Subset (g,is))
-  | ISet.null is = Sub.trivial g
-  | otherwise    = Subset (g, closure' g (ISet.toList is, is))
+ gclosure :: Ord a => Group a -> Set a -> Set a
+ gclosure g xs | Set.null xs = gtrivial g
+	       | otherwise   = closure' g (Set.toList xs, xs)
 
  -- |@centers g h x@ tests whether @x@ commutes with every element of @h@
- centers :: Subset -> Int -> Bool
- centers h x = all (\j -> x `op` j == j `op` x) $ Sub.toInts h
-  where op = g_oper $ Sub.getGroup h
+ centers :: Eq a => Group a -> Set a -> a -> Bool
+ centers g h x = all (\j -> x `op` j == j `op` x) $ Set.toList h
+  where op = goper g
 
- centralizer :: Subset -> Subset
- centralizer h = Sub.filter (centers h) $ Sub.total $ Sub.getGroup h
+ centralizer :: Eq a => Group a -> Set a -> Set a
+ centralizer g h = Set.fromDistinctAscList $ filter (centers g h) $ gelems g
 
- center :: Group -> Subset
- center g = Sub.filter (centers g') g' where g' = Sub.total g
+ center :: Eq a => Group a -> Set a
+ center g = Set.fromDistinctAscList $ filter (centers g $ gtotal g) $ gelems g
 
- isAbelian :: Group -> Bool
+ isAbelian :: Eq a => Group a -> Bool
  -- TODO: Try to reimplement this using information about @g@'s family rather
  -- than brute force.
- isAbelian g = all (centers $ Sub.total g) $ g_elems g
- --isAbelian g = all [centers (Sub.fromInts g xs) x | x:xs <- tails $ g_elems g]
+ isAbelian g = abel $ tail $ gelems g
+  where abel [] = True
+	abel [_] = True
+	abel (x:xs) = all (\y -> goper g x y == goper g y x) xs && abel xs
 
- -- |@norms h x@ tests whether @h@ is invariant under conjugation by @x@ (i.e.,
- -- whether @x@ normalizes @h@).  If @x@ is not in @h@'s group, 'False' is
- -- returned.
- norms :: Subset -> Int -> Bool
- norms h x = g_in x g && all (`Sub.inSubset` h) [g_conjugate g x i
-						 | i <- Sub.toInts h]
-  where g = Sub.getGroup h
+ -- |@norms g h x@ tests whether @h@ is invariant under conjugation by @x@
+ -- (i.e., whether @x@ normalizes @h@).
+ norms :: Ord a => Group a -> Set a -> a -> Bool
+ {- -- If @x@ is not in @h@'s group, 'False' is returned. -}
+ norms g h x = {- g_in x g && -} all ((`Set.member` h) . gconjugate g x)
+				     (Set.toList h)
 
- normalizer :: Subset -> Subset
- normalizer h = Sub.filter (norms h) $ Sub.total $ Sub.getGroup h
+ normalizer :: Ord a => Group a -> Set a -> Set a
+ normalizer g h = Set.fromDistinctAscList $ filter (norms g h) $ gelems g
 
- -- |Tests whether a given 'Subset' (assumed to be a subgroup) is normal within
- -- its containing 'Group'.  Whether or not the subset is actually a subgroup
- -- is not checked.
- isNormal :: Subset -> Bool
- isNormal h = all (norms h) $ g_elems $ Sub.getGroup h
+ -- |Tests whether a given subset (assumed to be a subgroup) is normal within
+ -- its containing group.  Whether or not the subset is actually a subgroup is
+ -- not checked.
+ isNormal :: Ord a => Group a -> Set a -> Bool
+ isNormal g h = all (norms g h) $ gelems g
 
- isSubset :: [Element] -> Bool
- isSubset = isJust . getGroup'
+ isSubgroup :: Ord a => Group a -> Set a -> Bool
+ isSubgroup g h = all ((`Set.member` h) . uncurry (goper g))
+		   $ cartesian (Set.toList h) (Set.toList h)
 
- isSubgroup :: Subset -> Bool
- isSubgroup (Subset (g,h)) = all ((`ISet.member` h) . uncurry (g_oper g))
-  $ cartesian (ISet.toList h) (ISet.toList h)
-
- nilpotence :: Group -> Maybe Int
- nilpotence g | g_size g == 1 = Just 0
+ nilpotence :: Ord a => Group a -> Maybe Int
+ nilpotence g | gsize g == 1 = Just 0
  nilpotence g = nil 1 l lc
   where (l:lc) = lowerCentral g
 	nil i g' (g'':xs) | g' == g'' = Nothing
-			  | Sub.size g'' == 1 = Just i
+			  | Set.size g'' == 1 = Just i
 			  | otherwise = nil (i+1) g'' xs
 	nil _ _ [] = undefined
 
- lowerCentral :: Group -> [Subset]
- lowerCentral g = iterate (commutators $ Sub.total g) $ Sub.total g
+ lowerCentral :: Ord a => Group a -> [Set a]
+ lowerCentral g = iterate (commutators g $ gtotal g) $ gtotal g
 
- commutators :: Subset -> Subset -> Subset
- commutators (Subset (g1, is1)) (Subset (g2, is2))
-  | g1 == g2 = let gop = g_oper g1
-		   xs = [g_invert g1 (gop y x) `gop` gop x y
-			 | x <- ISet.toList is1, y <- ISet.toList is2]
-	       in Subset (g1, closure' g1 (xs, ISet.fromList xs))
-  | otherwise = error "commutators: group mismatch"
+ commutators :: Ord a => Group a -> Set a -> Set a -> Set a
+ commutators g as bs = closure' g (xs, Set.fromList xs)
+  where gop = goper g
+	xs = [ginvert g (gop y x) `gop` gop x y
+	      | x <- Set.toList as, y <- Set.toList bs]
 
- conjugacies :: Group -> [Subset]
- conjugacies g = Sub.trivial g : conj (ISet.fromDistinctAscList [1..g_size g-1])
-  where conj left | ISet.null left = []
-		  | otherwise = Subset (g, cc) : conj (ISet.difference left cc)
-		   where least = ISet.findMin left
-			 cc = ISet.map (\x -> g_conjugate g x least) total
-	total = ISet.fromDistinctAscList [0..g_size g-1]
+ conjugacies :: Ord a => Group a -> [Set a]
+ conjugacies g = gtrivial g : conj (Set.fromDistinctAscList $ tail $ gelems g)
+  where conj left | Set.null left = []
+		  | otherwise     = cc : conj (Set.difference left cc)
+		   where least = Set.findMin left
+			 cc    = Set.map (\x -> gconjugate g x least) $ gtotal g
 
  -- |Given two subsets of the same group that are already closed under the group
  -- operation (i.e., that are subgroups; this precondition is not checked),
  -- 'subgroupUnion' computes the closure of their union.
- subgroupUnion :: Subset -> Subset -> Subset
- subgroupUnion (Subset (g, is)) (Subset (g', js))
-  | g == g' = Subset (g, closureS (ISet.toList js, ISet.union is js))
-  | otherwise = error "subgroupUnion: group mismatch"
-  where closureS ([],  seen) = seen
-	closureS (new, seen) = closureS $ view (f new seen) seen
-	f new seen = concat [[g_oper g a b, g_oper g b a]
-			     | a <- ISet.toList seen, b <- new]
+ subgroupUnion :: Ord a => Group a -> Set a -> Set a -> Set a
+ subgroupUnion g xs ys = closureS f (Set.toList ys, Set.union xs ys)
+  where f new seen = concat [[goper g a b, goper g b a]
+			     | a <- Set.toList seen, b <- new]
 
- conjugate :: Element -> Element -> Element
- conjugate y x = y · x · inverse y
+ gexponent :: Group a -> Int
+ gexponent g = foldl lcm 1 $ map (gorder g) $ gelems g
 
- gexponent :: Group -> Int
- gexponent g = foldl lcm 1 $ map (g_order g) $ g_elems g
+-- TO ADD: isSubset

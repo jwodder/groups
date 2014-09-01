@@ -2,23 +2,25 @@ import Data.Array (array, (!))
 import Data.List (intercalate)
 import Data.Set (toList)
 import Groups
-import Groups.Subgroups
-import Groups.Types.Subset (toInts)
-import Permutation (showCycles)
+import Groups.Subgroups (subgroups)
+import Permutation (Permutation, showCycles)
 
-main = mapM_ (putStrLn . bracket "{}" . toInts) $ toList $ subgroups group
+main :: IO ()
+main = mapM_ (putStrLn . bracket . toList) $ toList $ subgroups group
 
-group :: Group
-group = mkgroup group'
+group :: Group Int
+group = tabulate group'
 
 ciska :: Int -> String
-ciska = (!) strs where strs = array (0, g'size group' - 1)
-			[(g'index group' x, ciska' x) | x <- g'elems group']
+ciska = (!) strs where strs = array (0, gsize group' - 1)
+			      [(gindex group' x, ciska' x) | x <- gelems group']
 
-group' = symmetric' 4
---group' = alternating' 5
+bracket :: [Int] -> String
+bracket vals = '{' : intercalate ", " (map ciska vals) ++ "}"
+
+group' :: Group Permutation
+group' = symmetric 4
+--group' = alternating 5
+
+ciska' :: Permutation -> String
 ciska' = showCycles
-
-bracket :: String -> [Int] -> String
-bracket [o, c] vals = o : intercalate ", " (map ciska vals) ++ [c]
-bracket _ _ = undefined

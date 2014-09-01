@@ -1,5 +1,6 @@
 import Permutation
 
+main :: IO ()
 main = do mapM_ (\s -> putStrLn $ show (lehmer s) ++ '\t' : showCycles s)
 	   $ takeWhile (< firstOfDegree 6) $ iterate succ identity
 	  putStrLn "---"

@@ -3,18 +3,16 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Groups (Group, symmetric)
 import Groups.Subgroups (subgroupGens)
-import Groups.Types.Subset (Subset)
-import qualified Groups.Types.Subset as Sub
-import Permutation (showCycles, fromLehmer)
+import Permutation (Permutation, showCycles)
 
-gr :: Group
+gr :: Group Permutation
 gr = symmetric 4
 
-showElem :: Int -> String
-showElem = showCycles . fromLehmer
+showElem :: Permutation -> String
+showElem = showCycles
 
-showElemSet :: Subset -> String
-showElemSet xs = '{' : intercalate ", " (map showElem $ Sub.toInts xs) ++ "}"
+showElemSet :: Set.Set Permutation -> String
+showElemSet xs = '{' : intercalate ", " (map showElem $ Set.toList xs) ++ "}"
 
 main :: IO ()
 main = mapM_ (\(subgr, gens) -> do putStrLn $ showElemSet subgr
