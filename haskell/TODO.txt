@@ -18,4 +18,3 @@
 - Make Groups.hs re-export Subgroups.hs?
 - Add a function for generating the Cayley table of a given group
 - Replace permutation groups with subgroups of symmetric groups
-- Give Group a `gcontains` field and then reimplement Groups.Ops.isSubset

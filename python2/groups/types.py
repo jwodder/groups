@@ -701,7 +701,7 @@ class AutCyclic(group):
     def invert(self,x):    return I.modInverse(x, self.n)
     def __len__(self):     return len(self._elems)
     def __iter__(self):    return iter(self._elems)
-    def __contains__(self, x): return 0 <= x < self.n and I.gcd(x, self.n) == 1
+    def __contains__(self, x): return 0 <= x <= self.n and I.gcd(x, self.n) == 1
 
     def order(self,x):
     ### TODO: Try to find a more efficient way to calculate this.

@@ -15,7 +15,8 @@ module Groups.Families where
   goper = (\x y -> mod (x+y) n),
   ginvert = (`mod` n) . negate,
   gorder = cycOrd n,
-  gid = 0
+  gid = 0,
+  gcontains = (\x -> 0 <= x && x < n)
  }
 
  direct :: Group a -> Group b -> Group (a,b)
@@ -26,7 +27,8 @@ module Groups.Families where
   goper = (\(a1, b1) (a2, b2) -> (goper g a1 a2, goper h b1 b2)),
   ginvert = (\(a,b) -> (ginvert g a, ginvert h b)),
   gorder = (\(a,b) -> gorder g a `lcm` gorder h b),
-  gid = (gid g, gid h)
+  gid = (gid g, gid h),
+  gcontains = (\(a,b) -> gcontains g a && gcontains h b)
  }
 
  dihedral :: Int -> Group (Bool, Int)
@@ -38,7 +40,8 @@ module Groups.Families where
   goper = (\(s1, r1) (s2, r2) -> (s1 /= s2, mod (r2 + (s2 ?: negate :? id) r1) n)),
   ginvert = (\(s,r) -> s ?: (s,r) :? (False, mod (-r) n)),
   gorder = (\(s,r) -> s ?: 2 :? cycOrd n r),
-  gid = (False, 0)
+  gid = (False, 0),
+  gcontains = (\(_,r) -> 0 <= r && r < n)
  }
 
  dicyclic :: Int -> Group (Int, Bool)
@@ -50,7 +53,8 @@ module Groups.Families where
   goper = (\(i1, j1) (i2, j2) -> (mod (i1 + (j1 ?: negate :? id) i2 + (j1 && j2 ?: n :? 0)) (2*n), j1 /= j2)),
   ginvert = (\(i,j) -> (mod (j ?: i+n :? (-i)) (2*n), j)),
   gorder = (\(i,j) -> j ?: 4 :? cycOrd (2*n) i),
-  gid = (0, False)
+  gid = (0, False),
+  gcontains = (\(i,_) -> 0 <= i && i < 2*n)
  }
 
  -- |@genquaternion n@ returns $Q_{2^{n+1}}$
@@ -66,7 +70,8 @@ module Groups.Families where
   goper   = const,
   ginvert = id,
   gorder  = const 1,
-  gid     = ()
+  gid     = (),
+  gcontains = const True
  }
 
  boolean :: Group Bool
@@ -77,7 +82,8 @@ module Groups.Families where
   goper = (/=),
   ginvert = id,
   gorder = succ . fromEnum,
-  gid = False
+  gid = False,
+  gcontains = const True
  }
 
  klein4 :: Group (Bool, Bool)
@@ -95,7 +101,8 @@ module Groups.Families where
   goper = P.compose,
   ginvert = P.inverse,
   gorder = P.order,
-  gid = P.identity
+  gid = P.identity,
+  gcontains = (<= n) . P.degree
  }
 
  alternating :: Int -> Group P.Permutation
@@ -107,7 +114,8 @@ module Groups.Families where
   goper = P.compose,
   ginvert = P.inverse,
   gorder = P.order,
-  gid = P.identity
+  gid = P.identity,
+  gcontains = (\x -> P.degree x <= n && P.isEven x)
  } where facN = product [1..n]
 	 els = filter P.isEven $ P.s_n n
 	 dex = array (0, facN-1) $ zip (map P.lehmer els) [0..]
@@ -121,7 +129,8 @@ module Groups.Families where
   goper   = P.compose,
   ginvert = P.inverse,
   gorder  = P.order,
-  gid     = P.identity
+  gid     = P.identity,
+  gcontains = (`elem` els)
  } where els = sort $ closure2A P.compose perms
 	 -- Counting the quantity and largest Lehmer code while zipping should
 	 -- be faster than using `zip`, `length`, and `last` separately.
@@ -140,7 +149,8 @@ module Groups.Families where
   goper = (\x y -> mod (x*y) n),
   ginvert = (`modInverse` n),
   gorder = (\x -> succ $ length $ takeWhile (/= 1) $ iterate (\y -> mod (x*y) n) x),
-  gid = 1
+  gid = 1,
+  gcontains = (\x -> 0 <= x && x <= n && gcd n x == 1)
  } where coprimes = filter ((== 1) . gcd n) [1..n]
 	 dex = array (1,n) $ zip coprimes [0..]
 
@@ -159,13 +169,14 @@ module Groups.Families where
   gid = (gid g, gid h),
   -- TODO: Prove that the below is correct!
   gorder = (\xy -> let (xs, q:_) = break semiID $ iterate (gop xy) xy
-		   in (length xs + 1) * semiOrd q)
+		   in (length xs + 1) * semiOrd q),
+  gcontains = (\(x,y) -> gcontains g x && gcontains h y)
  } where gop (gx, hx) (gy, hy) = (goper g gx $ φ hx gy, goper h hx hy)
-	 semiID (a,b)  = a == gid g || b == gid h
+	 semiID  (a,b) = a == gid g || b == gid h
 	 semiOrd (a,b) = if a == gid g then gorder h b else gorder g a
 
  cycSemiCyc :: Int -> Int -> Int -> Group (Int, Int)
- cycSemiCyc n m i | mod (i^m) n/=1 = error "cycSemiCyc: invalid homomorphism"
+ cycSemiCyc n m i | mod (i^m) n /= 1 = error "cycSemiCyc: invalid homomorphism"
  cycSemiCyc n m i = semidirect (cyclic n) (cyclic m) (\y x -> mod (x*i^y) n)
 
  -- |@abelians n@ returns a list of all abelian groups of order @n@ together

@@ -53,6 +53,9 @@ module Groups.Ops where
  isNormal :: Ord a => Group a -> Set a -> Bool
  isNormal g h = all (norms g h) $ gelems g
 
+ isSubset :: Group a -> Set a -> Bool
+ isSubset g = all (gcontains g) . Set.toList
+
  isSubgroup :: Ord a => Group a -> Set a -> Bool
  isSubgroup g h = all ((`Set.member` h) . uncurry (goper g))
 		   $ cartesian (Set.toList h) (Set.toList h)
@@ -92,5 +95,3 @@ module Groups.Ops where
 
  gexponent :: Group a -> Int
  gexponent g = foldl lcm 1 $ map (gorder g) $ gelems g
-
--- TO ADD: isSubset

@@ -3,28 +3,29 @@ module Groups.Type where
  import qualified Data.Set as Set
 
  data Group a = Group {
-  gsize   :: Int,
-  gelems  :: [a],
-  gindex  :: a -> Int,
+  gsize     :: Int,
+  gelems    :: [a],
+  gindex    :: a -> Int,
   -- IMPORTANT INVARIANT: `gelems` must always be a sorted list in which the
   -- first element is the identity, and `gindex` must always return an
   -- element's index in this list.
-  goper   :: a -> a -> a,
-  ginvert :: a -> a,
-  gorder  :: a -> Int,
-  gid     :: a
-  -- TODO: Add a `gcontains` or `(∈)` function
+  goper     :: a -> a -> a,
+  ginvert   :: a -> a,
+  gorder    :: a -> Int,
+  gid       :: a,
+  gcontains :: a -> Bool
  }
 
  tabulate :: Group a -> Group Int
  tabulate g = Group {
-  gsize   = gsize g,
-  gelems  = indices invtbl,
-  gindex  = id,
-  goper   = curry (optbl !),
-  ginvert = (invtbl !),
-  gorder  = (ordtbl !),
-  gid     = 0
+  gsize     = gsize g,
+  gelems    = indices invtbl,
+  gindex    = id,
+  goper     = curry (optbl !),
+  ginvert   = (invtbl !),
+  gorder    = (ordtbl !),
+  gid       = 0,
+  gcontains = inRange (bounds invtbl)
  } where (optbl, invtbl, ordtbl) = tabulate' g
 
  tabulate' :: Group a -> (Array (Int, Int) Int, Array Int Int, Array Int Int)
