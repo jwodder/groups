@@ -1,8 +1,7 @@
 import Data.List (intercalate)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Groups (Group, symmetric)
-import Groups.Subgroups (subgroupGens)
+import Groups (Group, symmetric, subgroupGens)
 import Permutation (Permutation, showCycles)
 
 gr :: Group Permutation

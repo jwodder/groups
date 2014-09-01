@@ -2,7 +2,6 @@ import Data.Array (array, (!))
 import Data.List (intercalate)
 import Data.Set (toList)
 import Groups
-import Groups.Subgroups (subgroups)
 import Permutation (Permutation, showCycles)
 
 main :: IO ()

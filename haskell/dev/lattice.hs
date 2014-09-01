@@ -5,7 +5,6 @@
 import Data.Array
 import qualified Data.Set as Set
 import Groups
-import Groups.Subgroups (subgroups)
 import Permutation (Permutation)
 
 group :: Group Permutation

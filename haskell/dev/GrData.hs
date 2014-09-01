@@ -3,7 +3,6 @@ import Data.Array
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Groups
-import Groups.Subgroups
 import Groups.Internals (factor, (?:), TernaryBranch(..))
 
 data GrData = GrData {
