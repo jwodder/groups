@@ -122,10 +122,10 @@ module Groups.Families where
   ginvert = P.inverse,
   gorder  = P.order,
   gid     = P.identity
- } where els = closure2A P.compose perms
+ } where els = sort $ closure2A P.compose perms
 	 -- Counting the quantity and largest Lehmer code while zipping should
 	 -- be faster than using `zip`, `length`, and `last` separately.
-	 (zipped, (qty, maxCode)) = zippy 0 $ sort $ map P.lehmer els
+	 (zipped, (qty, maxCode)) = zippy 0 $ map P.lehmer els
 	 zippy i [c] = ([(c,i)], (i+1, c))
 	 zippy i (c:xs) = (c,i) &: zippy (i+1) xs
 	 zippy _ [] = error "Impossible runtime error in permutation"
