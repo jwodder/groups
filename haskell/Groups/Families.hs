@@ -167,3 +167,13 @@ module Groups.Families where
  cycSemiCyc :: Int -> Int -> Int -> Group (Int, Int)
  cycSemiCyc n m i | mod (i^m) n/=1 = error "cycSemiCyc: invalid homomorphism"
  cycSemiCyc n m i = semidirect (cyclic n) (cyclic m) (\y x -> mod (x*i^y) n)
+
+ -- |@abelians n@ returns a list of all abelian groups of order @n@ together
+ -- with their invariant factors.
+ abelians :: Int -> [(Group Int, [Int])]
+ abelians n | n < 1 = []
+ abelians 1 = [(tabulate trivial, [])]
+ abelians n = map (\xs -> (foldl1 (\g h -> tabulate $ direct g h)
+			   $ map cyclic xs, xs))
+	    $ map (foldl1 $ \a b -> map (uncurry (*)) $ extZip 1 1 a b) $ cross
+	    $ map (\(p,k) -> map (map (p^)) $ partitions k) $ factor n
