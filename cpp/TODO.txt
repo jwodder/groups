@@ -73,3 +73,5 @@ FEATURES
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
+- Give `Group` static methods named `cyclic`, `dihedral`, etc. for constructing
+  `Group`s of the given families directly

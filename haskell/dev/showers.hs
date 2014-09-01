@@ -27,7 +27,7 @@
  showCrossAB :: (a -> String) -> (b -> String) -> (a,b) -> String
  showCrossAB sha shb (a,b) = multish (sha a) (shb b)
 
- showSemiBA :: Group' (a,b) -> (a -> String) -> (b -> String) -> (a,b) -> String
+ showSemiBA :: Group (a,b) -> (a -> String) -> (b -> String) -> (a,b) -> String
  showSemiBA g sha shb (a,b) = multish (shb b) (sha a')
   where b' = g'invert g (fst $ g'id g, b)
 	a' = fst $ g'oper g b' (a, b)

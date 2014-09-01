@@ -1,17 +1,16 @@
 import Control.Monad (liftM2)
 import System.Environment (getArgs)
-import qualified Data.IntSet as ISet
+import Closure (view)
 import Groups
-import Groups.Internals (view)
-import Permutation
+import Permutation (fromCycle, transposition)
 
 main :: IO ()
 main = do
  n <- getArgs >>= readIO . fromHead "5"
- let group = symmetric' n
+ let group = symmetric n
  --let gens = map (transposition 1) [2..n]
  let gens = (fromCycle [1..n] :) $ if n == 1 then [] else [transposition 1 2]
- print $ gdiameter (mkgroup group) $ map (g'index group) gens
+ print $ gdiameter group gens
 
 fromHead :: a -> [a] -> a
 fromHead a [] = a
@@ -31,10 +30,10 @@ fromHead _ (b:_) = b
 -- Note that the diameter of a Cayley graph equals the eccentricity of the
 -- identity.
 
-gdiameter :: Group -> [Int] -> Int
-gdiameter g gens = gdiam 0 ([0], ISet.singleton 0)
+gdiameter :: Ord a => Group a -> [a] -> Int
+gdiameter g gens = gdiam 0 ([gid g], gtrivial g)
  where gdiam i ([], _) = i-1
-       gdiam i (new,seen) = gdiam (i+1) $ view (liftM2 (g_oper g) new gens) seen
+       gdiam i (new, seen) = gdiam (i+1) $ view (liftM2 (goper g) new gens) seen
 
 {-
 Diameters thus calculated so far:

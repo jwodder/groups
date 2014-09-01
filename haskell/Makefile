@@ -12,10 +12,10 @@ all : $(OBJS)
 	$(HC) -c $< $(HC_OPTS)
 
 Groups.o : Groups/Families.o Groups/Ops.o Groups/Type.o
-Groups/Families.o Groups/Ops.o : Groups/Type.o Groups/Internals.o
+Groups/Families.o Groups/Ops.o : Groups/Type.o Groups/Internals.o Closure.o
 Groups/Families.o : Permutation.o
 Groups/Subgroups.o : Groups/Type.o Groups/Ops.o
-Groups/Internals.o : Groups/Type.o
+Groups/Internals.o : Groups/Type.o Closure.o
 
 doc : Closure.hs Permutation.hs Groups.hs Groups/*.hs
 	haddock -ho doc -t Groups $^

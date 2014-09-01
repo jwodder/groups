@@ -10,6 +10,7 @@
 - Make `subgroupGens` actually return only minimal generating sets
  - ∅ should be the only generating set for the trivial subgroup; {1} is not a
    minimal generating set for anything
+- Try to make `subgroups` and `subgroupGens` faster
 
 - Permutation:
  - Add a method for getting the inversion number of permuted sequences?
