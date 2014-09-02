@@ -4,17 +4,15 @@ module Groups.Internals where
  import Control.Monad (liftM2)
  import Data.Bits (bit, testBit)
  import Data.Set (Set)
- import Closure (view)
+ import Closure (closureS)
  import Groups.Type
 
  cycOrd :: Int -> Int -> Int
  cycOrd n x = n `div` gcd x n
 
  closure' :: Ord a => Group a -> ([a], Set a) -> Set a
- closure' g (xs, is) = close (xs, is)
-  where func ys = [goper g y x | y <- ys, x <- xs]
-	close ([],  seen) = seen
-	close (new, seen) = close $ view (func new) seen
+ closure' g (xs, is) = closureS func (xs, is)
+  where func ys _ = [goper g y x | y <- ys, x <- xs]
 
  infixr 5 &:
  (&:) :: a -> ([a], b) -> ([a], b)

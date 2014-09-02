@@ -1,6 +1,7 @@
 module Closure (
   -- * Closure functions
-  closure2, closure2', closure2'', closure2A,
+  closure2, closure2', closure2'',
+  closure2A, closure2A',
   closure1m, closure1m',
   -- * Utility functions
   closureL, closureS, close2, view
@@ -20,11 +21,15 @@ module Closure (
  -- For use when @f@ is associative
  closure2A f start = closure1m (\x -> map (`f` x) start) start
 
+ closure2A' :: Ord a => (a -> a -> a) -> [a] -> Set a
+ -- For use when @f@ is associative
+ closure2A' f start = closure1m' (\x -> map (`f` x) start) start
+
  closure1m :: Ord a => (a -> [a]) -> [a] -> [a]
- closure1m f start = closureL (const . concatMap f) (start, fromList start)
+ closure1m f start = closureL (\xs _ -> concatMap f xs) (start, fromList start)
 
  closure1m' :: Ord a => (a -> [a]) -> [a] -> Set a
- closure1m' f start = closureS (const . concatMap f) (start, fromList start)
+ closure1m' f start = closureS (\xs _ -> concatMap f xs) (start, fromList start)
 
  closureL :: Ord a => ([a] -> Set a -> [a]) -> ([a], Set a) -> [a]
  closureL _ ([],  _) = []

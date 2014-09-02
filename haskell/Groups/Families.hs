@@ -1,7 +1,7 @@
 module Groups.Families where
  import Data.Array
- import Data.List (sort)
- import Closure (closure2A)
+ import qualified Data.Set as Set
+ import Closure (closure2A')
  import Groups.Type
  import Groups.Internals
  import qualified Permutation as P
@@ -124,17 +124,17 @@ module Groups.Families where
  permutation [] = symmetric 1
  permutation perms = Group {
   gsize   = qty,
-  gelems  = els,
+  gelems  = Set.toList elset,
   gindex  = (!) dex . P.lehmer,
   goper   = P.compose,
   ginvert = P.inverse,
   gorder  = P.order,
   gid     = P.identity,
-  gcontains = (`elem` els)
- } where els = sort $ closure2A P.compose perms
+  gcontains = (`Set.member` elset)
+ } where elset = closure2A' P.compose perms
 	 -- Counting the quantity and largest Lehmer code while zipping should
 	 -- be faster than using `zip`, `length`, and `last` separately.
-	 (zipped, (qty, maxCode)) = zippy 0 $ map P.lehmer els
+	 (zipped, (qty, maxCode)) = zippy 0 $ map P.lehmer $ Set.toList elset
 	 zippy i [c] = ([(c,i)], (i+1, c))
 	 zippy i (c:xs) = (c,i) &: zippy (i+1) xs
 	 zippy _ [] = error "Impossible runtime error in permutation"
