@@ -3,7 +3,6 @@
 - Possible coding changes:
  - Rename `basic_group::order()` to `size`?
  - Rethink the way Element manages its Group*
- - Should Quaternion() return `Dicyclic` instead of `Dicyclic*`?
  - Should Quaternion be a subclass of Dicyclic instead of a function?
  - Should `order` (both kinds) and `indexElem` return `size_t`s instead of
    `int`s?

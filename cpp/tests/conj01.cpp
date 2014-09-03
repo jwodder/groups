@@ -7,9 +7,7 @@ using namespace std;
 using namespace Groups;
 
 int main() {
- Dicyclic* q8 = Quaternion();
- Group g(*q8);
- delete q8;
+ Group g(Quaternion());
  vector<Element> elems = g.elements();
  vector<Element>::const_iterator xiter, yiter;
  size_t maxLen = 0;

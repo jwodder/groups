@@ -117,18 +117,12 @@ namespace Groups {
   return Group(tbl, invs, ords, ss, abel && right.abel);
  }
 
- Group Group::trivial()        {return Group(Trivial()); }
- Group Group::klein4()         {return Group(Klein4()); }
- Group Group::cyclic(int n)    {return Group(Cyclic(n)); }
- Group Group::autcyclic(int n) {return Group(AutCyclic(n)); }
- Group Group::dicyclic(int n)  {return Group(Dicyclic(n)); }
- Group Group::dihedral(int n)  {return Group(Dihedral(n)); }
- Group Group::symmetric(int n) {return Group(Symmetric(n)); }
-
- Group Group::quaternion(int n) {
-  Dicyclic* quat = Quaternion(n);
-  Group g = Group(*quat);
-  delete quat;
-  return g;
- }
+ Group Group::trivial()         {return Group(Trivial()); }
+ Group Group::klein4()          {return Group(Klein4()); }
+ Group Group::cyclic(int n)     {return Group(Cyclic(n)); }
+ Group Group::autcyclic(int n)  {return Group(AutCyclic(n)); }
+ Group Group::dicyclic(int n)   {return Group(Dicyclic(n)); }
+ Group Group::quaternion(int n) {return Group(Quaternion(n)); }
+ Group Group::dihedral(int n)   {return Group(Dihedral(n)); }
+ Group Group::symmetric(int n)  {return Group(Symmetric(n)); }
 }
