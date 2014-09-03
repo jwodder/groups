@@ -63,6 +63,15 @@ namespace Groups {
   virtual int cmp(const Group&) const;
 	  Group direct(const Group&);
 
+  static Group trivial();
+  static Group klein4();
+  static Group cyclic(int);
+  static Group autcyclic(int);
+  static Group dicyclic(int);
+  static Group quaternion(int=2);
+  static Group dihedral(int);
+  static Group symmetric(int);
+
  private:
   Group(std::vector< std::vector<int> > tbl, std::vector<int> invs,
 	std::vector<int> ords, std::vector<std::string> ss, bool abelian)

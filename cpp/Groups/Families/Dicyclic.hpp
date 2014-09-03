@@ -36,9 +36,9 @@ namespace Groups {
   int n;
  };
 
- inline Dicyclic* quaternion(int n=2) {
+ inline Dicyclic* Quaternion(int n=2) {
   if (n < 2)
-   throw std::invalid_argument("quaternion: argument must be at least 2");
+   throw std::invalid_argument("Quaternion: argument must be at least 2");
   return new Dicyclic(1 << (n-1));
  }
 }

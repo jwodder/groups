@@ -7,7 +7,7 @@ using namespace std;
 using namespace Groups;
 
 int main() {
- Dicyclic* q8 = quaternion();
+ Dicyclic* q8 = Quaternion();
  Group g(*q8);
  delete q8;
  vector<Element> elems = g.elements();

@@ -4,6 +4,13 @@
 #include "Groups/Group.hpp"
 #include "Groups/Util.hpp"  /* group_mismatch */
 #include "Groups/internals.hpp"  /* lcm */
+#include "Groups/Families/AutCyclic.hpp"
+#include "Groups/Families/Cyclic.hpp"
+#include "Groups/Families/Dicyclic.hpp"
+#include "Groups/Families/Dihedral.hpp"
+#include "Groups/Families/Klein4.hpp"
+#include "Groups/Families/Symmetric.hpp"
+#include "Groups/Families/Trivial.hpp"
 using namespace std;
 
 namespace Groups {
@@ -108,5 +115,20 @@ namespace Groups {
    }
   }
   return Group(tbl, invs, ords, ss, abel && right.abel);
+ }
+
+ Group Group::trivial()        {return Group(Trivial()); }
+ Group Group::klein4()         {return Group(Klein4()); }
+ Group Group::cyclic(int n)    {return Group(Cyclic(n)); }
+ Group Group::autcyclic(int n) {return Group(AutCyclic(n)); }
+ Group Group::dicyclic(int n)  {return Group(Dicyclic(n)); }
+ Group Group::dihedral(int n)  {return Group(Dihedral(n)); }
+ Group Group::symmetric(int n) {return Group(Symmetric(n)); }
+
+ Group Group::quaternion(int n) {
+  Dicyclic* quat = Quaternion(n);
+  Group g = Group(*quat);
+  delete quat;
+  return g;
  }
 }

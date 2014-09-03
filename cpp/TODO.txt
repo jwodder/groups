@@ -3,7 +3,8 @@
 - Possible coding changes:
  - Rename `basic_group::order()` to `size`?
  - Rethink the way Element manages its Group*
- - Should quaternion() return `Dicyclic` instead of `Dicyclic*`?
+ - Should Quaternion() return `Dicyclic` instead of `Dicyclic*`?
+ - Should Quaternion be a subclass of Dicyclic instead of a function?
  - Should `order` (both kinds) and `indexElem` return `size_t`s instead of
    `int`s?
  - Should `Permutation` use `size_t`s instead of `int`s (at the very least, for
@@ -62,7 +63,7 @@ FEATURES
  - setting what order to display factors of elements of semidirect products in
    (including elements of dihedral and dicyclic groups)
  - setting how to display i^n = j^2 in dicyclic groups
-- Add an alternative to/replacement for quaternion() that takes the cardinality
+- Add an alternative to/replacement for Quaternion() that takes the cardinality
   of the desired group?
 - Specialize C++11's `hash<T>` for Permutation.cpp?
 - Add methods for showing names of groups
@@ -73,5 +74,3 @@ FEATURES
 - Give `Group` a `Group(const basic_group<T>*)` constructor that uses/emulates
   either the `Group(const basic_group<T>&)` or `Group(const Group&)`
   constructor depending on what type the pointer points to
-- Give `Group` static methods named `cyclic`, `dihedral`, etc. for constructing
-  `Group`s of the given families directly

@@ -96,8 +96,7 @@ class group(object):
     def isSubgroup(self, elems):
 	if isinstance(elems, subgroup):
 	    return self.supergroup == elems.supergroup \
-	       and (not isinstance(self, subgroup)
-		     or elems.elems <= self.elems)
+	       and (not isinstance(self, subgroup) or elems.elems <= self.elems)
 	else:
 	    elems = set(elems)
 	    op = self.oper
