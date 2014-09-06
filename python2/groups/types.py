@@ -93,6 +93,8 @@ class group(object):
 	    elems = set(elems)
 	return all(self.conjugate(x,y) in elems for x in self for y in elems)
 
+    def isSubset(self, elems): return all(x in self for x in elems)
+
     def isSubgroup(self, elems):
 	if isinstance(elems, subgroup):
 	    return self.supergroup == elems.supergroup \
