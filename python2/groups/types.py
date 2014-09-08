@@ -728,7 +728,7 @@ def HolCyclic(n):
     if n<1: raise ValueError('n must be positive')
     g = Cyclic(n)
     h = AutCyclic(n)
-    return Semidirect(g, h, lambda y: lambda x: g.elem((x * y) % n))
+    return Semidirect(g, h, lambda y: lambda x: (x * y) % n)
     ### TODO: Should __str__ etc. be overridden to show $\Hol(\Z_n)$?
 
 
@@ -740,7 +740,7 @@ def CycSemiCyc(n,m,i):
     else:
 	g = Cyclic(n)
 	h = Cyclic(m)
-	return Semidirect(g, h, lambda y: lambda x: g.elem((x * i**y) % n))
+	return Semidirect(g, h, lambda y: lambda x: (x * i**y) % n)
 	### TODO: Override __str__ etc. to show "Z_n \rtimes_i Z_m" (dropping
 	### the "_i" when -1)
 
