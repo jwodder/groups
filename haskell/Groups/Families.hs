@@ -142,6 +142,9 @@ module Groups.Families where
 
  autCyclic :: Int -> Group Int
  autCyclic n | n < 1 = undefined
+ autCyclic 1 = Group {gsize = 1, gelems = [1], gindex = const 0, goper = const,
+		      ginvert = id, gorder = const 1, gid = 1,
+		      gcontains = (== 1)}
  autCyclic n = Group {
   gsize = length coprimes,
   gelems = coprimes,
