@@ -1,5 +1,5 @@
 #include <cstdlib>  /* abs */
-#include <algorithm>  /* binary_search, lower_bound */
+#include <algorithm>  /* lower_bound */
 #include <sstream>
 #include <stdexcept>  /* invalid_argument */
 #include <vector>
@@ -16,13 +16,16 @@ namespace Groups {
   }
  }
 
- int AutCyclic::oper(const int& x, const int& y) const {return (x * y) % n; }
+ int AutCyclic::oper(const int& x, const int& y) const {
+  return n == 1 ? 1 : (x * y) % n;
+ }
 
  int AutCyclic::identity() const {return 1; }
 
  vector<int> AutCyclic::elements() const {return elems; }
 
  int AutCyclic::invert(const int& x) const {
+  if (n == 1) return 1;
   int i = n, h = residue(x), v = 0, d = 1;
   while (h>0) {
    int t = i/h, x=h;
@@ -71,13 +74,14 @@ namespace Groups {
  int AutCyclic::cmp(const AutCyclic& other) const {return n - other.n; }
 
  int AutCyclic::residue(int x) const {
+  if (n == 1) return 1;
   x = modulo(x,n);
-  if (contains(x)) return x;
+  if (gcd(n,x) == 1) return x;
   else throw group_mismatch("AutCyclic::residue");
  }
 
  bool AutCyclic::contains(const int& x) const {
-  return binary_search(elems.begin(), elems.end(), x);
+  return 1 <= x <= n && gcd(n,x) == 1;
  }
 
  int AutCyclic::indexElem(const int& x) const {
