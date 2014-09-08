@@ -698,11 +698,11 @@ class AutCyclic(group):
 	self._elems = [i for i in range(1,n+1) if I.gcd(n,i) == 1]
 
     def identity(self):    return 1
-    def oper(self,x,y):    return (x * y) % self.n
-    def invert(self,x):    return I.modInverse(x, self.n)
+    def oper(self,x,y):    return 1 if self.n == 1 else (x * y) % self.n
+    def invert(self,x):    return 1 if self.n == 1 else I.modInverse(x, self.n)
     def __len__(self):     return len(self._elems)
     def __iter__(self):    return iter(self._elems)
-    def __contains__(self, x): return 0 <= x <= self.n and I.gcd(x, self.n) == 1
+    def __contains__(self, x): return 1 <= x <= self.n and I.gcd(x, self.n) == 1
 
     def order(self,x):
     ### TODO: Try to find a more efficient way to calculate this.
@@ -717,9 +717,9 @@ class AutCyclic(group):
     def __str__(self):     return  'Z'          + I.sub(self.n)  + '^*'
     def __unicode__(self): return u'ℤ'          + I.subU(self.n) + u'ˣ'
     def LaTeX(self):       return r'\mathbb{Z}' + I.sub(self.n)  + r'^\times{}'
-    def showElem(self,x):  return  '*'       + str(x)     if x else  '1'
-    def showUElem(self,x): return u'⋅'       + unicode(x) if x else u'1'
-    def LaTeXElem(self,x): return r'\cdot{}' + str(x)     if x else  '1'
+    def showElem(self,x):  return  '*'       + str(x)     if x>1 else  '1'
+    def showUElem(self,x): return u'⋅'       + unicode(x) if x>1 else u'1'
+    def LaTeXElem(self,x): return r'\cdot{}' + str(x)     if x>1 else  '1'
 
     def isAbelian(self):   return True
 
