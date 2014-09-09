@@ -65,9 +65,11 @@ namespace Groups {
    }
   }
 
+/*
   virtual bool isAbelian() const {
-   return _left.isAbelian() && _right.isAbelian() && ??? ;
+   return _left.isAbelian() && _right.isAbelian() && [Func is the trivial homomorphism];
   }
+*/
 
   virtual Semidirect<G,H,Func>* copy() const {return new Semidirect(*this); }
 

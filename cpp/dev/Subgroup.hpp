@@ -10,98 +10,81 @@
 #include "Groups/internals.hpp"
 
 namespace Groups {
- template<class T>
- class Subgroup : public basic_group<T>, public cmp_with< Subgroup<T> > {
- // TODO: Make this take the class of the supergroup as a template parameter
- // instead
+ template<class G>
+ class Subgroup : public basic_group<typename G::elem_t>,
+		  public cmp_with< Subgroup<G> > {
+ // TODO: Somehow make `Subgroup<Subgroup<G>>` a synonym for `Subgroup<G>`
  public:
+  typedef typename G::elem_t elem_t;
 
   // TODO: Insert checks in the constructors to ensure `elems` is actually a
   // subgroup! (but make sure `generate` bypasses these checks)
 
-  Subgroup(const basic_group<T>& g, const std::set<T>& els)
-   : super(g.copy()), elems(els) { }
+  Subgroup(const G& g, const std::set<elem_t>& els) : super(g), elems(els) { }
 
-  Subgroup(const basic_group<T>* g, const std::set<T>& els)
-   : super(g->copy()), elems(els) { }
+  virtual ~Subgroup() { }
 
-  Subgroup(const Subgroup<T>& g) : super(g.super->copy()), elems(g.elems) { }
-
-  Subgroup<T>& operator=(const Subgroup<T>& g) {
-   if (this != &g) {
-    delete super;
-    super = g.super->copy();
-    elems = g.elems;
-   }
-   return *this;
+  virtual elem_t oper(const elem_t& x, const elem_t& y) const {
+   return super->oper(x,y);
   }
 
-  virtual ~Subgroup() {delete super; }
+  virtual elem_t identity() const {return super->identity(); }
 
-  virtual T oper(const T& x, const T& y) const {return super->oper(x,y); }
-
-  virtual T identity() const {return super->identity(); }
-
-  virtual std::vector<T> elements() const {
-   return std::vector<T>(elems.begin(), elems.end());
+  virtual std::vector<elem_t> elements() const {
+   return std::vector<elem_t>(elems.begin(), elems.end());
   }
 
-  virtual T invert(const T& x) const {return super->invert(x); }
+  virtual elem_t invert(const elem_t& x) const {return super->invert(x); }
 
   virtual int order() const {return elems.size(); }
 
-  virtual int order(const T& x) const {return super->order(x); }
+  virtual int order(const elem_t& x) const {return super->order(x); }
 
-  virtual std::string showElem(const T& x) const {return super->showElem(x); }
-
-  virtual bool isAbelian() const {
-   // TODO: Should this be cached?
-   if (super->isAbelian()) return true;
-   for (const T& x: elems) {
-    for (const T& y: elems) {
-     if (super->oper(x,y) != super->oper(y,x)) return false;
-    }
-   }
-   return true;
+  virtual std::string showElem(const elem_t& x) const {
+   return super->showElem(x);
   }
 
-  virtual Subgroup<T>* copy() const {return new Subgroup(*this); }
+  virtual bool isAbelian() const {
+   return super->isAbelian() || basic_group<elem_t>::isAbelian();
+  }
 
-  virtual int cmp(const basic_group<T>* other) const {
+  virtual Subgroup<G>* copy() const {return new Subgroup(*this); }
+
+  virtual int cmp(const basic_group<elem_t>* other) const {
    int ct = cmpTypes(*this, *other);
    if (ct != 0) return ct;
-   const Subgroup<T>* c = static_cast<const Subgroup<T>*>(other);
+   const Subgroup<G>* c = static_cast<const Subgroup<G>*>(other);
    return cmp(*c);
   }
 
-  virtual int cmp(const Subgroup<T>& other) const {
+  virtual int cmp(const Subgroup<G>& other) const {
    int cmpSuper = super->cmp(other.super);
    if (cmpSuper != 0) return cmpSuper;
    return elems < other.elems ? -1 : elems > other.elems ? 1 : 0;
   }
 
-  virtual bool contains(const T& x) const {return elems.count(x) > 0; }
+  virtual bool contains(const elem_t& x) const {return elems.count(x) > 0; }
 
-  virtual int indexElem(const T& x) const {
-   std::set<T>::const_iterator iter = elems.lower_bound(x);
+  virtual int indexElem(const elem_t& x) const {
+   std::set<elem_t>::const_iterator iter = elems.lower_bound(x);
    if (iter == elems.end() || *iter != x)
     throw group_mismatch("Subgroup::indexElem");
    else return std::distance(elems.begin(), iter);
   }
 
-  const basic_group<T>* supergroup() const {return super; }
+  const G& supergroup() const {return super; }
 
-  static Subgroup<T> generate(const basic_group<T>* g, const std::set<T>& a) {
-   return Subgroup<T>(g, g->closure(a));
+  static Subgroup<G> generate(const G& g, const std::set<elem_t>& a) {
+   return Subgroup<G>(g, g->closure(a));
   }
 
-  virtual std::set<T> elementSet() const {return elems; }
+  virtual std::set<elem_t> elementSet() const {return elems; }
 
-  operator std::set<T>() const {return elems; }
+  operator std::set<elem_t>() const {return elems; }
 
  private:
-  basic_group<T>* super;
-  std::set<T> elems;
+  G super;
+  std::set<elem_t> elems;
  };
 }
 
