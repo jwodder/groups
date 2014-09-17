@@ -13,8 +13,8 @@
 
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
+from groups       import Symmetric
 from groups.about import about, printAbout
-from groups.types import Symmetric
 from permutation  import Permutation
 
 if len(sys.argv) < 2:

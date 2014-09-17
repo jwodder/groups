@@ -10,7 +10,7 @@
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
 from groups.read import readName
-from lattice     import lattice
+from groups      import lattice
 
 if len(sys.argv) != 2:
     sys.stderr.write("Usage: %s group\n" % (sys.argv[0],))

@@ -1,6 +1,6 @@
 import sys
 from operator   import and_
-from .types     import group, lattice
+from .          import group, lattice
 from .internals import gcd
 
 __all__ = ["about", "printAbout"]

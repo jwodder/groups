@@ -1,4 +1,4 @@
-from types import *
+from groups import *
 
 __all__ = ["groupList"]
 

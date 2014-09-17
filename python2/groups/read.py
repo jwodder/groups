@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import types as G
+import groups as G
 
 __all__ = ["readName"]
 
