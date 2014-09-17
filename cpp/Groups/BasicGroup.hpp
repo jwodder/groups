@@ -108,6 +108,18 @@ namespace Groups {
    return true;
   }
 
+  bool isSubgroup(const std::set<T>& elems) const {
+   if (elems.empty() || !isSubset(elems)) return false;
+   typename std::set<T>::const_iterator xiter;
+   for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
+    typename std::set<T>::const_iterator yiter;
+    for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
+     if (elems.count(oper(*xiter, *yiter)) == 0) return false;
+    }
+   }
+   return true;
+  }
+
   virtual int exponent() const {
    int ex = 1;
    const std::vector<T>& elems = elements();

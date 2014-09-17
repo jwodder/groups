@@ -40,17 +40,6 @@ bool isNormal(const basic_group<T>& g, const set<T>& elems) {
  });
 }
 
-template<class T>
-bool isSubgroup(const basic_group<T>& g, const set<T>& elems) {
- if (elems.empty() || !g.isSubset(elems)) return false;
- for (const T& x: elems) {
-  for (const T& y: elems) {
-   if (elems.count(g.oper(x,y)) == 0) return false;
-  }
- }
- return true;
-}
-
 template<class T> class LowerCentralSeries {
 public:
  LowerCentralSeries(const basic_group<T>& h)
