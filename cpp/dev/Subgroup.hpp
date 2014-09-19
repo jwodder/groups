@@ -17,10 +17,10 @@ namespace Groups {
  public:
   typedef typename G::elem_t elem_t;
 
-  // TODO: Insert checks in the constructors to ensure `elems` is actually a
-  // subgroup! (but make sure `generate` bypasses these checks)
-
-  Subgroup(const G& g, const std::set<elem_t>& els) : super(g), elems(els) { }
+  Subgroup(const G& g, const std::set<elem_t>& els) : super(g), elems(els) {
+   if (!g.isSubgroup(els))
+    throw std::invalid_argument("Subgroup(): not a valid subgroup");
+  }
 
   virtual ~Subgroup() { }
 
@@ -83,6 +83,13 @@ namespace Groups {
   operator std::set<elem_t>() const {return elems; }
 
  private:
+  // This constructor bypasses the check for subgroup validity:
+  // TODO: Give BasicGroup.hpp a `generate` method that makes use of this
+  Subgroup(const G& g, const std::set<elem_t>& els, int)
+   : super(g), elems(els) { }
+
+  friend class basic_group<elem_t>;
+
   G super;
   std::set<elem_t> elems;
  };
