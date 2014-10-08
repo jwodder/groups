@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "closure.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
  template<class T> class basic_group {
@@ -125,7 +126,7 @@ namespace Groups {
    const std::vector<T>& elems = elements();
    typename std::vector<T>::const_iterator iter;
    for (iter = elems.begin(); iter != elems.end(); iter++) {
-    ex = lcm(ex, order(*iter));
+    ex = Groups::lcm(ex, order(*iter));
    }
    return ex;
   }
