@@ -3,8 +3,6 @@
 - Expand defs.tex
 - Standardize the test programs and store all of their correct outputs in
   test-out/
-- Make calculation of orders in $\Z_n^\times$ more efficient with
-  <http://rosettacode.org/wiki/Multiplicative_order>
 - Implement methods for converting non-permutation groups to permutation
   groups?
 - Make `subgroupGens` actually return only minimal generating sets

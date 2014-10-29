@@ -27,6 +27,7 @@
 - Bring back Tabular and name it RawGroup?
 - Eliminate Group and Element (renaming basic_group to group) in favor of just
   Tabular/RawGroup?
+- Add the `override` keyword to all overridden virtual methods?
 
 FEATURES
 - Implement all of the features in plan.txt
