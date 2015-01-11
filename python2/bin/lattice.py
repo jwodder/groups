@@ -28,12 +28,12 @@ for order in sorted(byOrder):
     print ' subgraph order%d {' % (order,)
     print '  rank = "same"'
     for s in byOrder[order]:
-	print '  s%d [shape = "point"%s]' % (subsDex[s],
-					     '' if g.isNormal(s)
-						else ', fillcolor = "white"')
+        print '  s%d [shape = "point"%s]' % (subsDex[s],
+                                             '' if g.isNormal(s)
+                                                else ', fillcolor = "white"')
     print ' }'
 graph = lattice(subsSet)
 for j in graph:
     for i in graph[j]:
-	print ' s%d -- s%d' % (subsDex[j], subsDex[i])
+        print ' s%d -- s%d' % (subsDex[j], subsDex[i])
 print '}'

@@ -11,12 +11,12 @@ QD16 = CycSemiCyc(8,2,3)  ### Change name to "QD_{16}"
 M16 = CycSemiCyc(8,2,5)  ### Change name to "M"
 
 Q8sZ2 = Semidirect(Quaternion(2), Cyclic(2),
-		   lambda x:
-		     lambda (i,j):
-		       ((i + 2*(i%2) + 2*j) % 4 if x else i, j))
+                   lambda x:
+                     lambda (i,j):
+                       ((i + 2*(i%2) + 2*j) % 4 if x else i, j))
 
 V4sZ4 = Semidirect(Klein4(), Cyclic(4),
-		   lambda x: lambda (a,b): (b,a) if x%2 else (a,b))
+                   lambda x: lambda (a,b): (b,a) if x%2 else (a,b))
 
 o32nonA = [
     Quaternion(4),

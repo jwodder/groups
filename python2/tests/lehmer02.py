@@ -7,4 +7,4 @@ for x in Symmetric(5):
     lehmer = x.lehmer
     remhel = Permutation.fromLehmer(lehmer)
     if x != remhel:
-	print '%s -> %d -> %s' % (x, lehmer, remhel)
+        print '%s -> %d -> %s' % (x, lehmer, remhel)

@@ -3,10 +3,10 @@ def closure2S(function, iterable): return closureS(close2(function), iterable)
 
 def close2(function):
     def _close2(iter1, iter2):
-	for a in iter1:
-	    for b in iter2:
-		yield function(a,b)
-		yield function(b,a)
+        for a in iter1:
+            for b in iter2:
+                yield function(a,b)
+                yield function(b,a)
     return _close2
 
 def closure2A(function, iterable):
@@ -22,13 +22,13 @@ def closure2AGens(function, generators):
     for x in generators: elems[x] = [x]
     newQueue = generators
     while newQueue:
-	(oldQueue, newQueue) = (newQueue, [])
-	for x in oldQueue:
-	    for y in generators:
-		z = function(x,y)
-		if z not in elems:
-		    elems[z] = elems[x] + [y]
-		    newQueue.append(z)
+        (oldQueue, newQueue) = (newQueue, [])
+        for x in oldQueue:
+            for y in generators:
+                z = function(x,y)
+                if z not in elems:
+                    elems[z] = elems[x] + [y]
+                    newQueue.append(z)
     return elems
 
 def closure1m(function, iterable):
@@ -47,11 +47,11 @@ def closureI(function, iterable):
     seen = set(iterable)
     new = list(seen)
     for x in new:
-	yield x
+        yield x
     while new:
-	new = list(view(function(seen.copy(), new), seen))
-	for x in new:
-	    yield x
+        new = list(view(function(seen.copy(), new), seen))
+        for x in new:
+            yield x
 
 def closureS(function, iterable):
     # `function` must have type `(iterable /* old */, iterable /* new */) ->
@@ -59,14 +59,14 @@ def closureS(function, iterable):
     seen = set(iterable)
     new = list(seen)
     while new:
-	new = list(view(function(seen.copy(), new), seen))
+        new = list(view(function(seen.copy(), new), seen))
     return seen
 
 #def view(iterable, seen):
 #    for x in iterable:
-#	if x not in seen:
-#	    seen.add(x)
-#	    yield x
+#       if x not in seen:
+#           seen.add(x)
+#           yield x
 
 def view(iterable, seen):
     seen_add = seen.add  # Apparently this is a worthwhile optimization.

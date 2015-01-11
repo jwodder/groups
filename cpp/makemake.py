@@ -11,19 +11,19 @@ class Relation(object):
     # TODO: Replace this with the Floyd-Warshall algorithm?
 
     def __init__(self):
-	self.relate = {}
-	self.inverse = {}
+        self.relate = {}
+        self.inverse = {}
 
     def add(self, x, y):
-	self.relate.setdefault(x, set()).add(y)
-	self.inverse.setdefault(y, set()).add(x)
+        self.relate.setdefault(x, set()).add(y)
+        self.inverse.setdefault(y, set()).add(x)
 
     def transClosure(self):
-	for x in set(self.relate) | set(self.inverse):
-	    for a in self.inverse.get(x, set()):
-		for b in self.relate.get(x, set()):
-		    self.add(a,b)
-	return self.relate
+        for x in set(self.relate) | set(self.inverse):
+            for a in self.inverse.get(x, set()):
+                for b in self.relate.get(x, set()):
+                    self.add(a,b)
+        return self.relate
 
 
 def toObject(fname):
@@ -36,22 +36,22 @@ cpp = []
 tests = []
 for dirpath, dirnames, files in os.walk('.'):
     try:
-	dirnames.remove('dev')
+        dirnames.remove('dev')
     except ValueError:
-	pass
+        pass
     for fname in files:
-	if not (fname.endswith('.cpp') or fname.endswith('.hpp')):
-	    continue
-	fname = os.path.normpath(os.path.join(dirpath, fname))
-	if os.path.normpath(dirpath) == 'tests':
-	    tests.append(fname)
-	elif fname.endswith('.cpp'):
-	    cpp.append(fname)
-	with open(fname) as fp:
-	    for line in fp:
-		m = re.search(r'^#include "([^"]+)"', line)
-		if m:
-		    inclusions.add(fname, m.group(1))
+        if not (fname.endswith('.cpp') or fname.endswith('.hpp')):
+            continue
+        fname = os.path.normpath(os.path.join(dirpath, fname))
+        if os.path.normpath(dirpath) == 'tests':
+            tests.append(fname)
+        elif fname.endswith('.cpp'):
+            cpp.append(fname)
+        with open(fname) as fp:
+            for line in fp:
+                m = re.search(r'^#include "([^"]+)"', line)
+                if m:
+                    inclusions.add(fname, m.group(1))
 
 including = inclusions.transClosure()
 
@@ -68,7 +68,7 @@ print
 
 for c in cpp:
     if including.get(c):
-	print toObject(c) + ' : ' + ' '.join(including[c])
+        print toObject(c) + ' : ' + ' '.join(including[c])
 print
 
 # If we are linking with a `foo.o` compiled from `foo.cpp`, and `foo.cpp`
@@ -78,17 +78,17 @@ linksWith = Relation()
 for fname in cpp + tests:
     oname = toObject(fname)
     for hpp in including.get(fname, []):
-	obj = toObject(hpp)
-	if obj in objects:
-	    linksWith.add(oname, obj)
+        obj = toObject(hpp)
+        if obj in objects:
+            linksWith.add(oname, obj)
 linking = linksWith.transClosure()
 
 for t in tests:
     if linking.get(toObject(t)):
-	print os.path.splitext(t)[0] + ' : ' + ' '.join(linking[toObject(t)])
+        print os.path.splitext(t)[0] + ' : ' + ' '.join(linking[toObject(t)])
     if including.get(t):
-	print toObject(t) + ' : ' + ' '.join(including[t])
-	print
+        print toObject(t) + ' : ' + ' '.join(including[t])
+        print
 
 print 'clean :'
 print '\trm -f *.o Groups/*.o Groups/*/*.o tests/*.o'
