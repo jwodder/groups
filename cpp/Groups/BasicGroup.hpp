@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "closure.hpp"
+#include "Groups/internals.hpp"
 
 namespace Groups {
  template<class T> class basic_group {

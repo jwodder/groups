@@ -52,13 +52,13 @@ namespace Groups {
 					 const std::vector<U>& vec2) {
   if (vec1.empty() || vec2.empty()) return std::vector< std::pair<T,U> >(0);
   std::vector< std::pair<T,U> > vecout(vec1.size() * vec2.size(),
-				       make_pair(vec1[0], vec2[0]));
+				       std::make_pair(vec1[0], vec2[0]));
   typename std::vector< std::pair<T,U> >::iterator iter = vecout.begin();
   typename std::vector<T>::const_iterator iter1;
   for (iter1 = vec1.begin(); iter1 != vec1.end(); iter1++) {
    typename std::vector<U>::const_iterator iter2;
    for (iter2 = vec2.begin(); iter2 != vec2.end(); iter2++) {
-    *iter = make_pair(*iter1, *iter2);
+    *iter = std::make_pair(*iter1, *iter2);
     iter++;
    }
   }
