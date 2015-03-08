@@ -5,8 +5,7 @@ from groups.read  import readName
 from groups.about import printAbout
 
 if len(sys.argv) < 2:
-    sys.stderr.write("Usage: %s group ...\n" % (sys.argv[0],))
-    sys.exit(2)
+    raise SystemExit("Usage: %s group ...\n" % (sys.argv[0],))
 sys.stdout.write('[\n');
 first = True
 for gname in sys.argv[1:]:

@@ -18,8 +18,7 @@ from groups.about import about, printAbout
 from permutation  import Permutation
 
 if len(sys.argv) < 2:
-    sys.stderr.write("Usage: %s permutation ...\n" % (sys.argv[0],))
-    sys.exit(2)
+    raise SystemExit("Usage: %s permutation ...\n" % (sys.argv[0],))
 perms = [Permutation.fromCycles(map(int, b.split(',')) for b in a.split('/'))
          for a in sys.argv[1:]]
 perms.sort()

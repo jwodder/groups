@@ -13,8 +13,7 @@ from groups.read import readName
 from groups      import lattice
 
 if len(sys.argv) != 2:
-    sys.stderr.write("Usage: %s group\n" % (sys.argv[0],))
-    sys.exit(2)
+    raise SystemExit("Usage: %s group\n" % (sys.argv[0],))
 
 g = readName(sys.argv[1])
 subsSet = g.subgroups()
