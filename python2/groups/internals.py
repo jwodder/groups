@@ -15,11 +15,11 @@ supers = {0x30: u'⁰', 0x31: u'¹', 0x32: u'²', 0x33: u'³', 0x34: u'⁴',
 def sup(n):  n = str(n); return '^{' + n + '}' if len(n) > 1 else '^' + n
 def supU(n): return unicode(n).translate(supers)
 
-def uniexp(str):
+def uniexp(s):
     def mogrify(match):
         (cmd, val1, val2) = match.groups()
         return (val1 or val2).translate(subs if cmd == u'_' else supers)
-    return re.sub(ur'([_^])(?:([-\d])|\{(-?\d*)\})', mogrify, unicode(str))
+    return re.sub(ur'([_^])(?:([-\d])|\{(-?\d*)\})', mogrify, unicode(s))
 
 def multish(x,y):
     if x == '1': return y

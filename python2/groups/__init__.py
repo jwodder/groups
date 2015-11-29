@@ -56,13 +56,7 @@ class group(object):
     def __repr__(self):
         return self.family + '(' + ', '.join(map(repr, self.params)) + ')'
 
-    def __copy__(self): return self.__class__(*self.params)
-
-    copy = __copy__
-
-    def __deepcopy__(self, memo):
-        from copy import deepcopy
-        return self.__class__(*(deepcopy(p, memo) for p in self.params))
+    def copy(self): return self.__class__(*self.params)
 
     @property
     def supergroup(self): return self
@@ -404,14 +398,7 @@ class Element(object):
 
     def __nonzero__(self): return self.value != self.group.identity().value
 
-    def __copy__(self): return self.__class__(self.value, self.group)
-
-    copy = __copy__
-
-    def __deepcopy__(self, memo):
-        from copy import deepcopy
-        return self.__class__(deepcopy(self.value, memo),
-                              deepcopy(self.group, memo))
+    def copy(self): return self.__class__(self.value, self.group)
 
     def __pow__(self, n):
         return Element(self.rawGroup.pow(self.value, n), self.group)

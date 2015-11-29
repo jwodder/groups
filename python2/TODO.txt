@@ -32,3 +32,5 @@
  - normal subgroups within subgroups?
  - the Cayley table?
 - Get rid of Group and Element?
+- Rewrite `printAbout` to use the json (or simplejson?) module as much as
+  possible
