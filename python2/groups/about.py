@@ -1,7 +1,8 @@
+import json
+from   operator   import and_
 import sys
-from operator   import and_
-from .          import group, lattice
-from .internals import gcd
+from   .          import group, lattice
+from   .internals import gcd
 
 __all__ = ["about", "printAbout"]
 
@@ -108,22 +109,4 @@ def printAbout(data, out=None, indent=0):
     out.write('\n' + indent[:-1] + '}')
 
 def jsonify(obj):
-    if obj is None:
-        return 'null'
-    elif isinstance(obj, bool):
-        return repr(obj).lower()
-    elif isinstance(obj, (list, tuple)):
-        return '[' + ', '.join(map(jsonify, obj)) + ']'
-    elif isinstance(obj, dict):
-        return '{' + ', '.join(jsonify(k) + ': ' + jsonify(obj[k])
-                               for k in sorted(obj.keys())) + '}'
-    elif isinstance(obj, (int, long)):
-        return str(obj)
-    else:
-        obj = str(obj)
-        obj = obj.replace("\\", "\\\\")
-        obj = obj.replace('"', '\\"')
-        obj = obj.replace("\r", "\\n")
-        obj = obj.replace("\n", "\\n")
-        obj = obj.replace("\t", "\\t")
-        return '"' + obj + '"'
+    return json.dumps(obj, sort_keys=True, separators=(', ', ': '))
