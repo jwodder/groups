@@ -81,7 +81,7 @@ namespace Groups {
  }
 
  bool AutCyclic::contains(const int& x) const {
-  return 1 <= x <= n && gcd(n,x) == 1;
+  return 1 <= x && x <= n && gcd(n,x) == 1;
  }
 
  int AutCyclic::indexElem(const int& x) const {
