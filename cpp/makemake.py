@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from __future__ import with_statement
 import os
 import os.path
 import re
@@ -58,7 +57,7 @@ including = inclusions.transClosure()
 objects = set(map(toObject, cpp))
 
 print 'CXX = c++'
-print 'CPPFLAGS = -std=c++98 -Wall -pedantic -I.'
+print 'CPPFLAGS = -std=c++11 -Wall -pedantic -I.'
 print 'CC = $(CXX)  # for linking'
 print
 print 'TESTS = ' + ' '.join(map(lambda t: os.path.splitext(t)[0], tests))

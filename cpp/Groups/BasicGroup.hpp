@@ -61,11 +61,9 @@ namespace Groups {
 
   std::set<T> oper(const std::set<T>& xs, const std::set<T>& ys) const {
    std::set<T> result;
-   typename std::set<T>::const_iterator xiter;
-   for (xiter = xs.begin(); xiter != xs.end(); xiter++) {
-    typename std::set<T>::const_iterator yiter;
-    for (yiter = ys.begin(); yiter != ys.end(); yiter++) {
-     result.insert(oper(*xiter, *yiter));
+   for (const T& x: xs) {
+    for (const T& y: ys) {
+     result.insert(oper(x,y));
     }
    }
    return result;
@@ -102,20 +100,17 @@ namespace Groups {
   }
 
   bool isSubset(const std::set<T>& elems) const {
-   typename std::set<T>::const_iterator iter;
-   for (iter = elems.begin(); iter != elems.end(); iter++) {
-    if (!contains(*iter)) return false;
+   for (const T& x: elems) {
+    if (!contains(x)) return false;
    }
    return true;
   }
 
   bool isSubgroup(const std::set<T>& elems) const {
    if (elems.empty() || !isSubset(elems)) return false;
-   typename std::set<T>::const_iterator xiter;
-   for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
-    typename std::set<T>::const_iterator yiter;
-    for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
-     if (elems.count(oper(*xiter, *yiter)) == 0) return false;
+   for (const T& x: elems) {
+    for (const T& y: elems) {
+     if (elems.count(oper(x,y)) == 0) return false;
     }
    }
    return true;
@@ -123,10 +118,8 @@ namespace Groups {
 
   virtual int exponent() const {
    int ex = 1;
-   const std::vector<T>& elems = elements();
-   typename std::vector<T>::const_iterator iter;
-   for (iter = elems.begin(); iter != elems.end(); iter++) {
-    ex = lcm(ex, order(*iter));
+   for (const T& x: elements()) {
+    ex = lcm(ex, order(x));
    }
    return ex;
   }
