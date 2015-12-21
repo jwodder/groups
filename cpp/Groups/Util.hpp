@@ -20,16 +20,15 @@ namespace Groups {
  template<class T>
  std::ostream& showTable(std::ostream& out, const basic_group<T>& g) {
   std::vector<T> elems = g.elements();
-  typename std::vector<T>::const_iterator xiter, yiter;
   size_t maxLen = 0;
-  for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
-   size_t len = g.showElem(*xiter).size();
+  for (const T& x: elems) {
+   size_t len = g.showElem(x).size();
    if (len > maxLen) maxLen = len;
   }
   out << std::left;
   out << std::string(maxLen, ' ');
-  for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
-   out << '|' << std::setw(maxLen) << g.showElem(*yiter);
+  for (const T& y: elems) {
+   out << '|' << std::setw(maxLen) << g.showElem(y);
   }
   out << std::endl;
   std::string tmp = std::string(maxLen, '-');
@@ -37,10 +36,10 @@ namespace Groups {
   tmp = "|" + tmp;
   for (int i=0; i<g.order(); i++) out << tmp;
   out << std::endl;
-  for (xiter = elems.begin(); xiter != elems.end(); xiter++) {
-   out << std::setw(maxLen) << g.showElem(*xiter);
-   for (yiter = elems.begin(); yiter != elems.end(); yiter++) {
-    out << '|' << std::setw(maxLen) << g.showElem(g.oper(*xiter, *yiter));
+  for (const T& x: elems) {
+   out << std::setw(maxLen) << g.showElem(x);
+   for (const T& y: elems) {
+    out << '|' << std::setw(maxLen) << g.showElem(g.oper(x,y));
    }
    out << std::endl;
   }

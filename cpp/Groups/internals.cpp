@@ -33,8 +33,10 @@ namespace Groups {
  vector<int> vecN(int n) {
   if (n < 1) return vector<int>(0);
   vector<int> elems(n);
-  vector<int>::iterator iter = elems.begin();
-  for (int i=0; iter != elems.end(); iter++, i++) *iter = i;
+  int i=0;
+  for (int& x: elems) {
+   x = i++;
+  }
   return elems;
  }
 

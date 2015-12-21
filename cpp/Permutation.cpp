@@ -245,15 +245,14 @@ vector<int> Permutation::toImage(int n) const {
 
 Permutation Permutation::fromImage(const vector<int>& img) {
  vector<bool> used(img.size(), false);
- vector<int>::const_iterator iter;
- for (iter = img.begin(); iter != img.end(); iter++) {
-  if (*iter < 1)
+ for (const int& x: img) {
+  if (x < 1)
    throw invalid_argument("Permutation::fromImage: values must be positive");
-  if (*iter > (int) img.size())
+  if (x > (int) img.size())
    throw invalid_argument("Permutation::fromImage: value missing from input");
-  if (used[*iter-1])
+  if (used[x-1])
    throw invalid_argument("Permutation::fromImage: value repeated in input");
-  used[*iter-1] = true;
+  used[x-1] = true;
  }
  return Permutation(img);
 }

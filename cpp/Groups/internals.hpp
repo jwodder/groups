@@ -54,11 +54,9 @@ namespace Groups {
   std::vector< std::pair<T,U> > vecout(vec1.size() * vec2.size(),
 				       std::make_pair(vec1[0], vec2[0]));
   typename std::vector< std::pair<T,U> >::iterator iter = vecout.begin();
-  typename std::vector<T>::const_iterator iter1;
-  for (iter1 = vec1.begin(); iter1 != vec1.end(); iter1++) {
-   typename std::vector<U>::const_iterator iter2;
-   for (iter2 = vec2.begin(); iter2 != vec2.end(); iter2++) {
-    *iter = std::make_pair(*iter1, *iter2);
+  for (const T& x: vec1) {
+   for (const U& y: vec2) {
+    *iter = std::make_pair(x,y);
     iter++;
    }
   }

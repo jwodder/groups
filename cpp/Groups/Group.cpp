@@ -27,10 +27,9 @@ namespace Groups {
 
  vector<Element> Group::elements() const {
   vector<Element> elems(table.size(), identity());
-  vector<Element>::iterator iter = elems.begin();
   int i=0;
-  for (iter++, i++; iter != elems.end(); iter++, i++) {
-   *iter = Element(this, i);
+  for (Element& e: elems) {
+   e = Element(this, i++);
   }
   return elems;
  }
