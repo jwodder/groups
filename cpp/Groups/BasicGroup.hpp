@@ -42,21 +42,11 @@ namespace Groups {
   }
 
   std::set<T> oper(const T& x, const std::set<T>& ys) const {
-   std::set<T> result;
-   typename std::set<T>::const_iterator iter;
-   for (iter = ys.begin(); iter != ys.end(); iter++) {
-    result.insert(oper(x, *iter));
-   }
-   return result;
+   return mapset([&x](const T& y) -> T {return oper(x,y); }, ys);
   }
 
   std::set<T> oper(const std::set<T>& xs, const T& y) const {
-   std::set<T> result;
-   typename std::set<T>::const_iterator iter;
-   for (iter = xs.begin(); iter != xs.end(); iter++) {
-    result.insert(oper(*iter, y));
-   }
-   return result;
+   return mapset([&y](const T& x) -> T {return oper(x,y); }, xs);
   }
 
   std::set<T> oper(const std::set<T>& xs, const std::set<T>& ys) const {

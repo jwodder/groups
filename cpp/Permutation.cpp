@@ -1,6 +1,7 @@
 #include <algorithm>  /* max, min, next_permutation, prev_permutation */
 #include <functional>  /* greater */
 #include <list>
+#include <numeric>  /* iota */
 #include <sstream>  /* istringstream, ostringstream */
 #include <stdexcept>  /* logic_error, invalid_argument */
 #include <string>
@@ -226,13 +227,10 @@ bool Permutation::disjoint(const Permutation& other) const {
 }
 
 vector<Permutation> Permutation::s_n(int degree) {
- if (degree < 0) throw invalid_argument("Permutation::s_n: argument must be nonnegative");
+ if (degree < 0)
+  throw invalid_argument("Permutation::s_n: argument must be nonnegative");
  vector<Permutation> elems(Groups::factorial(degree), identity());
- vector<Permutation>::iterator iter = elems.begin();
- Permutation p = *iter;
- for (iter++, p++; iter != elems.end(); iter++, p++) {
-  *iter = p;
- }
+ iota(elems.begin(), elems.end(), identity());
  return elems;
 }
 

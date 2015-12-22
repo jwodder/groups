@@ -4,22 +4,14 @@
 #define GROUPS_INTERNALS_H
 
 #include <ostream>
+#include <set>
 #include <string>
 #include <typeinfo>  /* typeid */
 #include <utility>  /* pair */
 #include <vector>
 
-#if defined(__cplusplus) && __cplusplus >= 201103L
-#define CLAIMS_CPP11
-#endif
-
 namespace Groups {
-#ifdef CLAIMS_CPP11
  const std::vector<bool> vecFT{false, true};
-#else
- const bool vecFT_array[2] = {false, true};
- const std::vector<bool> vecFT(vecFT_array+0, vecFT_array+2);
-#endif
 
  template<class T> struct cmp_with {
   virtual ~cmp_with() { }
@@ -61,6 +53,15 @@ namespace Groups {
    }
   }
   return vecout;
+ }
+
+ template<class Func, class T, class U>
+ std::set<U> mapset(const Func& f, const std::set<T>& xs) {
+  std::set<U> result;
+  for (const T& x: xs) {
+   result.insert(f(x));
+  }
+  return result;
  }
 }
 

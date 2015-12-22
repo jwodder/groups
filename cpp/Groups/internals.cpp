@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <numeric>  /* iota */
 #include <ostream>
 #include <string>
 #include <vector>
@@ -33,10 +34,7 @@ namespace Groups {
  vector<int> vecN(int n) {
   if (n < 1) return vector<int>(0);
   vector<int> elems(n);
-  int i=0;
-  for (int& x: elems) {
-   x = i++;
-  }
+  iota(elems.begin(), elems.end(), 0);
   return elems;
  }
 
