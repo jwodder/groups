@@ -13,7 +13,6 @@
   -- e.g., writing "(a,b,c)" instead of "((a,b),c)"
 - Make Direct's `__str__` etc. "flatten" their output -- e.g., writing "Z_2 *
   Z_3 * Z_4" instead of "(Z_2 * Z_3) * Z_4"
-- Implement pickling methods?
 - Add a LaTeX version of the `cayley` method
 - Add support to groups/read.py for:
  - semidirect products
@@ -34,3 +33,15 @@
 - Get rid of Group and Element?
 - Rewrite `printAbout` to use the json (or simplejson?) module as much as
   possible
+
+- Yet another possible way to do the data structures: Each specific group is a
+  class that subclasses an abstract, family-specific class and defines a couple
+  of class member variables; metaclass magic (à la Enum) does the rest; e.g.:
+
+    class Cyclic5(Cyclic):
+        n = 5
+        # End of class
+
+  The elements of `Cyclic5` are then its instances.  Ideally, there would also
+  be factory functions for dynamically constructing subclasses of each family
+  (and it'd be even better if all classes and instances were "singletons").
