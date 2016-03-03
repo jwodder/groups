@@ -31,8 +31,7 @@
  - normal subgroups within subgroups?
  - the Cayley table?
 - Get rid of Group and Element?
-- Rewrite `printAbout` to use the json (or simplejson?) module as much as
-  possible
+- Make `group` into an ABC
 
 - Yet another possible way to do the data structures: Each specific group is a
   class that subclasses an abstract, family-specific class and defines a couple

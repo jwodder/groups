@@ -1,8 +1,10 @@
 #!/usr/bin/python
+import json
+import re
 import sys
 sys.path.insert(1, sys.path[0] + '/..')
+from groups.about import about
 from groups.read  import readName
-from groups.about import printAbout
 
 if len(sys.argv) < 2:
     raise SystemExit("Usage: %s group ...\n" % (sys.argv[0],))
@@ -15,5 +17,7 @@ for gname in sys.argv[1:]:
     else:
         sys.stdout.write(',\n')
     sys.stdout.write('\n')
-    printAbout(g, out=sys.stdout, indent=' ')
+    data = about(g)
+    shown = json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
+    sys.stdout.write(re.sub('^', ' '*4, shown, flags=re.M))
 sys.stdout.write('\n\n]\n')

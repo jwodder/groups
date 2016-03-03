@@ -1,10 +1,8 @@
-import json
 from   operator   import and_
-import sys
 from   .          import group, lattice
 from   .internals import gcd
 
-__all__ = ["about", "printAbout"]
+__all__ = ["about"]
 
 def about(g):
     subgrGens   = g.subgroupGens()
@@ -73,40 +71,3 @@ def about(g):
         "Frattini_subgroup": nameSet(reduce(and_, graph[total]) if graph[total]
                                                                 else total),
     }
-
-aboutOrder = """name order abelian exponent rank identity center total_subgroup
-                elements subgroups conjugacy_classes nilpotence
-                lower_central_series commutator_subgroup solvable simple
-                Frattini_subgroup""".split()
-
-def printAbout(data, out=None, indent=0):
-    if isinstance(data, group):
-        data = about(data)
-    if out is None:
-        out = sys.stdout
-    if isinstance(indent, int):
-        indent = ' ' * indent
-    out.write(indent + '{')
-    indent += ' '
-    first = True
-    for key in aboutOrder:
-        if first:
-            first = False
-        else:
-            out.write(',')
-        out.write('\n%s%s: ' % (indent, jsonify(key)))
-        if key in ("elements", "subgroups"):
-            elems = sorted(data[key], key=lambda k: data[key][k]["index"])
-            out.write('{\n' + indent + ' ')
-            out.write((',\n' + indent + ' ').join(jsonify(k) + ': ' + jsonify(data[key][k]) for k in elems))
-            out.write('\n' + indent + '}')
-        elif key == "conjugacy_classes":
-            out.write('[\n' + indent + ' ')
-            out.write((',\n' + indent + ' ').join(map(jsonify, data[key])))
-            out.write('\n' + indent + ']')
-        else:
-            out.write(jsonify(data[key]))
-    out.write('\n' + indent[:-1] + '}')
-
-def jsonify(obj):
-    return json.dumps(obj, sort_keys=True, separators=(', ', ': '))
